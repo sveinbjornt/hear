@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>The app converts your speech to text.</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.sveinbjorn.listen</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>The app converts speech to text.</string>
+</dict>
+</plist>
