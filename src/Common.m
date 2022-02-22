@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 // Print to stdout
-static void NSPrint(NSString *format, ...) {
+void NSPrint(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
@@ -20,7 +20,7 @@ static void NSPrint(NSString *format, ...) {
 }
 
 // Print to stderr
-static void NSPrintErr(NSString *format, ...) {
+void NSPrintErr(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);

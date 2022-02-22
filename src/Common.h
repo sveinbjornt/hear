@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 
 
+#define PROGRAM_VERSION 0.1
+
 // Logging in debug mode only
 #ifdef DEBUG
     #define DLog(...) NSLog(__VA_ARGS__)
@@ -16,6 +18,6 @@
 #endif
 
 
-static void NSPrint(NSString *format, ...);
-static void NSPrintErr(NSString *format, ...);
+void NSPrint(NSString *format, ...);
+void NSPrintErr(NSString *format, ...);
 

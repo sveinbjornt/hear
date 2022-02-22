@@ -21,6 +21,17 @@
 
 @implementation Listen
 
++ (void)printSupportedLanguages {
+    NSMutableArray *localeIdentifiers = [NSMutableArray new];
+    for (NSLocale *locale in [SFSpeechRecognizer supportedLocales]) {
+        [localeIdentifiers addObject:[locale localeIdentifier]];
+    }
+    [localeIdentifiers sortUsingSelector:@selector(compare:)];
+    for (NSString *identifier in localeIdentifiers) {
+        NSPrint(identifier);
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     [self requestSpeechRecognitionPermission];
 }
@@ -29,26 +40,28 @@
     
     [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus authStatus) {
         switch (authStatus) {
+            
             case SFSpeechRecognizerAuthorizationStatusAuthorized:
                 //User gave access to speech recognition
-                NSLog(@"Authorized");
+                DLog(@"Authorized");
                 [self startListening];
                 break;
-
+                
             case SFSpeechRecognizerAuthorizationStatusDenied:
                 // User denied access to speech recognition
-                NSLog(@"SFSpeechRecognizerAuthorizationStatusDenied");
+                NSPrintErr(@"Speech recognition authorization denied");
                 break;
-
+                
             case SFSpeechRecognizerAuthorizationStatusRestricted:
                 // Speech recognition restricted on this device
-                NSLog(@"SFSpeechRecognizerAuthorizationStatusRestricted");
+                NSPrintErr(@"Speech recognition authorization restricted on this device");
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusNotDetermined:
                 // Speech recognition not yet authorized
+                NSPrintErr(@"Speech recognition authorization not yet authorized");
                 break;
-            
+                
             default:
                 break;
         }
@@ -63,7 +76,7 @@
 
 - (void)print:(NSString *)s {
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-        printf("\r%s", [s cStringUsingEncoding:NSUTF8StringEncoding]);
+        printf("%s\n", [s cStringUsingEncoding:NSUTF8StringEncoding]);
         fflush(stdout);
     }];
 }
@@ -74,6 +87,13 @@
 }
 
 - (void)startListening {
+
+    self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
+    if (self.request == nil) {
+        NSLog(@"Unable to initialize speech recognition request");
+        return;
+    }
+
     
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
@@ -88,15 +108,10 @@
     }
     if (self.recognizer.supportsOnDeviceRecognition) {
         NSLog(@"Speech recognizer supports on-device recognition");
-        self.recognizer
+        self.request.requiresOnDeviceRecognition = YES;
     }
     
     
-    self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
-    if (self.request == nil) {
-        NSLog(@"Unable to initialize speech recognition request");
-        return;
-    }
     
     self.request.shouldReportPartialResults = YES;
 //    self.request.requiresOnDeviceRecognition = YES;
@@ -104,7 +119,10 @@
 //    self.task = [self.recognizer recognitionTaskWithRequest:self.request delegate:self];
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
                                               resultHandler:^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
-//        BOOL isFinal = result.isFinal;
+        BOOL isFinal = result.isFinal;
+        if (isFinal) {
+            NSLog(@"Final result");
+        }
         if (error != nil) {
             NSLog(@"Error: %@", error.localizedDescription);
             return;

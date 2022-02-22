@@ -8,7 +8,10 @@
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 #import <Speech/Speech.h>
+#import "Common.h"
 
 @interface Listen : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
+
++ (void)printSupportedLanguages;
 
 @end
