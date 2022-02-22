@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		F439F2B727C5794D00626667 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A327C0457A00EF9845 /* Common.m */; };
 		F45C87A627C0457A00EF9845 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C879F27C0457900EF9845 /* main.m */; };
-		F45C87A727C0457A00EF9845 /* Makefile in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A027C0457900EF9845 /* Makefile */; };
 		F45C87A927C0457A00EF9845 /* Listen.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A427C0457A00EF9845 /* Listen.m */; };
 /* End PBXBuildFile section */
 
@@ -139,7 +138,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F439F2B727C5794D00626667 /* Common.m in Sources */,
-				F45C87A727C0457A00EF9845 /* Makefile in Sources */,
 				F45C87A927C0457A00EF9845 /* Listen.m in Sources */,
 				F45C87A627C0457A00EF9845 /* main.m in Sources */,
 			);
