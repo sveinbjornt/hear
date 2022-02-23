@@ -1,4 +1,6 @@
 /*
+    hear - Command line speech recognition for macOS
+
     Copyright (c) 2022 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
