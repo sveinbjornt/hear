@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2022, Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -29,22 +29,26 @@
 */
 
 #import <getopt.h>
-
 #import <Foundation/Foundation.h>
 
 #import "Common.h"
-#import "Listen.h"
+#import "Hear.h"
+
 
 static void PrintVersion(void);
 static void PrintHelp(void);
+
+
+#define DEFAULT_LANGUAGE    @"en-US"
 
 
 static const char optstring[] = "li:f:dhv";
 
 static struct option long_options[] = {
 
-    {"list",                      required_argument,  0, 'l'}, // List available languages for STT
-    {"input",                     required_argument,  0, 'i'}, // Input (file path or - for stdin)
+    {"supported",                 required_argument,  0, 's'}, // List supported languages for STT
+    {"language",                  required_argument,  0, 'l'}, // Specify language for STT
+    {"input",                     required_argument,  0, 'i'}, // Input (file path or "-" for stdin)
     {"format",                    required_argument,  0, 'f'}, // Format (of input file or data)
     {"device",                    no_argument,        0, 'd'}, // Use on-device speech recognition
     //{"raw",                       required_argument,  0, 'r'}, // Raw output
@@ -57,7 +61,7 @@ static struct option long_options[] = {
 
 
 int main(int argc, const char * argv[]) { @autoreleasepool {
-    
+    NSString *language = DEFAULT_LANGUAGE;
     NSString *inputFilename;
     NSString *inputFormat;
     BOOL useOnDeviceRecognition = FALSE;
@@ -69,10 +73,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         switch (optch) {
             
             // Print list of supported languages
-            case 'l':
-                [Listen printSupportedLanguages];
+            case 's':
+                [Hear printSupportedLanguages];
                 exit(EXIT_SUCCESS);
                 break;
+            
+            case 'l':
+                language = @(optarg);
             
             // Input filename ("-" for stdin)
             case 'i':
@@ -104,10 +111,11 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         }
     }
 
-    Listen *listener = [[Listen alloc] initWithInput:inputFilename
-                                              format:inputFormat
-                                            onDevice:useOnDeviceRecognition];
-    [[NSApplication sharedApplication] setDelegate:listener];
+    Hear *hear = [[Hear alloc] initWithLanguage:language
+                                          input:inputFilename
+                                         format:inputFormat
+                                       onDevice:useOnDeviceRecognition];
+    [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
 
     return EXIT_SUCCESS;
@@ -116,14 +124,14 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 #pragma mark -
 
 static void PrintVersion(void) {
-    NSPrint(@"listen version %@", PROGRAM_VERSION);
+    NSPrint(@"hear version %@", PROGRAM_VERSION);
 }
 
 static void PrintHelp(void) {
     PrintVersion();
     
     NSPrint(@"\n\
-listen [-l] [-i file] [-f fmt]\n\
+hear [-l] [-i file] [-f fmt]\n\
 \n\
 Options:\n\
 \n\
@@ -136,6 +144,6 @@ Options:\n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
 \n\
-For further details, see 'man listen'.");
+For further details, see 'man hear'.");
 }
 

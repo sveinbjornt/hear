@@ -1,4 +1,4 @@
-# listen
+# hear
 
 ## Command line speech recognition for macOS
 

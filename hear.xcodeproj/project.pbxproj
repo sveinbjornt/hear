@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		F439F2B727C5794D00626667 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A327C0457A00EF9845 /* Common.m */; };
 		F45C87A627C0457A00EF9845 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C879F27C0457900EF9845 /* main.m */; };
-		F45C87A927C0457A00EF9845 /* Listen.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A427C0457A00EF9845 /* Listen.m */; };
+		F45C87A927C0457A00EF9845 /* Hear.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A427C0457A00EF9845 /* Hear.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,15 +25,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		F43A461B27C010B2000469BC /* listen */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = listen; sourceTree = BUILT_PRODUCTS_DIR; };
-		F45C879D27C0457900EF9845 /* listen.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = listen.1; sourceTree = "<group>"; };
+		F43A461B27C010B2000469BC /* hear */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hear; sourceTree = BUILT_PRODUCTS_DIR; };
+		F45C879D27C0457900EF9845 /* hear.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = hear.1; sourceTree = "<group>"; };
 		F45C879E27C0457900EF9845 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		F45C879F27C0457900EF9845 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F45C87A027C0457900EF9845 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
 		F45C87A127C0457A00EF9845 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		F45C87A227C0457A00EF9845 /* Listen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Listen.h; sourceTree = "<group>"; };
+		F45C87A227C0457A00EF9845 /* Hear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hear.h; sourceTree = "<group>"; };
 		F45C87A327C0457A00EF9845 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
-		F45C87A427C0457A00EF9845 /* Listen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Listen.m; sourceTree = "<group>"; };
+		F45C87A427C0457A00EF9845 /* Hear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hear.m; sourceTree = "<group>"; };
 		F45C87A527C0457A00EF9845 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -53,7 +53,7 @@
 			children = (
 				F45C87A127C0457A00EF9845 /* README.md */,
 				F45C87A027C0457900EF9845 /* Makefile */,
-				F45C879D27C0457900EF9845 /* listen.1 */,
+				F45C879D27C0457900EF9845 /* hear.1 */,
 				F45C87A527C0457A00EF9845 /* Info.plist */,
 				F45C87AA27C0458300EF9845 /* src */,
 				F43A461C27C010B2000469BC /* Products */,
@@ -63,7 +63,7 @@
 		F43A461C27C010B2000469BC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F43A461B27C010B2000469BC /* listen */,
+				F43A461B27C010B2000469BC /* hear */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -73,8 +73,8 @@
 			children = (
 				F45C879E27C0457900EF9845 /* Common.h */,
 				F45C87A327C0457A00EF9845 /* Common.m */,
-				F45C87A227C0457A00EF9845 /* Listen.h */,
-				F45C87A427C0457A00EF9845 /* Listen.m */,
+				F45C87A227C0457A00EF9845 /* Hear.h */,
+				F45C87A427C0457A00EF9845 /* Hear.m */,
 				F45C879F27C0457900EF9845 /* main.m */,
 			);
 			path = src;
@@ -83,9 +83,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F43A461A27C010B2000469BC /* listen */ = {
+		F43A461A27C010B2000469BC /* hear */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F43A462227C010B2000469BC /* Build configuration list for PBXNativeTarget "listen" */;
+			buildConfigurationList = F43A462227C010B2000469BC /* Build configuration list for PBXNativeTarget "hear" */;
 			buildPhases = (
 				F43A461727C010B2000469BC /* Sources */,
 				F43A461827C010B2000469BC /* Frameworks */,
@@ -95,9 +95,9 @@
 			);
 			dependencies = (
 			);
-			name = listen;
+			name = hear;
 			productName = listen;
-			productReference = F43A461B27C010B2000469BC /* listen */;
+			productReference = F43A461B27C010B2000469BC /* hear */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -114,7 +114,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F43A461627C010B2000469BC /* Build configuration list for PBXProject "listen" */;
+			buildConfigurationList = F43A461627C010B2000469BC /* Build configuration list for PBXProject "hear" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -127,7 +127,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F43A461A27C010B2000469BC /* listen */,
+				F43A461A27C010B2000469BC /* hear */,
 			);
 		};
 /* End PBXProject section */
@@ -138,7 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F439F2B727C5794D00626667 /* Common.m in Sources */,
-				F45C87A927C0457A00EF9845 /* Listen.m in Sources */,
+				F45C87A927C0457A00EF9845 /* Hear.m in Sources */,
 				F45C87A627C0457A00EF9845 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,7 +265,9 @@
 				DEVELOPMENT_TEAM = 5WX26Y89JP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.listen;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -278,7 +280,9 @@
 				DEVELOPMENT_TEAM = 5WX26Y89JP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
-				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.listen;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MARKETING_VERSION = 0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -286,7 +290,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F43A461627C010B2000469BC /* Build configuration list for PBXProject "listen" */ = {
+		F43A461627C010B2000469BC /* Build configuration list for PBXProject "hear" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F43A462027C010B2000469BC /* Debug */,
@@ -295,7 +299,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F43A462227C010B2000469BC /* Build configuration list for PBXNativeTarget "listen" */ = {
+		F43A462227C010B2000469BC /* Build configuration list for PBXNativeTarget "hear" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F43A462327C010B2000469BC /* Debug */,

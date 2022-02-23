@@ -2,11 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>The app converts your speech to text.</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.sveinbjorn.listen</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This command line tool converts speech to text.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>The app converts speech to text.</string>
+	<string>This command line too converts speech to text.</string>
 </dict>
 </plist>

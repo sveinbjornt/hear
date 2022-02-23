@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2022, Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -29,38 +29,45 @@
 */
 
 #import <Speech/Speech.h>
-#import "Listen.h"
+#import "Hear.h"
 
-@interface Listen() {
-}
+@interface Hear()
 
 @property (nonatomic, retain) AVAudioEngine *engine;
 @property (nonatomic, retain) SFSpeechRecognizer *recognizer;
 @property (nonatomic, retain) SFSpeechAudioBufferRecognitionRequest *request;
 @property (nonatomic, retain) SFSpeechRecognitionTask *task;
+@property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 
 @end
 
-@implementation Listen
+@implementation Hear
 
-+ (void)printSupportedLanguages {
++ (NSArray<NSString *> *)supportedLanguages {
     NSMutableArray *localeIdentifiers = [NSMutableArray new];
     for (NSLocale *locale in [SFSpeechRecognizer supportedLocales]) {
         [localeIdentifiers addObject:[locale localeIdentifier]];
     }
     [localeIdentifiers sortUsingSelector:@selector(compare:)];
+    return [localeIdentifiers copy];
+}
+
++ (void)printSupportedLanguages {
+    NSArray *localeIdentifiers = [Hear supportedLanguages];
     for (NSString *identifier in localeIdentifiers) {
         NSPrint(identifier);
     }
 }
 
-- (instancetype)initWithInput:(NSString *)input
-                       format:(NSString *)fmt
-                     onDevice:(BOOL)onDevice {
+- (instancetype)initWithLanguage:(NSString *)language
+                           input:(NSString *)input
+                          format:(NSString *)fmt
+                        onDevice:(BOOL)onDevice {
     if ((self = [super init])) {
+        self.language = language;
         self.inputFile = input;
         self.inputFormat = fmt;
         self.useOnDeviceRecognition = onDevice;
@@ -111,13 +118,15 @@
 }
 
 - (void)startListening {
-
+    
+    // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
         NSPrintErr(@"Unable to initialize speech recognition request");
         return;
     }
     
+    // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     self.recognizer.delegate = self;
@@ -125,10 +134,18 @@
         NSPrintErr(@"Unable to initialize speech recognizer");
         exit(EXIT_FAILURE);
     }
+    
+    // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
         NSPrintErr(@"Speech recognizer not available");
         exit(EXIT_FAILURE);
     }
+    
+    if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
+        NSPrintErr(@"On-device recognition is not supported for %@", self.language);
+        exit(EXIT_FAILURE);
+    }
+    
     if (self.recognizer.supportsOnDeviceRecognition) {
         DLog(@"Speech recognizer supports on-device recognition");
         self.request.requiresOnDeviceRecognition = YES;

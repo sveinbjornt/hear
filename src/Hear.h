@@ -1,5 +1,5 @@
 /*
-    Copyright (c) 2022, Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -33,11 +33,13 @@
 #import <Speech/Speech.h>
 #import "Common.h"
 
-@interface Listen : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
+@interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
-- (instancetype)initWithInput:(NSString *)input
-                       format:(NSString *)fmt
-                     onDevice:(BOOL)useOnDeviceRecognition;
++ (NSArray<NSString *> *)supportedLanguages;
 + (void)printSupportedLanguages;
 
+- (instancetype)initWithLanguage:(NSString *)language
+                           input:(NSString *)input
+                          format:(NSString *)fmt
+                        onDevice:(BOOL)useOnDeviceRecognition;
 @end
