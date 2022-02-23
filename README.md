@@ -1,8 +1,43 @@
-# hear
+# hear - Command line speech recognition for macOS
 
-## Command line speech recognition for macOS
+**hear** is a command line interface for the built-in speech recognition capabilities in macOS.
 
-Lorem ipsum.
+Apple's macOS has long shipped with the `say` tool, a command line interface
+for the operating system's native speech synthesis capabilities. As of
+10.15 "Catalina", the OS also ships with highly capable speech recognition for a variety
+of languages. This project is an attempt to provide a robust CLI for this functionality
+since no such tool is provided by Apple. `hear` supports speech recognition via both
+microphone audio input and audio files in a variety of formats.
+
+## Download
+
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
+
+`hear` is free, open source software. The source code is freely
+[available on GitHub](https://github.com/sveinbjornt/hear) under a BSD license. **If you
+find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
+
+* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)**  (Intel/ARM 64-bit, 10.15 or later, ~100 KB)
+
+## Documentation
+
+* [`hear` man page](https://sveinbjorn.org/files/manpages/hear.1.html)
+
+## Usage
+
+```
+hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
+```
+
+## Build
+
+To build `hear`, run the following command from the repository root (requires Xcode command line build tools):
+
+```
+make
+```
+
+The resulting binary is created in `products/`.
 
 ## BSD License 
 
