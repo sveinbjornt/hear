@@ -31,7 +31,8 @@
 #import <Foundation/Foundation.h>
 
 
-#define PROGRAM_VERSION 0.1
+#define PROGRAM_VERSION @"0.1"
+
 
 // Logging in debug mode only
 #ifdef DEBUG
@@ -43,4 +44,3 @@
 
 void NSPrint(NSString *format, ...);
 void NSPrintErr(NSString *format, ...);
-

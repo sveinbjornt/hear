@@ -35,7 +35,9 @@
 
 @interface Listen : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
-- (instancetype)initWithInput:(NSString *)input format:(NSString *)fmt;
+- (instancetype)initWithInput:(NSString *)input
+                       format:(NSString *)fmt
+                     onDevice:(BOOL)useOnDeviceRecognition;
 + (void)printSupportedLanguages;
 
 @end

@@ -39,6 +39,8 @@
 @property (nonatomic, retain) SFSpeechAudioBufferRecognitionRequest *request;
 @property (nonatomic, retain) SFSpeechRecognitionTask *task;
 @property (nonatomic, retain) NSString *inputFile;
+@property (nonatomic, retain) NSString *inputFormat;
+@property (nonatomic) BOOL useOnDeviceRecognition;
 
 @end
 
@@ -55,10 +57,13 @@
     }
 }
 
-- (instancetype)initWithInput:(NSString *)input format:(NSString *)fmt {
-    self = [super init];
-    if (self) {
+- (instancetype)initWithInput:(NSString *)input
+                       format:(NSString *)fmt
+                     onDevice:(BOOL)onDevice {
+    if ((self = [super init])) {
         self.inputFile = input;
+        self.inputFormat = fmt;
+        self.useOnDeviceRecognition = onDevice;
     }
     return self;
 }
@@ -99,50 +104,51 @@
     }];
 }
 
-- (void)speechRecognitionTask:(SFSpeechRecognitionTask *)task didFinishRecognition:(SFSpeechRecognitionResult *)recognitionResult {
+- (void)speechRecognitionTask:(SFSpeechRecognitionTask *)task
+         didFinishRecognition:(SFSpeechRecognitionResult *)recognitionResult {
     NSString *recognizedText = recognitionResult.bestTranscription.formattedString;
-    NSLog(@"%@", recognizedText);
+    NSPrint(@"%@", recognizedText);
 }
 
 - (void)startListening {
 
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
-        NSLog(@"Unable to initialize speech recognition request");
+        NSPrintErr(@"Unable to initialize speech recognition request");
         return;
     }
-
     
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
-//    self.recognizer.delegate = self;
+    self.recognizer.delegate = self;
     if (self.recognizer == nil) {
-        NSLog(@"Unable to initialize speech recognizer");
-        return;
+        NSPrintErr(@"Unable to initialize speech recognizer");
+        exit(EXIT_FAILURE);
     }
     if (self.recognizer.isAvailable == NO) {
-        NSLog(@"Speech recognizer not available");
-        return;
+        NSPrintErr(@"Speech recognizer not available");
+        exit(EXIT_FAILURE);
     }
     if (self.recognizer.supportsOnDeviceRecognition) {
-        NSLog(@"Speech recognizer supports on-device recognition");
+        DLog(@"Speech recognizer supports on-device recognition");
         self.request.requiresOnDeviceRecognition = YES;
     }
     
-    
-    
     self.request.shouldReportPartialResults = YES;
-//    self.request.requiresOnDeviceRecognition = YES;
+    self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
     
-//    self.task = [self.recognizer recognitionTaskWithRequest:self.request delegate:self];
+//    self.task = [self.recognizer recognitionTaskWithRequest:self.request
+//                                                   delegate:self];
+    
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
-                                              resultHandler:^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
+                                              resultHandler:
+    ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         BOOL isFinal = result.isFinal;
         if (isFinal) {
-            NSLog(@"Final result");
+            DLog(@"Final result");
         }
         if (error != nil) {
-            NSLog(@"Error: %@", error.localizedDescription);
+            DLog(@"Error: %@", error.localizedDescription);
             return;
         }
         NSString *s = result.bestTranscription.formattedString;
@@ -150,27 +156,30 @@
     }];
     
     if (self.task == nil) {
-        NSLog(@"Unable to initialize speech recognition task");
+        NSPrintErr(@"Unable to initialize speech recognition task");
         return;
     }
     
-    NSLog(@"Creating engine");
+    DLog(@"Creating engine");
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
     
     id recFmt = [inputNode outputFormatForBus:0];
         
-    [inputNode installTapOnBus:0 bufferSize:1024 format:recFmt block:^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
+    [inputNode installTapOnBus:0
+                    bufferSize:1024
+                        format:recFmt
+                         block:
+     ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
         [self.request appendAudioPCMBuffer:buffer];
-//        NSLog(@"Got audio input data: %@", buffer.description);
     }];
     
     NSError *err;
-    NSLog(@"Starting engine");
+    DLog(@"Starting engine");
     [self.engine prepare];
     [self.engine startAndReturnError:&err];
     if (err != nil) {
-        NSLog(@"%@", [err localizedDescription]);
+        NSPrintErr(@"Error: %@", [err localizedDescription]);
         exit(EXIT_FAILURE);
     }
 }
