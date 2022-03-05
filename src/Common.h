@@ -35,6 +35,8 @@
 
 #define PROGRAM_VERSION @"0.1"
 
+#define DEFAULT_LANGUAGE    @"en-US"
+
 
 // Logging in debug mode only
 #ifdef DEBUG

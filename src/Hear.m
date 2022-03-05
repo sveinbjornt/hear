@@ -39,6 +39,7 @@
 @property (nonatomic, retain) SFSpeechRecognizer *recognizer;
 @property (nonatomic, retain) SFSpeechAudioBufferRecognitionRequest *request;
 @property (nonatomic, retain) SFSpeechRecognitionTask *task;
+@property (nonatomic) BOOL useMic;
 @property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
@@ -73,6 +74,7 @@
         self.inputFile = input;
         self.inputFormat = fmt;
         self.useOnDeviceRecognition = onDevice;
+        self.useMic = (input == nil);
     }
     return self;
 }
@@ -88,8 +90,7 @@
             
             case SFSpeechRecognizerAuthorizationStatusAuthorized:
                 //User gave access to speech recognition
-                DLog(@"Authorized");
-                [self startListening];
+                [self runTask];
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusDenied:
@@ -119,15 +120,55 @@
     NSPrint(@"%@", recognizedText);
 }
 
-- (void)startListening {
-    
-    // Create speech recognition request
-    self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
-    if (self.request == nil) {
-        NSPrintErr(@"Unable to initialize speech recognition request");
+- (void)runTask {
+    if (self.useMic) {
+        [self startListening];
         return;
     }
     
+    NSString *filePath = self.inputFile;
+    if ([filePath isEqualToString:@"-"]) {
+        // filePath = tmpPath
+    } else if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
+        NSPrintErr(@"No file at path %@", filePath);
+        exit(EXIT_FAILURE);
+    }
+    // OK, the file exists.
+    
+    [self initRecognizer];
+    
+    // Create speech recognition request with file URL
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    self.request = [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
+    if (self.request == nil) {
+        NSPrintErr(@"Unable to initialize speech recognition request");
+        exit(EXIT_FAILURE);
+    }
+    self.request.shouldReportPartialResults = NO;
+    self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
+
+    // Create speech recognition task
+    self.task = [self.recognizer recognitionTaskWithRequest:self.request
+                                              resultHandler:
+    ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
+        if (error != nil) {
+            NSPrintErr(@"Error: %@", [error localizedDescription]);
+            exit(EXIT_FAILURE);
+        }
+        NSString *s = result.bestTranscription.formattedString;
+        NSPrint(s);
+        if (result.isFinal) {
+            // We're all done
+            exit(EXIT_SUCCESS);
+        }
+    }];
+    if (self.task == nil) {
+        NSPrintErr(@"Unable to initialize speech recognition task");
+        exit(EXIT_FAILURE);
+    }
+}
+
+- (void)initRecognizer {
     // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
@@ -139,7 +180,7 @@
     
     // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
-        NSPrintErr(@"Speech recognizer not available");
+        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Ask Siri in System Preferences.");
         exit(EXIT_FAILURE);
     }
     
@@ -147,36 +188,43 @@
         NSPrintErr(@"On-device recognition is not supported for %@", self.language);
         exit(EXIT_FAILURE);
     }
+}
+
+- (void)startListening {
     
-    if (self.recognizer.supportsOnDeviceRecognition) {
-        DLog(@"Speech recognizer supports on-device recognition");
-        self.request.requiresOnDeviceRecognition = YES;
+    [self initRecognizer];
+    
+    // Create speech recognition request
+    self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
+    if (self.request == nil) {
+        NSPrintErr(@"Unable to initialize speech recognition request");
+        exit(EXIT_FAILURE);
     }
-    
     self.request.shouldReportPartialResults = YES;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
     
-//    self.task = [self.recognizer recognitionTaskWithRequest:self.request
-//                                                   delegate:self];
-    
+    // Create spech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
-        BOOL isFinal = result.isFinal;
-        if (isFinal) {
-            DLog(@"Final result");
-        }
         if (error != nil) {
-            DLog(@"Error: %@", error.localizedDescription);
+            NSPrintErr(@"Error: %@", error.localizedDescription);
             return;
         }
-        NSString *s = result.bestTranscription.formattedString;
-        NSPrint(s);
+        NSString *s = [NSString stringWithFormat:@"%@\r", result.bestTranscription.formattedString];
+//        NSPrint(s);
+        fprintf(stdout, "%s", [s UTF8String]);
+        fflush(stdout);
+        if (result.isFinal) {
+            exit(EXIT_SUCCESS);
+//            DLog(@"Final result");
+        }
+
     }];
     
     if (self.task == nil) {
         NSPrintErr(@"Unable to initialize speech recognition task");
-        return;
+        exit(EXIT_FAILURE);
     }
     
     DLog(@"Creating engine");

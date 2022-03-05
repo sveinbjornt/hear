@@ -41,9 +41,6 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-#define DEFAULT_LANGUAGE    @"en-US"
-
-
 static const char optstring[] = "li:f:dhv";
 
 static struct option long_options[] = {
@@ -104,7 +101,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 exit(EXIT_SUCCESS);
                 break;
             
-            // Print help text with list of options
+            // Print help text with list of option flags
             case 'h':
             default:
                 PrintHelp();
@@ -133,12 +130,13 @@ static void PrintHelp(void) {
     PrintVersion();
     
     NSPrint(@"\n\
-hear [-l] [-i file] [-f fmt]\n\
+hear [-s] [-l lang] [-i file] [-f fmt] [-d]\n\
 \n\
 Options:\n\
 \n\
-    -l --list               Print list of supported languages\n\
+    -s --supported          Print list of supported languages\n\
 \n\
+    -l --language           Specify speech recognition language\n\
     -i --input [file_path]  Specify audio file to process\n\
     -f --format [fmt]       Specify audio file format\n\
     -d --device             Only use on-device speech recognition\n\
