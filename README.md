@@ -18,7 +18,7 @@ microphone audio input and audio files in a variety of formats.
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
 `hear` is free, open source software. The source code is freely
-[available on GitHub](https://github.com/sveinbjornt/hear) under a BSD license. **If you
+[available](https://github.com/sveinbjornt/hear) under a BSD license. **If you
 find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
 * **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)**  (Intel/ARM 64-bit, macOS 10.15 or later, ~100 KB)
@@ -36,7 +36,7 @@ This will install `hear` into `/usr/local/bin` and the man page into
 
 ## Usage
 
-### Via microphone input
+### Transcribe microphone input
 ```
 hear
 ```

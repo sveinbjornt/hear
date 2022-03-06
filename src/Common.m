@@ -31,9 +31,9 @@
 */
 
 #include "Common.h"
-#import <Cocoa/Cocoa.h>
+#include <stdio.h>
 
-// Print to stdout
+// Print NSString to stdout
 void NSPrint(NSString *format, ...) {
     va_list args;
     
@@ -44,7 +44,7 @@ void NSPrint(NSString *format, ...) {
     fprintf(stdout, "%s\n", [string UTF8String]);
 }
 
-// Print to stderr
+// Print NSString to stderr
 void NSPrintErr(NSString *format, ...) {
     va_list args;
     
@@ -53,4 +53,17 @@ void NSPrintErr(NSString *format, ...) {
     va_end(args);
     
     fprintf(stderr, "%s\n", [string UTF8String]);
+}
+
+// Print NSString to stdout without newline, flushing stdout in the process
+// to ensure that the output is shown immediately without line buffering
+void NSDump(NSString *format, ...) {
+    va_list args;
+    
+    va_start(args, format);
+    NSString *string  = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    
+    fprintf(stdout, "%s", [string UTF8String]); // No newline appended
+    fflush(stdout); // Flush stdout to prevent line buffering issues
 }

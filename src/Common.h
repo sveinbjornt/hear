@@ -32,11 +32,9 @@
 
 #import <Foundation/Foundation.h>
 
-
-#define PROGRAM_VERSION @"0.1"
-
+#define PROGRAM_NAME        @"hear"
+#define PROGRAM_VERSION     @"0.1"
 #define DEFAULT_LANGUAGE    @"en-US"
-
 
 // Logging in debug mode only
 #ifdef DEBUG
@@ -45,6 +43,6 @@
     #define DLog(...)
 #endif
 
-
 void NSPrint(NSString *format, ...);
 void NSPrintErr(NSString *format, ...);
+void NSDump(NSString *format, ...);

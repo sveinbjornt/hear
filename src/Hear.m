@@ -72,7 +72,7 @@
     if ((self = [super init])) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
-            NSPrintErr(@"Locale '%@' not supported", language);
+            NSPrintErr(@"Locale '%@' not supported. Run hear -s for list of supported locales.", language);
             exit(EXIT_FAILURE);
         }
         
@@ -154,6 +154,7 @@
     
     NSString *filePath = self.inputFile;
     if ([filePath isEqualToString:@"-"]) {
+        // TODO: Read from stdin and save to temp dir
         // filePath = tmpPath
     } else if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
         NSPrintErr(@"No file at path %@", filePath);
@@ -217,8 +218,7 @@
         }
         NSString *s = [NSString stringWithFormat:@"\33[2K\r%@", result.bestTranscription.formattedString];
 //        NSPrint(s);
-        fprintf(stdout, "%s", [s UTF8String]);
-        fflush(stdout);
+        NSDump(s);
         if (result.isFinal) {
             exit(EXIT_SUCCESS);
         }
