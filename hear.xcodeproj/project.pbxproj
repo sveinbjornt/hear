@@ -29,6 +29,7 @@
 		F439F2C127D5158000626667 /* upload_manpage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_manpage.sh; sourceTree = "<group>"; };
 		F439F2C327D51D7F00626667 /* test.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = test.wav; sourceTree = "<group>"; };
 		F439F2C427D51D7F00626667 /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
+		F439F2C527D55BFF00626667 /* macos.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = macos.yml; path = .github/workflows/macos.yml; sourceTree = "<group>"; };
 		F43A461B27C010B2000469BC /* hear */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hear; sourceTree = BUILT_PRODUCTS_DIR; };
 		F45C879D27C0457900EF9845 /* hear.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = hear.1; sourceTree = "<group>"; };
 		F45C879E27C0457900EF9845 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 		F43A461227C010B2000469BC = {
 			isa = PBXGroup;
 			children = (
+				F439F2C527D55BFF00626667 /* macos.yml */,
 				F45C87A127C0457A00EF9845 /* README.md */,
 				F45C87A027C0457900EF9845 /* Makefile */,
 				F439F2C027D5157A00626667 /* install.sh */,

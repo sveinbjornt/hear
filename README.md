@@ -21,7 +21,7 @@ microphone audio and audio files in a variety of formats.
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** (Intel/ARM 64-bit, macOS 10.15 or later, ~100 KB)
+* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** (Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
 
 ## Installation
 
