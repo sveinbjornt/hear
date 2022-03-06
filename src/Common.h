@@ -34,7 +34,9 @@
 
 #define PROGRAM_NAME        @"hear"
 #define PROGRAM_VERSION     @"0.1"
-#define DEFAULT_LANGUAGE    @"en-US"
+#define PROGRAM_AUTHOR      @"Sveinbjorn Thordarson"
+
+#define DEFAULT_LOCALE      @"en-US"
 
 // Logging in debug mode only
 #ifdef DEBUG

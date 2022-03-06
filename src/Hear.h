@@ -45,4 +45,5 @@
                           format:(NSString *)fmt
                         onDevice:(BOOL)useOnDeviceRecognition
                   singleLineMode:(BOOL)singleLine;
+
 @end

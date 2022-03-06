@@ -10,8 +10,8 @@ Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", macOS also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust CLI for this functionality
-since no such tool is provided by Apple. `hear` supports speech recognition via both
-microphone audio input and audio files in a variety of formats.
+since no such tool is provided by Apple. `hear` supports speech recognition of both
+microphone audio and audio files in a variety of formats.
 
 ## Download
 
@@ -41,6 +41,11 @@ This will install the binary into `/usr/local/bin` and the man page into
 hear
 ```
 
+### From microphone in single line output mode
+```
+hear -m
+```
+
 ### Transcribe audio file
 ```
 hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
@@ -51,9 +56,7 @@ hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 cat /path/to/audio_file.wav | hear -i - -f wav
 ```
 
-## Documentation
-
-* [`hear` man page](https://sveinbjorn.org/files/manpages/hear.1.html)
+See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further documentation.
 
 ## Build
 

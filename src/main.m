@@ -61,7 +61,7 @@ static struct option long_options[] = {
 
 
 int main(int argc, const char * argv[]) { @autoreleasepool {
-    NSString *language = DEFAULT_LANGUAGE;
+    NSString *language = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *inputFormat;
     BOOL useOnDeviceRecognition = FALSE;
@@ -126,7 +126,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 #pragma mark -
 
 static void PrintVersion(void) {
-    NSPrint(@"%@ version %@", PROGRAM_NAME, PROGRAM_VERSION);
+    NSPrint(@"%@ version %@ by %@", PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR);
 }
 
 static void PrintHelp(void) {

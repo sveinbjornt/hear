@@ -35,14 +35,16 @@
 
 @interface Hear()
 
-@property (nonatomic, retain) AVAudioEngine *engine;
 @property (nonatomic, retain) SFSpeechRecognizer *recognizer;
 @property (nonatomic, retain) SFSpeechRecognitionRequest *request;
 @property (nonatomic, retain) SFSpeechRecognitionTask *task;
-@property (nonatomic) BOOL useMic;
+
+@property (nonatomic, retain) AVAudioEngine *engine;
+
 @property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
+@property (nonatomic) BOOL useMic;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
 
@@ -74,7 +76,8 @@
     if ((self = [super init])) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
-            NSPrintErr(@"Locale '%@' not supported. Run hear -s for list of supported locales.", language);
+            NSPrintErr(@"Locale '%@' not supported. Run %@ -s for list of supported locales.",
+                       PROGRAM_NAME, language);
             exit(EXIT_FAILURE);
         }
         
@@ -98,23 +101,23 @@
         switch (authStatus) {
             
             case SFSpeechRecognizerAuthorizationStatusAuthorized:
-                //User gave access to speech recognition
+                // User allowed access to speech recognition
                 [self runTask];
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusDenied:
-                // User denied access to speech recognition
                 NSPrintErr(@"Speech recognition authorization denied");
+                exit(EXIT_FAILURE);
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusRestricted:
-                // Speech recognition restricted on this device
                 NSPrintErr(@"Speech recognition authorization restricted on this device");
+                exit(EXIT_FAILURE);
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusNotDetermined:
-                // Speech recognition not yet authorized
                 NSPrintErr(@"Speech recognition authorization not yet authorized");
+                exit(EXIT_FAILURE);
                 break;
                 
             default:
@@ -125,7 +128,7 @@
 
 - (void)initRecognizer {
     // Initialize speech recognizer
-    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.language];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     self.recognizer.delegate = self;
     if (self.recognizer == nil) {
@@ -135,7 +138,7 @@
     
     // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
-        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Ask Siri in System Preferences.");
+        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Siri in System Preferences.");
         exit(EXIT_FAILURE);
     }
     
@@ -186,9 +189,13 @@
             exit(EXIT_FAILURE);
         }
         NSString *s = result.bestTranscription.formattedString;
-        NSPrint(s);
+        if ([s hasSuffix:@" "] == FALSE) {
+            s = [NSString stringWithFormat:@"%@ ", s];
+        }
+        NSDump(s);
         if (result.isFinal) {
             // We're all done
+            NSDump(@"\n");
             exit(EXIT_SUCCESS);
         }
     }];
