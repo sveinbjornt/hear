@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
 @property (nonatomic) BOOL useOnDeviceRecognition;
+@property (nonatomic) BOOL singleLineMode;
 
 @end
 
@@ -68,7 +69,8 @@
 - (instancetype)initWithLanguage:(NSString *)language
                            input:(NSString *)input
                           format:(NSString *)fmt
-                        onDevice:(BOOL)onDevice {
+                        onDevice:(BOOL)onDevice
+                  singleLineMode:(BOOL)singleLine {
     if ((self = [super init])) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
@@ -80,6 +82,7 @@
         self.inputFile = input;
         self.inputFormat = fmt;
         self.useOnDeviceRecognition = onDevice;
+        self.singleLineMode = singleLine;
         self.useMic = (input == nil);
     }
     return self;
@@ -216,9 +219,16 @@
             NSPrintErr(@"Error: %@", error.localizedDescription);
             return;
         }
-        NSString *s = [NSString stringWithFormat:@"\33[2K\r%@", result.bestTranscription.formattedString];
-//        NSPrint(s);
-        NSDump(s);
+        
+        // Print to stdout
+        if (self.singleLineMode) {
+            NSString *s = [NSString stringWithFormat:@"\33[2K\r%@",
+                           result.bestTranscription.formattedString];
+            NSDump(s);
+        } else {
+            NSPrint(result.bestTranscription.formattedString);
+        }
+        
         if (result.isFinal) {
             exit(EXIT_SUCCESS);
         }

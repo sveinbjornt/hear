@@ -18,10 +18,10 @@ microphone audio input and audio files in a variety of formats.
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
 `hear` is free, open source software. The source code is freely
-[available](https://github.com/sveinbjornt/hear) under a BSD license. **If you
-find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
+[available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
+**If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)**  (Intel/ARM 64-bit, macOS 10.15 or later, ~100 KB)
+* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** (Intel/ARM 64-bit, macOS 10.15 or later, ~100 KB)
 
 ## Installation
 
@@ -31,12 +31,12 @@ After downloading and expanding the archive, change to the resulting directory a
 bash install.sh
 ```
 
-This will install `hear` into `/usr/local/bin` and the man page into
+This will install the binary into `/usr/local/bin` and the man page into
 `/usr/local/share/man/man1/`.
 
 ## Usage
 
-### Transcribe microphone input
+### Transcribe audio from microphone
 ```
 hear
 ```
@@ -44,6 +44,11 @@ hear
 ### Transcribe audio file
 ```
 hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
+```
+
+### Transcribe audio from standard input
+```
+cat /path/to/audio_file.wav | hear -i - -f wav
 ```
 
 ## Documentation

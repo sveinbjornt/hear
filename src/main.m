@@ -41,7 +41,7 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-static const char optstring[] = "sl:i:f:dhv";
+static const char optstring[] = "sl:i:f:dmhv";
 
 static struct option long_options[] = {
 
@@ -50,6 +50,7 @@ static struct option long_options[] = {
     {"input",                     required_argument,  0, 'i'}, // Input (file path or "-" for stdin)
     {"format",                    required_argument,  0, 'f'}, // Format (of input file or data)
     {"device",                    no_argument,        0, 'd'}, // Use on-device speech recognition
+    {"mode",                      no_argument,        0, 'm'}, // Enable single-line output mode (for mic)
     //{"raw",                       required_argument,  0, 'r'}, // Raw output
     
     {"help",                      no_argument,        0, 'h'},
@@ -64,6 +65,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     NSString *inputFilename;
     NSString *inputFormat;
     BOOL useOnDeviceRecognition = FALSE;
+    BOOL singleLineMode = FALSE;
     
     int optch;
     int long_index = 0;
@@ -113,7 +115,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     Hear *hear = [[Hear alloc] initWithLanguage:language
                                           input:inputFilename
                                          format:inputFormat
-                                       onDevice:useOnDeviceRecognition];
+                                       onDevice:useOnDeviceRecognition
+                                 singleLineMode:singleLineMode];
     [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
 
@@ -123,7 +126,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 #pragma mark -
 
 static void PrintVersion(void) {
-    NSPrint(@"hear version %@", PROGRAM_VERSION);
+    NSPrint(@"%@ version %@", PROGRAM_NAME, PROGRAM_VERSION);
 }
 
 static void PrintHelp(void) {
@@ -140,10 +143,11 @@ Options:\n\
     -i --input [file_path]  Specify audio file to process\n\
     -f --format [fmt]       Specify audio file format\n\
     -d --device             Only use on-device speech recognition\n\
+    -m --mode               Enable single-line output mode (mic only)\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
 \n\
-For further details, see 'man hear'.");
+For further details, see 'man %@'.", PROGRAM_NAME);
 }
 
