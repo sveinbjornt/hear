@@ -1,12 +1,14 @@
 # hear
 
-## Command line speech recognition for macOS
+<img src="icon.png" width="168" height="168" alt="hear" style="float: right; margin-left: 20px; margin-bottom: 20px;" align="right">
+
+### macOS speech recognition via the command line
 
 **hear** is a command line interface for the built-in speech recognition capabilities in macOS.
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
-for the operating system's native speech synthesis capabilities. As of
-10.15 "Catalina", the OS also ships with highly capable speech recognition for a variety
+for the operating system's venerable speech synthesis capabilities. As of
+10.15 "Catalina", macOS also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust CLI for this functionality
 since no such tool is provided by Apple. `hear` supports speech recognition via both
 microphone audio input and audio files in a variety of formats.
@@ -19,21 +21,38 @@ microphone audio input and audio files in a variety of formats.
 [available on GitHub](https://github.com/sveinbjornt/hear) under a BSD license. **If you
 find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)**  (Intel/ARM 64-bit, 10.15 or later, ~100 KB)
+* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)**  (Intel/ARM 64-bit, macOS 10.15 or later, ~100 KB)
+
+## Installation
+
+After downloading and expanding the archive, change to the resulting directory and run the following command:
+
+```
+bash install.sh
+```
+
+This will install `hear` into `/usr/local/bin` and the man page into
+`/usr/local/share/man/man1/`.
+
+## Usage
+
+### Via microphone input
+```
+hear
+```
+
+### Transcribe audio file
+```
+hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
+```
 
 ## Documentation
 
 * [`hear` man page](https://sveinbjorn.org/files/manpages/hear.1.html)
 
-## Usage
-
-```
-hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
-```
-
 ## Build
 
-To build `hear`, run the following command from the repository root (requires Xcode command line build tools):
+To build `hear` from source, run the following command from the repository root (requires Xcode command line build tools):
 
 ```
 make
