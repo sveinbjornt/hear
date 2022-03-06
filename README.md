@@ -1,4 +1,6 @@
-# hear - Command line speech recognition for macOS
+# hear
+
+## Command line speech recognition for macOS
 
 **hear** is a command line interface for the built-in speech recognition capabilities in macOS.
 

@@ -41,11 +41,11 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-static const char optstring[] = "li:f:dhv";
+static const char optstring[] = "sl:i:f:dhv";
 
 static struct option long_options[] = {
 
-    {"supported",                 required_argument,  0, 's'}, // List supported languages for STT
+    {"supported",                 no_argument,        0, 's'}, // List supported languages for STT
     {"language",                  required_argument,  0, 'l'}, // Specify language for STT
     {"input",                     required_argument,  0, 'i'}, // Input (file path or "-" for stdin)
     {"format",                    required_argument,  0, 'f'}, // Format (of input file or data)

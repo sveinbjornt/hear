@@ -37,7 +37,7 @@
 
 @property (nonatomic, retain) AVAudioEngine *engine;
 @property (nonatomic, retain) SFSpeechRecognizer *recognizer;
-@property (nonatomic, retain) SFSpeechAudioBufferRecognitionRequest *request;
+@property (nonatomic, retain) SFSpeechRecognitionRequest *request;
 @property (nonatomic, retain) SFSpeechRecognitionTask *task;
 @property (nonatomic) BOOL useMic;
 @property (nonatomic, retain) NSString *language;
@@ -70,6 +70,12 @@
                           format:(NSString *)fmt
                         onDevice:(BOOL)onDevice {
     if ((self = [super init])) {
+        
+        if ([[Hear supportedLanguages] containsObject:language] == NO) {
+            NSPrintErr(@"Locale '%@' not supported", language);
+            exit(EXIT_FAILURE);
+        }
+        
         self.language = language;
         self.inputFile = input;
         self.inputFormat = fmt;
@@ -114,17 +120,37 @@
     }];
 }
 
-- (void)speechRecognitionTask:(SFSpeechRecognitionTask *)task
-         didFinishRecognition:(SFSpeechRecognitionResult *)recognitionResult {
-    NSString *recognizedText = recognitionResult.bestTranscription.formattedString;
-    NSPrint(@"%@", recognizedText);
+- (void)initRecognizer {
+    // Initialize speech recognizer
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
+    self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
+    self.recognizer.delegate = self;
+    if (self.recognizer == nil) {
+        NSPrintErr(@"Unable to initialize speech recognizer");
+        exit(EXIT_FAILURE);
+    }
+    
+    // Make sure recognition is available
+    if (self.recognizer.isAvailable == NO) {
+        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Ask Siri in System Preferences.");
+        exit(EXIT_FAILURE);
+    }
+    
+    if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
+        NSPrintErr(@"On-device recognition is not supported for %@", self.language);
+        exit(EXIT_FAILURE);
+    }
 }
 
 - (void)runTask {
     if (self.useMic) {
         [self startListening];
-        return;
+    } else {
+        [self processFile];
     }
+}
+
+- (void)processFile {
     
     NSString *filePath = self.inputFile;
     if ([filePath isEqualToString:@"-"]) {
@@ -133,8 +159,8 @@
         NSPrintErr(@"No file at path %@", filePath);
         exit(EXIT_FAILURE);
     }
-    // OK, the file exists.
     
+    // OK, the file exists, let's try to run speech recognition on it
     [self initRecognizer];
     
     // Create speech recognition request with file URL
@@ -168,28 +194,6 @@
     }
 }
 
-- (void)initRecognizer {
-    // Initialize speech recognizer
-    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:@"en-US"];
-    self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
-    self.recognizer.delegate = self;
-    if (self.recognizer == nil) {
-        NSPrintErr(@"Unable to initialize speech recognizer");
-        exit(EXIT_FAILURE);
-    }
-    
-    // Make sure recognition is available
-    if (self.recognizer.isAvailable == NO) {
-        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Ask Siri in System Preferences.");
-        exit(EXIT_FAILURE);
-    }
-    
-    if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
-        NSPrintErr(@"On-device recognition is not supported for %@", self.language);
-        exit(EXIT_FAILURE);
-    }
-}
-
 - (void)startListening {
     
     [self initRecognizer];
@@ -211,15 +215,13 @@
             NSPrintErr(@"Error: %@", error.localizedDescription);
             return;
         }
-        NSString *s = [NSString stringWithFormat:@"%@\r", result.bestTranscription.formattedString];
+        NSString *s = [NSString stringWithFormat:@"\33[2K\r%@", result.bestTranscription.formattedString];
 //        NSPrint(s);
         fprintf(stdout, "%s", [s UTF8String]);
         fflush(stdout);
         if (result.isFinal) {
             exit(EXIT_SUCCESS);
-//            DLog(@"Final result");
         }
-
     }];
     
     if (self.task == nil) {
@@ -238,7 +240,7 @@
                         format:recFmt
                          block:
      ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
-        [self.request appendAudioPCMBuffer:buffer];
+        [(SFSpeechAudioBufferRecognitionRequest *)self.request appendAudioPCMBuffer:buffer];
     }];
     
     NSError *err;
