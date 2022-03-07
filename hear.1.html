@@ -1,0 +1,67 @@
+<html><head></head><body bgcolor="black" text="white"><pre><font face="Courier">
+<b>HEAR(1)                   BSD General Commands Manual                  HEAR(1)</b>
+
+<b>NAME</b>
+
+     <b>hear</b> -- macOS speech recognition via the command line
+
+<b>SYNOPSIS</b>
+
+     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-f</b> <u>audio</u><b>_<u></b>fmt</u>]
+
+<b>DESCRIPTION</b>
+
+     <b>hear</b> is a command line interface for the built-in speech recognition
+     capabilities in macOS. It supports transcription of both audio files and
+     microphone input. If no input is provided, the default behaviour is to
+     start listening for audio from the microphone.
+
+     The following flags are supported:
+
+     <b>-s</b> <b>--supported</b>
+              Print list of supported languages (locales) for speech recogni-
+              tion.
+
+     <b>-l</b> <b>--language</b> <u>lang</u>
+              Specify speech recognition language (locale). Default is 'en-
+              US'.
+
+     <b>-i</b> <b>--input</b> <u>audio</u><b>_<u></b>file</u>
+              Input audio file. All formats supported by CoreAudio should work
+              (e.g. WAV, MP3, AAC, etc.). If the argument is '-', the audio
+              data is read from standard input.
+
+     <b>-f</b> <b>--format</b> <u>format</u><b>_<u></b>name</u>
+              Specify the format of the audio file (e.g. wav, mp3, aac, etc.)
+              Only required when reading audio data from standard input.
+
+     <b>-d</b> <b>--device</b>
+              Only use on-device offline speech recognition. The default is to
+              use whatever Apple's APIs think is best, which may include send-
+              ing data to their servers.  When on-device is not enabled, there
+              may be a hard limit to the length of audio that can be recog-
+              nized in a single session.
+
+     <b>-m</b> <b>--mode</b>
+              Enable single-line output mode (only applies when the input is
+              microphone audio).
+
+     <b>-h</b> <b>--help</b>
+              Print help and exit.
+
+     <b>-v</b> <b>--version</b>
+              Print program name and version, and exit.
+
+     Returns 0 on success and greater than 0 on error or failure.
+
+<b>SEE ALSO</b>
+
+     say(1)
+
+<b>AUTHORS</b>
+
+     Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
+
+Darwin                           March 7, 2022                          Darwin
+</font></pre>
+</body></html>

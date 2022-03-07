@@ -1,75 +1,49 @@
-.\" Modified from man(1) of FreeBSD, the NetBSD mdoc.template and mdoc.samples
-.\" See man mdoc for the short list of editing options
-.Dd January 26, 2018     \" DATE
-.Dt HEAR 1           \" Program name and manual section number
+.Dd March 7, 2022
+.Dt HEAR 1
 .Os Darwin
-.Sh NAME                 \" Section Header - required - don't modify
+.Sh NAME
 .Nm hear
-.\" The following lines are read in generating the apropos database.
-.\" Use only key words here as the database is built on these.
-.Sh SYNOPSIS             \" Section Header - required - don't modify
+.Nd macOS speech recognition via the command line
+.Sh SYNOPSIS
 .Nm
-.Op Fl abcd              \" [-abcd]
-.Op Fl a Ar path         \" [-a path]
-.Op Ar file              \" [file]
-.Op Ar                   \" [file ...]
-.Ar arg0                 \" Underlined argument - use .Ar anywhere to underline
-arg2 ...                 \" Arguments
-.Sh DESCRIPTION          \" Section Header - required - don't modify
-Use the .Nm macro to refer to your program throughout the man page like such:
+.Op Fl hvdms
+.Op Fl i Ar audio_file
+.Op Fl l Ar language
+.Op Fl f Ar audio_fmt
+.Sh DESCRIPTION
 .Nm
-Underlining is accomplished with the .Ar macro like this:
-.Ar underlined text.
-.Pp                      \" Inserts a space
-A list of items with descriptions:
-.Bl -tag -width -indent  \" Begins a tagged list
-.It item a               \" Each item preceded by .It macro
-Description of item a
-.It item b
-Description of item b
-.El                      \" Ends the list
+is a command line interface for the built-in speech recognition
+capabilities in macOS. It supports transcription of both audio files
+and microphone input. If no input is provided, the default behaviour
+is to start listening for audio from the microphone.
 .Pp
-A list of flags and their descriptions:
-.Bl -tag -width -indent  \" Differs from above in tag removed
-.It Fl a, -aegh                 \"-a flag as a list item
-Description of -a flag
-.It Fl b
-Description of -b flag
-.El                      \" Ends the list
-.\" .Sh ENVIRONMENT      \" May not be needed
-.\" .Bl -tag -width "ENVVAR1"
-.\" .It Ev ENVVAR1
-.\" Description of ENVVAR1
-.\" .It Ev ENVVAR2
-.\" Description of ENVVAR2
-.\" .El
-.Sh FILES                \" Files used or created by the program
-.Bl -tag -width "/Users/joeuser/Library/really_long_file_name" -compact
-.It Pa /usr/share/file_name
-FILE_1 description
-.It Pa /Users/joeuser/Library/really_long_file_name
-FILE_2 description
-.El                      \" Ends the list
-.\" .Sh DIAGNOSTICS       \" May not be needed
-.\" .Bl -diag
-.\" .It Diagnostic Tag
-.\" Diagnostic informtion here.
-.\" .It Diagnostic Tag
-.\" Diagnostic informtion here.
-.\" .El
+The following flags are supported:
+.Bl -tag -width -indent
+.It Fl s -supported
+Print list of supported languages (locales) for speech recognition.
+.It Fl l -language Ar lang
+Specify speech recognition language (locale). Default is 'en-US'.
+.It Fl i -input Ar audio_file
+Input audio file. All formats supported by CoreAudio should work (e.g. WAV, MP3,
+AAC, etc.). If the argument is '-', the audio data is read from standard input.
+.It Fl f -format Ar format_name
+Specify the format of the audio file (e.g. wav, mp3, aac, etc.) Only required
+when reading audio data from standard input.
+.It Fl d -device
+Only use on-device offline speech recognition. The default is to use whatever
+Apple's APIs think is best, which may include sending data to their servers.
+When on-device is not enabled, there may be a hard limit to the length of audio
+that can be recognized in a single session.
+.It Fl m -mode
+Enable single-line output mode (only applies when the input is microphone audio).
+.It Fl h -help
+Print help and exit.
+.It Fl v -version
+Print program name and version, and exit.
+.El
+.Pp
+Returns 0 on success and greater than 0 on error or failure.
 .Sh SEE ALSO
-.\" List links in ascending order by section, alphabetically within a section.
-.\" Please do not reference files that do not exist without filing a bug report
-.Xr a 1 ,
-.Xr b 1 ,
-.Xr c 1 ,
-.Xr a 2 ,
-.Xr b 2 ,
-.Xr a 3 ,
-.Xr b 3
-.\" .Sh STANDARDS       \" Standards relating to command being described
-.\" .Sh HISTORY         \" Document history if command behaves uniquely
-.\" .Sh AUTHORS         \" A list of authors of the program
-.\" .An John Doe        \" Some author
-.\" .An Jane Doe        \" Some other author
-.\" .Sh BUGS            \" Document known, unremedied bugs
+.Xr say 1
+.Sh AUTHORS
+.An Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>

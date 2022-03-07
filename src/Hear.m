@@ -52,22 +52,6 @@
 
 @implementation Hear
 
-+ (NSArray<NSString *> *)supportedLanguages {
-    NSMutableArray *localeIdentifiers = [NSMutableArray new];
-    for (NSLocale *locale in [SFSpeechRecognizer supportedLocales]) {
-        [localeIdentifiers addObject:[locale localeIdentifier]];
-    }
-    [localeIdentifiers sortUsingSelector:@selector(compare:)];
-    return [localeIdentifiers copy];
-}
-
-+ (void)printSupportedLanguages {
-    NSArray *localeIdentifiers = [Hear supportedLanguages];
-    for (NSString *identifier in localeIdentifiers) {
-        NSPrint(identifier);
-    }
-}
-
 - (instancetype)initWithLanguage:(NSString *)language
                            input:(NSString *)input
                           format:(NSString *)fmt
@@ -76,7 +60,7 @@
     if ((self = [super init])) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
-            NSPrintErr(@"Locale '%@' not supported. Run with -s flag for list of supported locales.", language);
+            NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", language);
             exit(EXIT_FAILURE);
         }
         
@@ -89,6 +73,8 @@
     }
     return self;
 }
+
+#pragma mark - NSApplicationDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     [self requestSpeechRecognitionPermission];
@@ -125,13 +111,15 @@
     }];
 }
 
+#pragma mark -
+
 - (void)initRecognizer {
     // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.language];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     self.recognizer.delegate = self;
     if (self.recognizer == nil) {
-        NSPrintErr(@"Unable to initialize speech recognizer");
+        NSPrintErr(@"Error: Unable to initialize speech recognizer");
         exit(EXIT_FAILURE);
     }
     
@@ -173,7 +161,7 @@
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     self.request = [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
     if (self.request == nil) {
-        NSPrintErr(@"Unable to initialize speech recognition request");
+        NSPrintErr(@"Error: Unable to initialize speech recognition request");
         exit(EXIT_FAILURE);
     }
     self.request.shouldReportPartialResults = NO;
@@ -199,7 +187,7 @@
         }
     }];
     if (self.task == nil) {
-        NSPrintErr(@"Unable to initialize speech recognition task");
+        NSPrintErr(@"Error: Unable to initialize speech recognition task");
         exit(EXIT_FAILURE);
     }
 }
@@ -211,7 +199,7 @@
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
-        NSPrintErr(@"Unable to initialize speech recognition request");
+        NSPrintErr(@"Error: Unable to initialize speech recognition request");
         exit(EXIT_FAILURE);
     }
     self.request.shouldReportPartialResults = YES;
@@ -241,7 +229,7 @@
     }];
     
     if (self.task == nil) {
-        NSPrintErr(@"Unable to initialize speech recognition task");
+        NSPrintErr(@"Error: Unable to initialize speech recognition task");
         exit(EXIT_FAILURE);
     }
     
@@ -263,8 +251,26 @@
     NSError *err;
     [self.engine startAndReturnError:&err];
     if (err != nil) {
-        NSPrintErr(@"Error: %@", [err localizedDescription]);
+        NSPrintErr(@"Error starting audio engine: %@", [err localizedDescription]);
         exit(EXIT_FAILURE);
+    }
+}
+
+#pragma mark - Class methods
+
++ (NSArray<NSString *> *)supportedLanguages {
+    NSMutableArray *localeIdentifiers = [NSMutableArray new];
+    for (NSLocale *locale in [SFSpeechRecognizer supportedLocales]) {
+        [localeIdentifiers addObject:[locale localeIdentifier]];
+    }
+    [localeIdentifiers sortUsingSelector:@selector(compare:)];
+    return [localeIdentifiers copy];
+}
+
++ (void)printSupportedLanguages {
+    NSArray *localeIdentifiers = [Hear supportedLanguages];
+    for (NSString *identifier in localeIdentifiers) {
+        NSPrint(identifier);
     }
 }
 
