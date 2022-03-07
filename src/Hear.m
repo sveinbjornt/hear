@@ -44,6 +44,7 @@
 @property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
+//@property (nonatomic, retain) NSString *tempFile;
 @property (nonatomic) BOOL useMic;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
@@ -147,8 +148,9 @@
     
     NSString *filePath = self.inputFile;
     if ([filePath isEqualToString:@"-"]) {
-        // TODO: Read from stdin and save to temp dir
-        // filePath = tmpPath
+        // TODO: Read from stdin and save to temp dir/feed to audio buffer processing?
+        NSPrintErr(@"Reading from standard input remains unimplemented");
+        exit(EXIT_FAILURE);
     } else if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
         NSPrintErr(@"No file at path %@", filePath);
         exit(EXIT_FAILURE);

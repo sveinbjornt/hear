@@ -1,3 +1,7 @@
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
+[![Build](https://github.com/sveinbjornt/hear/actions/workflows/macos.yml/badge.svg)]()
+
 # hear
 
 <img src="icon.png" width="168" height="168" alt="hear" style="float: right; margin-left: 20px; margin-bottom: 20px;" align="right">
@@ -8,16 +12,16 @@
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
-10.15 "Catalina", macOS also ships with highly capable speech recognition for a variety
+10.15 "Catalina", it also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust CLI for this functionality
-since no such tool is provided by Apple. `hear` supports speech recognition of both
+since no such tool is provided by Apple. **hear** supports speech recognition of both
 microphone audio and audio files in a variety of formats.
 
 ## Download
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
-`hear` is free, open source software. The source code is freely
+**hear** is free, open source software. The source code is freely
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
@@ -49,11 +53,6 @@ hear -m
 ### Transcribe audio file
 ```
 hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
-```
-
-### Transcribe audio from standard input
-```
-cat /path/to/audio_file.wav | hear -i - -f wav
 ```
 
 See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further documentation.
