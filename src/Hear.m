@@ -76,8 +76,7 @@
     if ((self = [super init])) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
-            NSPrintErr(@"Locale '%@' not supported. Run %@ -s for list of supported locales.",
-                       PROGRAM_NAME, language);
+            NSPrintErr(@"Locale '%@' not supported. Run with -s flag for list of supported locales.", language);
             exit(EXIT_FAILURE);
         }
         
@@ -189,7 +188,7 @@
             exit(EXIT_FAILURE);
         }
         NSString *s = result.bestTranscription.formattedString;
-        if ([s hasSuffix:@" "] == FALSE) {
+        if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
             s = [NSString stringWithFormat:@"%@ ", s];
         }
         NSDump(s);
@@ -246,7 +245,7 @@
         exit(EXIT_FAILURE);
     }
     
-    DLog(@"Creating engine");
+//    DLog(@"Creating engine");
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
     
@@ -260,9 +259,8 @@
         [(SFSpeechAudioBufferRecognitionRequest *)self.request appendAudioPCMBuffer:buffer];
     }];
     
+//    DLog(@"Starting engine");
     NSError *err;
-    DLog(@"Starting engine");
-    [self.engine prepare];
     [self.engine startAndReturnError:&err];
     if (err != nil) {
         NSPrintErr(@"Error: %@", [err localizedDescription]);

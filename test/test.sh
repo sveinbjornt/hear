@@ -3,7 +3,7 @@
 # Test binary by running various commands
 #
 
-EXPECTED="The rain in Spain stays mainly in the plane "
+EXPECTED="The rain in Spain stays mainly in the plane"
 
 OUT=$(products/hear -i "test/test.wav" -d)
 

@@ -44,14 +44,13 @@ static void PrintHelp(void);
 static const char optstring[] = "sl:i:f:dmhv";
 
 static struct option long_options[] = {
-
+    
     {"supported",                 no_argument,        0, 's'}, // List supported languages for STT
     {"language",                  required_argument,  0, 'l'}, // Specify language for STT
     {"input",                     required_argument,  0, 'i'}, // Input (file path or "-" for stdin)
     {"format",                    required_argument,  0, 'f'}, // Format (of input file or data)
     {"device",                    no_argument,        0, 'd'}, // Use on-device speech recognition
     {"mode",                      no_argument,        0, 'm'}, // Enable single-line output mode (for mic)
-    //{"raw",                       required_argument,  0, 'r'}, // Raw output
     
     {"help",                      no_argument,        0, 'h'},
     {"version",                   no_argument,        0, 'v'},
@@ -61,12 +60,23 @@ static struct option long_options[] = {
 
 
 int main(int argc, const char * argv[]) { @autoreleasepool {
+    
+    // Make sure we're running on a macOS version that supports speech recognition
+    NSOperatingSystemVersion osVersion = {0};
+    osVersion.majorVersion = 10;
+    osVersion.minorVersion = 15;
+    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:osVersion] == NO) {
+        NSPrintErr(@"This program requires macOS 10.15 or later.");
+        exit(EXIT_FAILURE);
+    }
+    
     NSString *language = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *inputFormat;
     BOOL useOnDeviceRecognition = FALSE;
     BOOL singleLineMode = FALSE;
     
+    // Parse arguments
     int optch;
     int long_index = 0;
     
@@ -79,6 +89,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 exit(EXIT_SUCCESS);
                 break;
             
+            // Set language (i.e. locale) for speech recognition
             case 'l':
                 language = @(optarg);
             
@@ -87,7 +98,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 inputFilename = @(optarg);
                 break;
             
-            // Input audio format
+            // Input audio format (only required if getting data via stdin)
             case 'f':
                 inputFormat = @(optarg);
                 break;
@@ -95,6 +106,11 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             // Use on-device speech recognition
             case 'd':
                 useOnDeviceRecognition = YES;
+                break;
+            
+            // Use single line mode when showing transcription of mic input
+            case 'm':
+                singleLineMode = YES;
                 break;
             
             // Print version
@@ -111,7 +127,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 break;
         }
     }
-
+    
+    // Instantiate app delegate object with core program functionality
     Hear *hear = [[Hear alloc] initWithLanguage:language
                                           input:inputFilename
                                          format:inputFormat
@@ -119,7 +136,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                  singleLineMode:singleLineMode];
     [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
-
+    
     return EXIT_SUCCESS;
 }}
 
@@ -131,7 +148,6 @@ static void PrintVersion(void) {
 
 static void PrintHelp(void) {
     PrintVersion();
-    
     NSPrint(@"\n\
 hear [-s] [-l lang] [-i file] [-f fmt] [-d]\n\
 \n\
