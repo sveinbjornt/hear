@@ -81,6 +81,13 @@
     [self requestSpeechRecognitionPermission];
 }
 
+#pragma mark -
+
+- (void)die:(NSString *)errmsg {
+    NSPrintErr(errmsg);
+    exit(EXIT_FAILURE);
+}
+
 - (void)requestSpeechRecognitionPermission {
     
     [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus authStatus) {
@@ -92,18 +99,15 @@
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusDenied:
-                NSPrintErr(@"Speech recognition authorization denied");
-                exit(EXIT_FAILURE);
+                [self die:@"Speech recognition authorization denied"];
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusRestricted:
-                NSPrintErr(@"Speech recognition authorization restricted on this device");
-                exit(EXIT_FAILURE);
+                [self die:@"Speech recognition authorization restricted on this device"];
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusNotDetermined:
-                NSPrintErr(@"Speech recognition authorization not yet authorized");
-                exit(EXIT_FAILURE);
+                [self die:@"Speech recognition authorization not yet authorized"];
                 break;
                 
             default:
@@ -112,27 +116,22 @@
     }];
 }
 
-#pragma mark -
-
 - (void)initRecognizer {
     // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.language];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     self.recognizer.delegate = self;
     if (self.recognizer == nil) {
-        NSPrintErr(@"Error: Unable to initialize speech recognizer");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Unable to initialize speech recognizer"];
     }
     
     // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
-        NSPrintErr(@"Error: Speech recognizer not available. Try enabling Siri in System Preferences.");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Speech recognizer not available. Try enabling Siri in System Preferences."];
     }
     
     if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
-        NSPrintErr(@"On-device recognition is not supported for %@", self.language);
-        exit(EXIT_FAILURE);
+        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for %@", self.language]];
     }
 }
 
@@ -149,11 +148,9 @@
     NSString *filePath = self.inputFile;
     if ([filePath isEqualToString:@"-"]) {
         // TODO: Read from stdin and save to temp dir/feed to audio buffer processing?
-        NSPrintErr(@"Reading from standard input remains unimplemented");
-        exit(EXIT_FAILURE);
+        [self die:@"Reading from standard input remains unimplemented"];
     } else if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
-        NSPrintErr(@"No file at path %@", filePath);
-        exit(EXIT_FAILURE);
+        [self die:[NSString stringWithFormat:@"No file at path %@", filePath]];
     }
     
     // OK, the file exists, let's try to run speech recognition on it
@@ -163,8 +160,7 @@
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     self.request = [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
     if (self.request == nil) {
-        NSPrintErr(@"Error: Unable to initialize speech recognition request");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Unable to initialize speech recognition request"];
     }
     self.request.shouldReportPartialResults = NO;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
@@ -174,8 +170,7 @@
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         if (error != nil) {
-            NSPrintErr(@"Error: %@", [error localizedDescription]);
-            exit(EXIT_FAILURE);
+            [self die:[error localizedDescription]];
         }
         NSString *s = result.bestTranscription.formattedString;
         if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
@@ -189,8 +184,7 @@
         }
     }];
     if (self.task == nil) {
-        NSPrintErr(@"Error: Unable to initialize speech recognition task");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Unable to initialize speech recognition task"];
     }
 }
 
@@ -201,8 +195,7 @@
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
-        NSPrintErr(@"Error: Unable to initialize speech recognition request");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Unable to initialize speech recognition request"];
     }
     self.request.shouldReportPartialResults = YES;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
@@ -231,8 +224,7 @@
     }];
     
     if (self.task == nil) {
-        NSPrintErr(@"Error: Unable to initialize speech recognition task");
-        exit(EXIT_FAILURE);
+        [self die:@"Error: Unable to initialize speech recognition task"];
     }
     
 //    DLog(@"Creating engine");
@@ -253,8 +245,7 @@
     NSError *err;
     [self.engine startAndReturnError:&err];
     if (err != nil) {
-        NSPrintErr(@"Error starting audio engine: %@", [err localizedDescription]);
-        exit(EXIT_FAILURE);
+        [self die:[NSString stringWithFormat:@"Error starting audio engine: %@", [err localizedDescription]]];
     }
 }
 
