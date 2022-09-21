@@ -73,8 +73,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     NSString *language = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *inputFormat;
-    BOOL useOnDeviceRecognition = FALSE;
-    BOOL singleLineMode = FALSE;
+    BOOL useOnDeviceRecognition = NO;
+    BOOL singleLineMode = NO;
     
     // Parse arguments
     int optch;

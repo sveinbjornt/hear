@@ -52,8 +52,12 @@ hear -m
 
 ### Transcribe audio file
 ```
-hear -i /path/to/someone_speaking.mp3 > transcribed_text.txt
+hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 ```
+
+Tbe `-d` flag specifiies that only on-device speech recognition is used.
+Otherwise, data may be sent to Apple servers, which have a hard limit of
+something like 500 characters before they cut off the connection.
 
 See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further documentation.
 

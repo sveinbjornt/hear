@@ -42,6 +42,7 @@ void NSPrint(NSString *format, ...) {
     va_end(args);
     
     fprintf(stdout, "%s\n", [string UTF8String]);
+    fflush(stdout); // Flush stdout to prevent line buffering issues
 }
 
 // Print NSString to stderr
@@ -53,6 +54,7 @@ void NSPrintErr(NSString *format, ...) {
     va_end(args);
     
     fprintf(stderr, "%s\n", [string UTF8String]);
+    fflush(stderr); // Flush stderr to prevent line buffering issues
 }
 
 // Print NSString to stdout without newline, flushing stdout in the process
