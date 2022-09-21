@@ -31,7 +31,8 @@
 */
 
 #include "Common.h"
-#include <stdio.h>
+
+#import <stdio.h>
 
 // Print NSString to stdout
 inline void NSPrint(NSString *format, ...) {

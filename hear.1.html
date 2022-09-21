@@ -14,7 +14,7 @@
      <b>hear</b> is a command line interface for the built-in speech recognition
      capabilities in macOS. It supports transcription of both audio files and
      microphone input. If no input is provided, the default behaviour is to
-     start listening for audio from the microphone.
+     transcribe from the default audio input device, typically the microphone.
 
      The following flags are supported:
 
@@ -28,19 +28,21 @@
 
      <b>-i</b> <b>--input</b> <u>audio</u><b>_<u></b>file</u>
               Input audio file. All formats supported by CoreAudio should work
-              (e.g. WAV, MP3, AAC, etc.). If the argument is '-', the audio
-              data is read from standard input.
+              (e.g. WAV, MP3, AAC, CAF, AIFF, etc.). If the argument is '-',
+              the audio data is read from standard input, in which case you
+              need to specify the format.
 
      <b>-f</b> <b>--format</b> <u>format</u><b>_<u></b>name</u>
-              Specify the format of the audio file (e.g. wav, mp3, aac, etc.)
-              Only required when reading audio data from standard input.
+              Specify the format of the audio file (e.g. wav, mp3, aac, etc.).
+              This flag is only required when reading audio data from standard
+              input and is otherwise ignored.
 
      <b>-d</b> <b>--device</b>
               Only use on-device offline speech recognition. The default is to
-              use whatever Apple's APIs think is best, which may include send-
-              ing data to their servers.  When on-device is not enabled, there
-              may be a hard limit to the length of audio that can be recog-
-              nized in a single session.
+              use whatever the macOS Speech Recognition API thinks is best,
+              which may include sending data to Apple servers. When on-device
+              is not enabled, there may be a hard limit to the length of audio
+              that can be transcribed in a single session.
 
      <b>-m</b> <b>--mode</b>
               Enable single-line output mode (only applies when the input is

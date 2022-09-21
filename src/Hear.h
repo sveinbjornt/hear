@@ -36,7 +36,6 @@
 
 @interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
-+ (NSArray<NSString *> *)supportedLanguages;
 + (void)printSupportedLanguages;
 
 - (instancetype)initWithLanguage:(NSString *)language

@@ -37,6 +37,7 @@
 #import "Hear.h"
 
 
+static BOOL IsRightOSVersion(void);
 static void PrintVersion(void);
 static void PrintHelp(void);
 
@@ -62,10 +63,7 @@ static struct option long_options[] = {
 int main(int argc, const char * argv[]) { @autoreleasepool {
     
     // Make sure we're running on a macOS version that supports speech recognition
-    NSOperatingSystemVersion osVersion = {0};
-    osVersion.majorVersion = 10;
-    osVersion.minorVersion = 15;
-    if ([[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:osVersion] == NO) {
+    if (IsRightOSVersion() == NO) {
         NSPrintErr(@"This program requires macOS 10.15 or later.");
         exit(EXIT_FAILURE);
     }
@@ -141,6 +139,14 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 }}
 
 #pragma mark -
+
+static BOOL IsRightOSVersion() {
+    // The Speech Recognition API wasn't introduced until macOS 10.15
+    NSOperatingSystemVersion osVersion = {0};
+    osVersion.majorVersion = 10;
+    osVersion.minorVersion = 15;
+    return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:osVersion];
+}
 
 static void PrintVersion(void) {
     NSPrint(@"%@ version %@ by %@", PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR);

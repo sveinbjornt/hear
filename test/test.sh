@@ -27,4 +27,5 @@ test_transcribe_file $WAV_PATH
 WAV_PATH="$TEST_ROOT/test.mp3"
 test_transcribe_file $WAV_PATH
 
-# cat "test/test.wav" | products/hear -i '-' -f 'wav'
+# cat "$WAV_PATH" | "$BIN_PATH" -i '-' -f 'wav'
+# cat "$WAV_PATH" | "$BIN_PATH" -i '-' -f 'mp3'
