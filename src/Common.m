@@ -34,7 +34,7 @@
 #include <stdio.h>
 
 // Print NSString to stdout
-void NSPrint(NSString *format, ...) {
+inline void NSPrint(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
@@ -42,11 +42,11 @@ void NSPrint(NSString *format, ...) {
     va_end(args);
     
     fprintf(stdout, "%s\n", [string UTF8String]);
-    fflush(stdout); // Flush stdout to prevent line buffering issues
+    fflush(stdout); // Flush stdout to prevent any line buffering issues
 }
 
 // Print NSString to stderr
-void NSPrintErr(NSString *format, ...) {
+inline void NSPrintErr(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
@@ -54,12 +54,12 @@ void NSPrintErr(NSString *format, ...) {
     va_end(args);
     
     fprintf(stderr, "%s\n", [string UTF8String]);
-    fflush(stderr); // Flush stderr to prevent line buffering issues
+    fflush(stderr); // Flush stderr to prevent any line buffering issues
 }
 
 // Print NSString to stdout without newline, flushing stdout in the process
 // to ensure that the output is shown immediately without line buffering
-void NSDump(NSString *format, ...) {
+inline void NSDump(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);

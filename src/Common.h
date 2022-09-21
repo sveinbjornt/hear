@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 
 #define PROGRAM_NAME        @"hear"
-#define PROGRAM_VERSION     @"0.1"
+#define PROGRAM_VERSION     @"0.2"
 #define PROGRAM_AUTHOR      @"Sveinbjorn Thordarson"
 
 #define DEFAULT_LOCALE      @"en-US"
