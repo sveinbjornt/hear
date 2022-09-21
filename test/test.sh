@@ -8,19 +8,23 @@ abs_path_to_enclosing_dir () {
 }
 
 TEST_ROOT=$(abs_path_to_enclosing_dir $0)
-
 BIN_PATH="products/hear"
-WAV_PATH="$TEST_ROOT/test.wav"
 
 EXPECTED_OUTPUT="The rain in Spain stays mainly in the plane"
 
-OUTPUT=$("$BIN_PATH" -i "$WAV_PATH" -d)
+test_transcribe_file() {
+    OUTPUT=$("$BIN_PATH" -i "$1" -d)
 
-if [ "$OUTPUT" != "$EXPECTED_OUTPUT" ]; then
-    echo "Unexpected output"
-    exit 1
-else
-    exit 0
-fi
+    if [ "$OUTPUT" != "$EXPECTED_OUTPUT" ]; then
+        echo "Unexpected output"
+        exit 1
+    fi
+}
+
+WAV_PATH="$TEST_ROOT/test.wav"
+test_transcribe_file $WAV_PATH
+
+WAV_PATH="$TEST_ROOT/test.mp3"
+test_transcribe_file $WAV_PATH
 
 # cat "test/test.wav" | products/hear -i '-' -f 'wav'

@@ -45,6 +45,7 @@ size:
 	@cd "$(BUILD_DIR)"; du -hs "$(PROGRAM_NAME)-$(VERSION).zip"
 
 runtests:
+# The tests don't work in CI env due to missing permissions from macOS
 #	@echo "Running tests"
 #	@bash "test/test.sh"
 
