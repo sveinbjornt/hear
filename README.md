@@ -8,15 +8,17 @@
 
 ### macOS speech recognition via the command line
 
-**hear** is a command line interface for the built-in speech recognition capabilities in macOS. This makes it
-possible to transcribe spoken texxt and return it as plain text.
+**hear** is a command line interface for the built-in speech recognition capabilities in macOS.
+This makes it possible to transcribe spoken audio input.
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", it also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust CLI for this functionality
-since no such tool is provided by Apple. **hear** supports speech recognition of both
-microphone audio and audio files in a variety of formats.
+since no such tool is provided by Apple. **hear** supports speech recognition and
+transcription of both microphone input and audio files in a variety of formats.
+
+See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further details.
 
 ## Download
 
@@ -26,11 +28,13 @@ microphone audio and audio files in a variety of formats.
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** (Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
+* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** 
+(Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
 
 ## Installation
 
-After downloading and expanding the archive, change to the resulting directory and run the following command:
+After downloading and expanding the archive, change to the resulting directory and run
+the following command:
 
 ```
 bash install.sh
@@ -56,11 +60,9 @@ hear -m
 hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 ```
 
-Tbe `-d` flag specifiies that only on-device speech recognition is used.
-Otherwise, data may be sent to Apple servers, which have a hard limit of
-something like 500 characters before they cut off the connection.
-
-See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further documentation.
+Tbe `-d` flag specifies that only on-device speech recognition capabilities
+should be used. Otherwise, data may be sent to Apple servers, which as of 
+writing have a hard limit of something like 500 characters before quitting.
 
 ## Build
 
@@ -72,9 +74,18 @@ make
 
 The resulting binary is created in `products/`.
 
+## Test
+
+To run tests on the built command line tool, run the following command from the repository root:
+
+```
+bash test/test.sh
+```
+
 ## BSD License 
 
-Copyright (c) 2022 Sveinbjorn Thordarson &lt;<a href="mailto:">sveinbjorn@sveinbjorn.org</a>&gt;
+Copyright (c) 2022 Sveinbjorn Thordarson
+&lt;<a href="mailto:sveinbjorn@sveinbjorn.org">sveinbjorn@sveinbjorn.org</a>&gt;
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
