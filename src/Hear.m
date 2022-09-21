@@ -30,8 +30,8 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Speech/Speech.h>
 #import "Hear.h"
+#import "Common.h"
 
 @interface Hear()
 
@@ -58,7 +58,8 @@
                           format:(NSString *)fmt
                         onDevice:(BOOL)onDevice
                   singleLineMode:(BOOL)singleLine {
-    if ((self = [super init])) {
+    self = [super init];
+    if (self) {
         
         if ([[Hear supportedLanguages] containsObject:language] == NO) {
             NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", language);
@@ -234,7 +235,7 @@
     id recFmt = [inputNode outputFormatForBus:0];
         
     [inputNode installTapOnBus:0
-                    bufferSize:1024
+                    bufferSize:3200
                         format:recFmt
                          block:
      ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
@@ -257,14 +258,13 @@
         [localeIdentifiers addObject:[locale localeIdentifier]];
     }
     [localeIdentifiers sortUsingSelector:@selector(compare:)];
-    return [localeIdentifiers copy];
+    return localeIdentifiers;
 }
 
 + (void)printSupportedLanguages {
     NSArray *localeIdentifiers = [Hear supportedLanguages];
-    for (NSString *identifier in localeIdentifiers) {
-        NSPrint(identifier);
-    }
+    NSString *s = [localeIdentifiers componentsJoinedByString:@"\n"];
+    NSPrint(s);
 }
 
 @end
