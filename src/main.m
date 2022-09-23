@@ -90,6 +90,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             // Set language (i.e. locale) for speech recognition
             case 'l':
                 language = @(optarg);
+                break;
             
             // Input filename ("-" for stdin)
             case 'i':
