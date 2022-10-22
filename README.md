@@ -1,5 +1,6 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
+[![Release](https://shields.io/github/v/release/sveinbjornt/hear?display_name=tag)]()
 [![Build](https://github.com/sveinbjornt/hear/actions/workflows/macos.yml/badge.svg)]()
 
 # hear
@@ -24,7 +25,7 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
-**hear** is free, open source software. The source code is freely
+**hear** is free, open source software written in Objective-C. The source code is freely
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
@@ -76,7 +77,7 @@ The resulting binary is created in `products/`.
 
 ## Test
 
-To run tests on the built command line tool, run the following command from the repository root:
+To run tests on the built command line tool, execute the following command from the repository root:
 
 ```
 bash test/test.sh
