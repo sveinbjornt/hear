@@ -46,12 +46,18 @@ static const char optstring[] = "sl:i:f:dmhv";
 
 static struct option long_options[] = {
     
-    {"supported",                 no_argument,        0, 's'}, // List supported languages for STT
-    {"language",                  required_argument,  0, 'l'}, // Specify language for STT
-    {"input",                     required_argument,  0, 'i'}, // Input (file path or "-" for stdin)
-    {"format",                    required_argument,  0, 'f'}, // Format (of input file or data)
-    {"device",                    no_argument,        0, 'd'}, // Use on-device speech recognition
-    {"mode",                      no_argument,        0, 'm'}, // Enable single-line output mode (for mic)
+    // List supported languages (locales for STT
+    {"supported",                 no_argument,        0, 's'},
+    // Specify language (locale) for STT
+    {"language",                  required_argument,  0, 'l'},
+    // Input (file path or "-" for stdin)
+    {"input",                     required_argument,  0, 'i'},
+    // Format (of input file or data)
+    {"format",                    required_argument,  0, 'f'},
+    // Use on-device speech recognition
+    {"device",                    no_argument,        0, 'd'},
+    // Enable single-line output mode (for mic)
+    {"mode",                      no_argument,        0, 'm'},
     
     {"help",                      no_argument,        0, 'h'},
     {"version",                   no_argument,        0, 'v'},
@@ -164,7 +170,7 @@ Options:\n\
 \n\
     -l --language           Specify speech recognition language\n\
     -i --input [file_path]  Specify audio file to process\n\
-    -f --format [fmt]       Specify audio file format\n\
+    -f --format [fmt]       Specify audio file format (for stdin)\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\
 \n\

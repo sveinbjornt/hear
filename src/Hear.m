@@ -109,7 +109,7 @@
                 break;
                 
             case SFSpeechRecognizerAuthorizationStatusNotDetermined:
-                [self die:@"Speech recognition authorization not yet authorized"];
+                [self die:@"Speech recognition authorization not determined"];
                 break;
                 
             default:
@@ -123,23 +123,27 @@
     // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.language];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
-    self.recognizer.delegate = self;
     if (self.recognizer == nil) {
         [self die:@"Unable to initialize speech recognizer"];
     }
+    self.recognizer.delegate = self;
     
     // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
-        [self die:@"Speech recognizer not available. Try enabling Siri in System Preferences."];
+        [self die:@"Speech recognizer not available. Try enabling Siri in System Preferences/Settings."];
     }
     
     if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
-        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for %@", self.language]];
+        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for locale '%@'", self.language]];
     }
 }
 
 - (void)runTask {
-    self.useDeviceInput ? [self startListening] : [self processFile];
+    if (self.useDeviceInput) {
+        [self startListening];
+    } else {
+        [self processFile];
+    }
 }
 
 - (void)processFile {
@@ -233,6 +237,7 @@
         }
         
         if (result.isFinal) {
+            // We're done
             exit(EXIT_SUCCESS);
         }
     }];
@@ -241,21 +246,20 @@
         [self die:@"Unable to initialize speech recognition task"];
     }
     
-//    DLog(@"Creating engine");
+    // Create audio engine
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
     
-    id recFmt = [inputNode outputFormatForBus:0];
-        
+    // Feed microphone audio data into recognition request
     [inputNode installTapOnBus:0
                     bufferSize:3200
-                        format:recFmt
+                        format:[inputNode outputFormatForBus:0]
                          block:
      ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
         [(SFSpeechAudioBufferRecognitionRequest *)self.request appendAudioPCMBuffer:buffer];
     }];
     
-//    DLog(@"Starting engine");
+    // Start engine
     NSError *err;
     [self.engine startAndReturnError:&err];
     if (err != nil) {
