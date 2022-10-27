@@ -279,9 +279,8 @@
 }
 
 + (void)printSupportedLanguages {
-    NSArray *localeIdentifiers = [Hear supportedLanguages];
-    NSString *s = [localeIdentifiers componentsJoinedByString:@"\n"];
-    NSPrint(s);
+    NSArray<NSString *> *localeIdentifiers = [Hear supportedLanguages];
+    NSPrint([localeIdentifiers componentsJoinedByString:@"\n"]);
 }
 
 @end

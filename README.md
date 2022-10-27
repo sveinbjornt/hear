@@ -61,9 +61,9 @@ hear -m
 hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 ```
 
-Tbe `-d` flag specifies that only on-device speech recognition capabilities
+The `-d` flag specifies that only on-device speech recognition capabilities
 should be used. Otherwise, data may be sent to Apple servers, which as of 
-writing have a hard limit of something like 500 characters before quitting.
+writing (2022) have a hard limit of something like 500 characters before quitting.
 
 ## Build
 
