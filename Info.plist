@@ -7,6 +7,6 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This command line tool converts spoken audio to text.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>This command line too converts spoken audio to text.</string>
+	<string>This command line tool converts spoken audio to text.</string>
 </dict>
 </plist>

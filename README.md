@@ -9,14 +9,14 @@
 
 ### macOS speech recognition via the command line
 
-**hear** is a command line interface for the built-in speech recognition capabilities in macOS.
+`hear` is a command line interface for the built-in speech recognition capabilities in macOS.
 This makes it possible to transcribe spoken audio input.
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", it also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust CLI for this functionality
-since no such tool is provided by Apple. **hear** supports speech recognition and
+since no such tool is provided by Apple. `hear` supports speech recognition and
 transcription of both microphone input and audio files in a variety of formats.
 
 See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further details.
@@ -25,11 +25,11 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
-**hear** is free, open source software written in Objective-C. The source code is freely
+`hear` is free, open source software written in Objective-C. The source code is freely
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.1](https://sveinbjorn.org/files/software/hear.zip)** 
+* **[⇩ Download hear 0.2](https://sveinbjorn.org/files/software/hear.zip)** 
 (Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
 
 ## Installation
@@ -70,7 +70,7 @@ writing have a hard limit of something like 500 characters before quitting.
 To build `hear` from source, run the following command from the repository root (requires Xcode command line build tools):
 
 ```
-make
+make build_unsigned
 ```
 
 The resulting binary is created in `products/`.

@@ -1,9 +1,8 @@
-<html><head></head><body bgcolor="black" text="white"><pre><font face="Courier">
-<b>HEAR(1)                   BSD General Commands Manual                  HEAR(1)</b>
+<html><head></head><body><pre><font face="Courier"><b>HEAR(1)                      General Commands Manual                     HEAR(1)</b>
 
 <b>NAME</b>
 
-     <b>hear</b> -- macOS speech recognition via the command line
+     <b>hear</b> &#x2013; macOS speech recognition via the command line
 
 <b>SYNOPSIS</b>
 
@@ -19,17 +18,16 @@
      The following flags are supported:
 
      <b>-s</b> <b>--supported</b>
-              Print list of supported languages (locales) for speech recogni-
-              tion.
+              Print list of supported languages (locales) for speech
+              recognition.
 
      <b>-l</b> <b>--language</b> <u>lang</u>
-              Specify speech recognition language (locale). Default is 'en-
-              US'.
+              Specify speech recognition language (locale). Default is 'en-US'.
 
      <b>-i</b> <b>--input</b> <u>audio</u><b>_<u></b>file</u>
               Input audio file. All formats supported by CoreAudio should work
-              (e.g. WAV, MP3, AAC, CAF, AIFF, etc.). If the argument is '-',
-              the audio data is read from standard input, in which case you
+              (e.g. WAV, MP3, AAC, CAF, AIFF, ALAC, etc.). If the argument is
+              '-', the audio data is read from standard input, in which case you
               need to specify the format.
 
      <b>-f</b> <b>--format</b> <u>format</u><b>_<u></b>name</u>
@@ -40,9 +38,9 @@
      <b>-d</b> <b>--device</b>
               Only use on-device offline speech recognition. The default is to
               use whatever the macOS Speech Recognition API thinks is best,
-              which may include sending data to Apple servers. When on-device
-              is not enabled, there may be a hard limit to the length of audio
-              that can be transcribed in a single session.
+              which may include sending data to Apple servers. When on-device is
+              not enabled, there may be a hard limit to the length of audio that
+              can be transcribed in a single session.
 
      <b>-m</b> <b>--mode</b>
               Enable single-line output mode (only applies when the input is
@@ -64,6 +62,6 @@
 
      Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 
-Darwin                           March 7, 2022                          Darwin
+Darwin                          October 27, 2022                          Darwin
 </font></pre>
 </body></html>

@@ -1,4 +1,4 @@
-.Dd March 7, 2022
+.Dd October 27, 2022
 .Dt HEAR 1
 .Os Darwin
 .Sh NAME
@@ -26,7 +26,7 @@ Print list of supported languages (locales) for speech recognition.
 Specify speech recognition language (locale). Default is 'en-US'.
 .It Fl i -input Ar audio_file
 Input audio file. All formats supported by CoreAudio should work (e.g. WAV, MP3,
-AAC, CAF, AIFF, etc.). If the argument is '-', the audio data is read
+AAC, CAF, AIFF, ALAC, etc.). If the argument is '-', the audio data is read
 from standard input, in which case you need to specify the format.
 .It Fl f -format Ar format_name
 Specify the format of the audio file (e.g. wav, mp3, aac, etc.). This flag

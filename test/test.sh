@@ -16,7 +16,7 @@ test_transcribe_file() {
     OUTPUT=$("$BIN_PATH" -i "$1" -d)
 
     if [ "$OUTPUT" != "$EXPECTED_OUTPUT" ]; then
-        echo "Unexpected output"
+        echo "Unexpected output: ${OUTPUT}"
         exit 1
     fi
 }
