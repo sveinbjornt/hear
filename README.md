@@ -10,7 +10,7 @@
 ### macOS speech recognition via the command line
 
 `hear` is a command line interface for the built-in speech recognition capabilities in macOS.
-This makes it possible to transcribe spoken audio input.
+This makes it possible to transcribe spoken audio input or entire audio files.
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
