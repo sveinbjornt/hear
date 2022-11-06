@@ -8,5 +8,7 @@
 	<string>This command line tool converts spoken audio to text.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>This command line tool converts spoken audio to text.</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
 </dict>
 </plist>

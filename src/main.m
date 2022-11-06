@@ -162,7 +162,7 @@ static void PrintVersion(void) {
 static void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
-hear [-s] [-l lang] [-i file] [-f fmt] [-d]\n\
+%@ [-s] [-l lang] [-i file] [-f fmt] [-d]\n\
 \n\
 Options:\n\
 \n\
@@ -177,6 +177,6 @@ Options:\n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
 \n\
-For further details, see 'man %@'.", PROGRAM_NAME);
+For further details, see 'man %@'.", PROGRAM_NAME, PROGRAM_NAME);
 }
 
