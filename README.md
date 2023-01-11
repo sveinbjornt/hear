@@ -46,7 +46,7 @@ This will install the binary into `/usr/local/bin` and the man page into
 
 ## Usage
 
-### Transcribe audio from microphone
+### Transcribe audio from microphone (or default audio input device)
 ```
 hear
 ```
