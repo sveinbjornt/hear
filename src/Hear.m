@@ -43,7 +43,6 @@
 
 @property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
-@property (nonatomic, retain) NSString *inputFormat;
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
@@ -54,7 +53,6 @@
 
 - (instancetype)initWithLanguage:(NSString *)language
                            input:(NSString *)input
-                          format:(NSString *)fmt
                         onDevice:(BOOL)onDevice
                   singleLineMode:(BOOL)singleLine {
     self = [super init];
@@ -67,7 +65,6 @@
         
         self.language = language;
         self.inputFile = input;
-        self.inputFormat = fmt;
         self.useOnDeviceRecognition = onDevice;
         self.singleLineMode = singleLine;
         self.useDeviceInput = (input == nil);
@@ -149,10 +146,6 @@
 - (void)processFile {
     
     NSString *filePath = self.inputFile;
-    if ([filePath isEqualToString:@"-"]) {
-        // TODO: Read from stdin and save to temp dir/feed to audio buffer processing?
-        [self die:@"Reading from standard input remains unimplemented"];
-    }
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
         [self die:[NSString stringWithFormat:@"No file at path %@", filePath]];
     }

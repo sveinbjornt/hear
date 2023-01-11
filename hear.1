@@ -9,7 +9,6 @@
 .Op Fl hvdms
 .Op Fl i Ar audio_file
 .Op Fl l Ar language
-.Op Fl f Ar audio_fmt
 .Sh DESCRIPTION
 .Nm
 is a command line interface for the built-in speech recognition
@@ -26,17 +25,13 @@ Print list of supported languages (locales) for speech recognition.
 Specify speech recognition language (locale). Default is 'en-US'.
 .It Fl i -input Ar audio_file
 Input audio file. All formats supported by CoreAudio should work (e.g. WAV, MP3,
-AAC, CAF, AIFF, ALAC, etc.). If the argument is '-', the audio data is read
-from standard input, in which case you need to specify the format.
-.It Fl f -format Ar format_name
-Specify the format of the audio file (e.g. wav, mp3, aac, etc.). This flag
-is only required when reading audio data from standard input and is
-otherwise ignored.
+AAC, CAF, AIFF, ALAC, etc.).
 .It Fl d -device
 Only use on-device offline speech recognition. The default is to use whatever
 the macOS Speech Recognition API thinks is best, which may include sending data
 to Apple servers. When on-device is not enabled, there may be a hard limit to
-the length of audio that can be transcribed in a single session.
+the length of audio that can be transcribed in a single session. As of writing
+(2022) this is about 500 characters or so.
 .It Fl m -mode
 Enable single-line output mode (only applies when the input is default audio
 input device, e.g. microphone).

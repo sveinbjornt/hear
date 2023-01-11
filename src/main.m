@@ -42,7 +42,7 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-static const char optstring[] = "sl:i:f:dmhv";
+static const char optstring[] = "sl:i:dmhv";
 
 static struct option long_options[] = {
     
@@ -50,10 +50,8 @@ static struct option long_options[] = {
     {"supported",                 no_argument,        0, 's'},
     // Specify language (locale) for STT
     {"language",                  required_argument,  0, 'l'},
-    // Input (file path or "-" for stdin)
+    // Input (file path)
     {"input",                     required_argument,  0, 'i'},
-    // Format (of input file or data)
-    {"format",                    required_argument,  0, 'f'},
     // Use on-device speech recognition
     {"device",                    no_argument,        0, 'd'},
     // Enable single-line output mode (for mic)
@@ -76,7 +74,6 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     NSString *language = DEFAULT_LOCALE;
     NSString *inputFilename;
-    NSString *inputFormat;
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     
@@ -98,14 +95,9 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 language = @(optarg);
                 break;
             
-            // Input filename ("-" for stdin)
+            // Input filename (path)
             case 'i':
                 inputFilename = @(optarg);
-                break;
-            
-            // Input audio format (only required if getting data via stdin)
-            case 'f':
-                inputFormat = @(optarg);
                 break;
             
             // Use on-device speech recognition
@@ -136,7 +128,6 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     // Instantiate app delegate object with core program functionality
     Hear *hear = [[Hear alloc] initWithLanguage:language
                                           input:inputFilename
-                                         format:inputFormat
                                        onDevice:useOnDeviceRecognition
                                  singleLineMode:singleLineMode];
     [[NSApplication sharedApplication] setDelegate:hear];
@@ -170,7 +161,6 @@ Options:\n\
 \n\
     -l --language           Specify speech recognition language\n\
     -i --input [file_path]  Specify audio file to process\n\
-    -f --format [fmt]       Specify audio file format (for stdin)\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\
 \n\
