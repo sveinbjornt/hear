@@ -1,5 +1,5 @@
-TODO for hear command line tool:
+TODO for `hear` command line tool:
 
 * Timeout option
-* Brew install option
-
+* Add brew formula
+* Read audio data from stdin

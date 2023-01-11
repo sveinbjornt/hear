@@ -44,7 +44,6 @@
 @property (nonatomic, retain) NSString *language;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic, retain) NSString *inputFormat;
-//@property (nonatomic, retain) NSString *tempFile;
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
@@ -114,6 +113,7 @@
                 
             default:
                 break;
+            
         }
     }];
     
