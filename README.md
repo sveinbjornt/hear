@@ -83,6 +83,10 @@ To run tests on the built command line tool, execute the following command from 
 bash test/test.sh
 ```
 
+## Troubleshooting
+
+If running the binary leads to an abort signal, try running the binary by right-clicking, and selecting open. This should automatically open the binary with the regular terminal and prompt you to allow the required permissions.
+
 ## BSD License 
 
 Copyright (c) 2022-2023 Sveinbjorn Thordarson
