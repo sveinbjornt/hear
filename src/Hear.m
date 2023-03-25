@@ -46,6 +46,7 @@
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
+@property (nonatomic, retain) NSString *exitWord;
 
 @end
 
@@ -54,7 +55,8 @@
 - (instancetype)initWithLanguage:(NSString *)language
                            input:(NSString *)input
                         onDevice:(BOOL)onDevice
-                  singleLineMode:(BOOL)singleLine {
+                  singleLineMode:(BOOL)singleLine
+                        exitWord:(NSString *)exitWord {
     self = [super init];
     if (self) {
         
@@ -68,6 +70,7 @@
         self.useOnDeviceRecognition = onDevice;
         self.singleLineMode = singleLine;
         self.useDeviceInput = (input == nil);
+        self.exitWord = exitWord;
     }
     return self;
 }
@@ -221,12 +224,18 @@
         }
         
         // Print to stdout
+        NSString *transcript = result.bestTranscription.formattedString;
         if (self.singleLineMode) {
-            NSString *s = [NSString stringWithFormat:@"\33[2K\r%@",
-                           result.bestTranscription.formattedString];
+            NSString *s = [NSString stringWithFormat:@"\33[2K\r%@", transcript];
             NSDump(s);
         } else {
-            NSPrint(result.bestTranscription.formattedString);
+            NSPrint(transcript);
+        }
+        
+        NSString *exitSuffix = [[NSString stringWithFormat:@" %@", self.exitWord] lowercaseString];
+        if (self.exitWord != nil && [[transcript lowercaseString] hasSuffix:exitSuffix]) {
+            // Exit word identified, we're done
+            exit(EXIT_SUCCESS);
         }
         
         if (result.isFinal) {

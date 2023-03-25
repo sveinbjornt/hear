@@ -42,7 +42,7 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-static const char optstring[] = "sl:i:dmhv";
+static const char optstring[] = "sl:i:dmx:hv";
 
 static struct option long_options[] = {
     
@@ -56,7 +56,9 @@ static struct option long_options[] = {
     {"device",                    no_argument,        0, 'd'},
     // Enable single-line output mode (for mic)
     {"mode",                      no_argument,        0, 'm'},
-    
+    // Exit word
+    {"exit-word",                 required_argument,  0, 'x'},
+
     {"help",                      no_argument,        0, 'h'},
     {"version",                   no_argument,        0, 'v'},
     
@@ -74,6 +76,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     NSString *language = DEFAULT_LOCALE;
     NSString *inputFilename;
+    NSString *exitWord;
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     
@@ -110,6 +113,11 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 singleLineMode = YES;
                 break;
             
+            // Set exit word (causes app to exit when word detected in speech).
+            case 'x':
+                exitWord = @(optarg);
+                break;
+            
             // Print version
             case 'v':
                 PrintVersion();
@@ -129,7 +137,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     Hear *hear = [[Hear alloc] initWithLanguage:language
                                           input:inputFilename
                                        onDevice:useOnDeviceRecognition
-                                 singleLineMode:singleLineMode];
+                                 singleLineMode:singleLineMode
+                                       exitWord:exitWord];
     [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
     

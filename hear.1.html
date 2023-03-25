@@ -1,4 +1,4 @@
-<html><head></head><body><pre><font face="Courier"><b>HEAR(1)                      General Commands Manual                     HEAR(1)</b>
+<html><head></head><body><pre><font face="Courier"><b>HEAR(1)                     General Commands Manual                    HEAR(1)</b>
 
 <b>NAME</b>
 
@@ -6,7 +6,7 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-f</b> <u>audio</u><b>_<u></b>fmt</u>]
+     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>]
 
 <b>DESCRIPTION</b>
 
@@ -22,7 +22,8 @@
               recognition.
 
      <b>-l</b> <b>--language</b> <u>lang</u>
-              Specify speech recognition language (locale). Default is 'en-US'.
+              Specify speech recognition language (locale). Default is 'en-
+              US'.
 
      <b>-i</b> <b>--input</b> <u>audio</u><b>_<u></b>file</u>
               Input audio file. All formats supported by CoreAudio should work
@@ -31,14 +32,18 @@
      <b>-d</b> <b>--device</b>
               Only use on-device offline speech recognition. The default is to
               use whatever the macOS Speech Recognition API thinks is best,
-              which may include sending data to Apple servers. When on-device is
-              not enabled, there may be a hard limit to the length of audio that
-              can be transcribed in a single session. As of writing (2022) this
-              is about 500 characters or so.
+              which may include sending data to Apple servers. When on-device
+              is not enabled, there may be a hard limit to the length of audio
+              that can be transcribed in a single session. As of writing
+              (2022) this is about 500 characters or so.
 
      <b>-m</b> <b>--mode</b>
               Enable single-line output mode (only applies when the input is
               default audio input device, e.g. microphone).
+
+     <b>-x</b> <b>--exit</b>
+              Set exit word. This causes hear to exit when the speech
+              recognition result ends with the word in question.
 
      <b>-h</b> <b>--help</b>
               Print help and exit.
@@ -56,6 +61,6 @@
 
      Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 
-Darwin                          October 27, 2022                          Darwin
+Darwin                         October 27, 2022                         Darwin
 </font></pre>
 </body></html>

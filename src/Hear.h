@@ -41,6 +41,7 @@
 - (instancetype)initWithLanguage:(NSString *)language
                            input:(NSString *)input
                         onDevice:(BOOL)useOnDeviceRecognition
-                  singleLineMode:(BOOL)singleLine;
+                  singleLineMode:(BOOL)singleLine
+                        exitWord:(NSString *)exitWord;
 
 @end
