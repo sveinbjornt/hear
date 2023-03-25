@@ -10,8 +10,8 @@ abs_path_to_enclosing_dir () {
 TEST_ROOT=$(abs_path_to_enclosing_dir $0)
 BIN_PATH="products/hear"
 
-EXPECTED_OUTPUT="The rain in Spain stays mainly in the plane"
-
+EXPECTED_OUTPUT="The rain in Spain stays mainly in the plain"
+                 
 test_transcribe_file() {
     OUTPUT=$("$BIN_PATH" -i "$1" -d)
 
