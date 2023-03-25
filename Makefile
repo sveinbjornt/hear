@@ -3,7 +3,7 @@
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"
 BUILD_DIR := "products"
-VERSION := "0.2"
+VERSION := "0.3"
 
 all: clean build_unsigned
 
@@ -19,6 +19,7 @@ build_unsigned:
 	            CONFIGURATION_BUILD_DIR="$(BUILD_DIR)" \
 	            CODE_SIGN_IDENTITY="" \
 	            CODE_SIGNING_REQUIRED=NO \
+	            CODE_SIGNING_ALLOWED=NO \
 	            build
 
 build_signed:
@@ -28,6 +29,8 @@ build_signed:
 	            -target "$(PROGRAM_NAME)" \
 	            -configuration "Release" \
 	            CONFIGURATION_BUILD_DIR="$(BUILD_DIR)" \
+	            CODE_SIGNING_REQUIRED=YES \
+	            CODE_SIGNING_ALLOWED=YES \
 	            build
 
 archive:

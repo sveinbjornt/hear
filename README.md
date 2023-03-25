@@ -29,7 +29,7 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.2](https://sveinbjorn.org/files/software/hear.zip)** 
+* **[⇩ Download hear 0.3](https://sveinbjorn.org/files/software/hear.zip)** 
 (Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
 
 ## Installation

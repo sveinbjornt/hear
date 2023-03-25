@@ -172,6 +172,7 @@ Options:\n\
     -i --input [file_path]  Specify audio file to process\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\
+    -x --exit-word          Set exit word that causes program to quit\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
