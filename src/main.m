@@ -46,7 +46,7 @@ static const char optstring[] = "sl:i:dmx:hv";
 
 static struct option long_options[] = {
     
-    // List supported languages (locales for STT
+    // List supported languages (locales) for STT
     {"supported",                 no_argument,        0, 's'},
     // Specify language (locale) for STT
     {"language",                  required_argument,  0, 'l'},
@@ -162,13 +162,13 @@ static void PrintVersion(void) {
 static void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
-%@ [-s] [-l lang] [-i file] [-f fmt] [-d]\n\
+%@ [-sd] [-l lang] [-i file] [-x word]\n\
 \n\
 Options:\n\
 \n\
-    -s --supported          Print list of supported languages\n\
+    -s --supported          Print list of supported languages (locales)\n\
 \n\
-    -l --language           Specify speech recognition language\n\
+    -l --language           Specify speech recognition language (locale)\n\
     -i --input [file_path]  Specify audio file to process\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\
