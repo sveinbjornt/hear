@@ -114,6 +114,7 @@
 				F43A461727C010B2000469BC /* Sources */,
 				F43A461827C010B2000469BC /* Frameworks */,
 				F43A461927C010B2000469BC /* CopyFiles */,
+				F4B96E4729D0FA690023A4BF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -155,6 +156,27 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F4B96E4729D0FA690023A4BF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nstrip -Tx  \"$SRCROOT/products/hear\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F43A461727C010B2000469BC /* Sources */ = {
@@ -299,6 +321,7 @@
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -318,6 +341,7 @@
 				MARKETING_VERSION = 0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				STRIPFLAGS = "-x";
 			};
 			name = Release;
