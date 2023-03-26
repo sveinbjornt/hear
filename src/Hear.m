@@ -226,14 +226,17 @@
         // Print to stdout
         NSString *transcript = result.bestTranscription.formattedString;
         if (self.singleLineMode) {
+            // Erase current line and move cursor to the start of the line before printing
             NSString *s = [NSString stringWithFormat:@"\33[2K\r%@", transcript];
             NSDump(s);
         } else {
             NSPrint(transcript);
         }
         
-        NSString *exitSuffix = [[NSString stringWithFormat:@" %@", self.exitWord] lowercaseString];
-        if (self.exitWord != nil && [[transcript lowercaseString] hasSuffix:exitSuffix]) {
+        NSString *exitWord = [self.exitWord lowercaseString];
+        NSString *exitSuffix = [[NSString stringWithFormat:@" %@", exitWord] lowercaseString];
+        NSString *tsLower = [transcript lowercaseString];
+        if (self.exitWord != nil && ([tsLower hasSuffix:exitSuffix] || [tsLower isEqualToString:exitWord])) {
             // Exit word identified, we're done
             exit(EXIT_SUCCESS);
         }
