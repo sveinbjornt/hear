@@ -3,7 +3,7 @@
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"
 BUILD_DIR := "products"
-VERSION := "0.3"
+VERSION := "0.3.1"
 
 all: clean build_unsigned
 
@@ -51,6 +51,7 @@ runtests:
 # The tests don't work in CI env due to missing permissions from macOS
 #	@echo "Running tests"
 #	@bash "test/test.sh"
+	@"$(BUILD_DIR)/$(PROGRAM_NAME)" --version
 
 clean:
 	xcodebuild -project "$(XCODE_PROJ)" clean

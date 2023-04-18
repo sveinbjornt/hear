@@ -10,6 +10,7 @@
 		F439F2B727C5794D00626667 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A327C0457A00EF9845 /* Common.m */; };
 		F45C87A627C0457A00EF9845 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C879F27C0457900EF9845 /* main.m */; };
 		F45C87A927C0457A00EF9845 /* Hear.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A427C0457A00EF9845 /* Hear.m */; };
+		F4A6209F29EEC7BB00DD9BE1 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		F45C87A527C0457A00EF9845 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F47FA1B7290B31C500914395 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		F47FA1B8290B38EF00914395 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
+		F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		F4ACB73928DB41DA00E9E778 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
 		F4B96E4629CF4B1C0023A4BF /* CHANGES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGES.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4A6209F29EEC7BB00DD9BE1 /* Speech.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +84,7 @@
 				F45C87AA27C0458300EF9845 /* src */,
 				F439F2C227D51D7F00626667 /* test */,
 				F43A461C27C010B2000469BC /* Products */,
+				F4A6209D29EEC7BB00DD9BE1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +106,14 @@
 				F45C87A427C0457A00EF9845 /* Hear.m */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		F4A6209D29EEC7BB00DD9BE1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,7 +330,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -338,7 +350,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.3;
+				MARKETING_VERSION = 0.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
