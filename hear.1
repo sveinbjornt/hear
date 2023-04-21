@@ -6,7 +6,7 @@
 .Nd macOS speech recognition via the command line
 .Sh SYNOPSIS
 .Nm
-.Op Fl hvdms
+.Op Fl hvdmps
 .Op Fl i Ar audio_file
 .Op Fl l Ar language
 .Op Fl x Ar exit_word
@@ -14,14 +14,14 @@
 .Nm
 is a command line interface for the built-in speech recognition
 capabilities in macOS. It supports transcription of both audio files
-and microphone input. If no input is provided, the default behaviour
+and microphone input. If no input file is provided, the default behaviour
 is to transcribe from the default audio input device, typically the
 microphone.
 .Pp
 The following flags are supported:
 .Bl -tag -width -indent
 .It Fl s -supported
-Print list of supported languages (locales) for speech recognition.
+Print list of supported languages (locales) for speech recognition and exit.
 .It Fl l -language Ar lang
 Specify speech recognition language (locale). Default is 'en-US'.
 .It Fl i -input Ar audio_file
@@ -38,7 +38,7 @@ Enable single-line output mode (only applies when the input is default audio
 input device, e.g. microphone).
 .It Fl p -punctuation
 Add punctuation to speech recognition results.
-.It Fl x -exit
+.It Fl x -exit Ar exit_word
 Set exit word. This causes hear to exit when a speech recognition result ends
 with the word in question.
 .It Fl h -help

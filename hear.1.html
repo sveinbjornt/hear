@@ -6,14 +6,15 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
+     <b>hear</b> [<b>-hvdmps</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
 
 <b>DESCRIPTION</b>
 
      <b>hear</b> is a command line interface for the built-in speech recognition
      capabilities in macOS. It supports transcription of both audio files and
-     microphone input. If no input is provided, the default behaviour is to
-     transcribe from the default audio input device, typically the microphone.
+     microphone input. If no input file is provided, the default behaviour is
+     to transcribe from the default audio input device, typically the
+     microphone.
 
      The following flags are supported:
 
@@ -44,7 +45,7 @@
      <b>-p</b> <b>--punctuation</b>
               Add punctuation to speech recognition results.
 
-     <b>-x</b> <b>--exit</b>
+     <b>-x</b> <b>--exit</b> <u>exit</u><b>_<u></b>word</u>
               Set exit word. This causes hear to exit when a speech
               recognition result ends with the word in question.
 

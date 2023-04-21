@@ -1,5 +1,9 @@
 # hear version history
 
+## v0.4 - 21/04/2023
+
+* Now supports -p flag to enable adding punctuation to speech recognition results (macOS 13+ only)
+
 ## v0.3 - 25/03/2023
 
 * Now supports -x flag to specify "exit word", i.e. a word that causes the program to quit when heard
