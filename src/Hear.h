@@ -42,6 +42,7 @@
                            input:(NSString *)input
                         onDevice:(BOOL)useOnDeviceRecognition
                   singleLineMode:(BOOL)singleLine
+                  addPunctuation:(BOOL)addPunctuation
                         exitWord:(NSString *)exitWord;
 
 @end

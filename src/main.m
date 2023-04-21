@@ -42,7 +42,7 @@ static void PrintVersion(void);
 static void PrintHelp(void);
 
 
-static const char optstring[] = "sl:i:dmx:hv";
+static const char optstring[] = "sl:i:dpmx:hv";
 
 static struct option long_options[] = {
     
@@ -54,15 +54,17 @@ static struct option long_options[] = {
     {"input",                     required_argument,  0, 'i'},
     // Use on-device speech recognition
     {"device",                    no_argument,        0, 'd'},
+    // Whether to add punctuation to speech recognition results
+    {"punctuation",               no_argument,        0, 'p'},
     // Enable single-line output mode (for mic)
     {"mode",                      no_argument,        0, 'm'},
     // Exit word
     {"exit-word",                 required_argument,  0, 'x'},
-
+    // Print help
     {"help",                      no_argument,        0, 'h'},
+    // Print version
     {"version",                   no_argument,        0, 'v'},
-    
-    {0,                           0,                  0,  0 }
+    {0,                           0,                  0,  0 },
 };
 
 
@@ -70,7 +72,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     // Make sure we're running on a macOS version that supports speech recognition
     if (IsRightOSVersion() == NO) {
-        NSPrintErr(@"This program requires macOS 10.15 or later.");
+        NSPrintErr(@"This program requires macOS Catalina 10.15 or later.");
         exit(EXIT_FAILURE);
     }
     
@@ -79,6 +81,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     NSString *exitWord;
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
+    BOOL addsPunctuation = NO;
     
     // Parse arguments
     int optch;
@@ -113,7 +116,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 singleLineMode = YES;
                 break;
             
-            // Set exit word (causes app to exit when word detected in speech).
+            // Whether to add punctuation to speech recognition results
+            // This option is ignored on macOS versions prior to Ventura
+            case 'p':
+                addsPunctuation = YES;
+                break;
+            
+            // Set exit word (causes app to exit when word detected in speech)
             case 'x':
                 exitWord = @(optarg);
                 break;
@@ -138,6 +147,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                           input:inputFilename
                                        onDevice:useOnDeviceRecognition
                                  singleLineMode:singleLineMode
+                                 addPunctuation:addsPunctuation
                                        exitWord:exitWord];
     [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
@@ -147,7 +157,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 
 #pragma mark -
 
-static BOOL IsRightOSVersion() {
+static BOOL IsRightOSVersion(void) {
     // The Speech Recognition API wasn't introduced until macOS 10.15
     NSOperatingSystemVersion osVersion = {0};
     osVersion.majorVersion = 10;
@@ -172,6 +182,7 @@ Options:\n\
     -i --input [file_path]  Specify audio file to process\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\
+    -p --punctuation        Add punctuation to speech recognition results (macOS 13+)\n\
     -x --exit-word          Set exit word that causes program to quit\n\
 \n\
     -h --help               Prints help\n\

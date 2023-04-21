@@ -43,6 +43,7 @@
 		F47FA1B7290B31C500914395 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		F47FA1B8290B38EF00914395 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
+		F4A620A029F2D79800DD9BE1 /* hear.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = hear.rb; sourceTree = "<group>"; };
 		F4ACB73928DB41DA00E9E778 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
 		F4B96E4629CF4B1C0023A4BF /* CHANGES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGES.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				F4ACB73928DB41DA00E9E778 /* hear.entitlements */,
+				F4A620A029F2D79800DD9BE1 /* hear.rb */,
 				F439F2C527D55BFF00626667 /* macos.yml */,
 				F45C87A127C0457A00EF9845 /* README.md */,
 				F47FA1B7290B31C500914395 /* TODO.md */,
@@ -330,7 +332,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -350,7 +352,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.3.1;
+				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

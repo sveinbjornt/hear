@@ -46,6 +46,7 @@
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
+@property (nonatomic) BOOL addPunctuation;
 @property (nonatomic, retain) NSString *exitWord;
 
 @end
@@ -56,6 +57,7 @@
                            input:(NSString *)input
                         onDevice:(BOOL)onDevice
                   singleLineMode:(BOOL)singleLine
+                  addPunctuation:(BOOL)punctuation
                         exitWord:(NSString *)exitWord {
     self = [super init];
     if (self) {
@@ -70,6 +72,7 @@
         self.useOnDeviceRecognition = onDevice;
         self.singleLineMode = singleLine;
         self.useDeviceInput = (input == nil);
+        self.addPunctuation = punctuation;
         self.exitWord = exitWord;
     }
     return self;
@@ -165,7 +168,12 @@
     
     self.request.shouldReportPartialResults = NO;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
-
+    
+    // Add punctuation setting only available in Ventura and later
+    if (@available(macOS 13, *)) {
+        self.request.addsPunctuation = self.addPunctuation;
+    }
+    
     // Create speech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
                                               resultHandler:
@@ -213,6 +221,11 @@
     }
     self.request.shouldReportPartialResults = YES;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
+    
+    // Add punctuation setting only available in Ventura and later
+    if (@available(macOS 13, *)) {
+        self.request.addsPunctuation = self.addPunctuation;
+    }
     
     // Create spech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request

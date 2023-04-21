@@ -6,7 +6,7 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>]
+     <b>hear</b> [<b>-hvdms</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
 
 <b>DESCRIPTION</b>
 
@@ -41,8 +41,11 @@
               Enable single-line output mode (only applies when the input is
               default audio input device, e.g. microphone).
 
+     <b>-p</b> <b>--punctuation</b>
+              Add punctuation to speech recognition results.
+
      <b>-x</b> <b>--exit</b>
-              Set exit word. This causes hear to exit when the speech
+              Set exit word. This causes hear to exit when a speech
               recognition result ends with the word in question.
 
      <b>-h</b> <b>--help</b>
@@ -55,7 +58,7 @@
 
 <b>SEE ALSO</b>
 
-     say(1)
+     say(1) afplay(1)
 
 <b>AUTHORS</b>
 
