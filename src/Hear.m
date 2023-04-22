@@ -153,7 +153,7 @@
     
     NSString *filePath = self.inputFile;
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
-        [self die:[NSString stringWithFormat:@"No file at path %@", filePath]];
+        [self die:[NSString stringWithFormat:@"No file at path '%@'", filePath]];
     }
     
     // OK, the file exists, let's try to run speech recognition on it
@@ -187,13 +187,13 @@
             return;
         }
         
-        // Make sure there's a space between the incoming resulting strings
+        // Make sure there's a space between the incoming result strings
         NSString *s = result.bestTranscription.formattedString;
         if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
             s = [NSString stringWithFormat:@"%@ ", s];
         }
         
-        // Print w/o newline to stdout and flush
+        // Print to stdout without newline and flush
         NSDump(s);
         
         // Close with a newline once we're done
@@ -246,12 +246,15 @@
             NSPrint(transcript);
         }
         
-        NSString *exitWord = [self.exitWord lowercaseString];
-        NSString *exitSuffix = [[NSString stringWithFormat:@" %@", exitWord] lowercaseString];
-        NSString *tsLower = [transcript lowercaseString];
-        if (self.exitWord != nil && ([tsLower hasSuffix:exitSuffix] || [tsLower isEqualToString:exitWord])) {
-            // Exit word identified, we're done
-            exit(EXIT_SUCCESS);
+        // If an exit word has been set, check if result ends with it
+        if (self.exitWord != nil) {
+            NSString *exitWord = [self.exitWord lowercaseString];
+            NSString *exitSuffix = [[NSString stringWithFormat:@" %@", exitWord] lowercaseString];
+            NSString *tsLower = [transcript lowercaseString];
+            if ([tsLower hasSuffix:exitSuffix] || [tsLower isEqualToString:exitWord]) {
+                // Exit word identified, we're done
+                exit(EXIT_SUCCESS);
+            }
         }
         
         if (result.isFinal) {
@@ -297,8 +300,7 @@
 }
 
 + (void)printSupportedLanguages {
-    NSArray<NSString *> *localeIdentifiers = [Hear supportedLanguages];
-    NSPrint([localeIdentifiers componentsJoinedByString:@"\n"]);
+    NSPrint([[Hear supportedLanguages] componentsJoinedByString:@"\n"]);
 }
 
 @end
