@@ -45,7 +45,6 @@ static void PrintHelp(void);
 static const char optstring[] = "sl:i:dpmx:hv";
 
 static struct option long_options[] = {
-    
     // List supported languages (locales) for STT
     {"supported",                 no_argument,        0, 's'},
     // Specify language (locale) for STT
@@ -172,7 +171,7 @@ static void PrintVersion(void) {
 static void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
-%@ [-sd] [-l lang] [-i file] [-x word]\n\
+%@ [-vhmsdp] [-l lang] [-i file] [-x word]\n\
 \n\
 Options:\n\
 \n\
