@@ -32,9 +32,10 @@
 
 #import <Foundation/Foundation.h>
 
-#define PROGRAM_NAME        @"hear"
-#define PROGRAM_VERSION     @"0.4"
-#define PROGRAM_AUTHOR      @"Sveinbjorn Thordarson"
+#define PROGRAM_NAME            @"hear"
+#define PROGRAM_VERSION         @"0.4"
+#define PROGRAM_AUTHOR          @"Sveinbjorn Thordarson"
+#define PROGRAM_AUTHOR_EMAIL    @"sveinbjorn@sveinbjorn.org"
 
 #define DEFAULT_LOCALE      @"en-US"
 

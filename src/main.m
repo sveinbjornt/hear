@@ -37,11 +37,12 @@
 #import "Hear.h"
 
 
-static BOOL IsRightOSVersion(void);
-static void PrintVersion(void);
-static void PrintHelp(void);
+// Prototypes
+static inline BOOL IsRightOSVersion(void);
+static inline void PrintVersion(void);
+static inline void PrintHelp(void);
 
-
+// Command line options
 static const char optstring[] = "sl:i:dpmx:hv";
 
 static struct option long_options[] = {
@@ -156,7 +157,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 
 #pragma mark -
 
-static BOOL IsRightOSVersion(void) {
+static inline BOOL IsRightOSVersion(void) {
     // The Speech Recognition API wasn't introduced until macOS 10.15
     NSOperatingSystemVersion osVersion = {0};
     osVersion.majorVersion = 10;
@@ -164,11 +165,12 @@ static BOOL IsRightOSVersion(void) {
     return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:osVersion];
 }
 
-static void PrintVersion(void) {
-    NSPrint(@"%@ version %@ by %@", PROGRAM_NAME, PROGRAM_VERSION, PROGRAM_AUTHOR);
+static inline void PrintVersion(void) {
+    NSPrint(@"%@ version %@ by %@ <%@>", PROGRAM_NAME, PROGRAM_VERSION,
+            PROGRAM_AUTHOR, PROGRAM_AUTHOR_EMAIL);
 }
 
-static void PrintHelp(void) {
+static inline void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
 %@ [-vhmsdp] [-l lang] [-i file] [-x word]\n\

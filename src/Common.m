@@ -34,8 +34,8 @@
 
 #import <stdio.h>
 
-// Print NSString to stdout
-inline void NSPrint(NSString *format, ...) {
+// Print NSString to stdout with appended newline.
+void NSPrint(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
@@ -46,8 +46,8 @@ inline void NSPrint(NSString *format, ...) {
     fflush(stdout); // Flush stdout to prevent any line buffering issues
 }
 
-// Print NSString to stderr
-inline void NSPrintErr(NSString *format, ...) {
+// Print NSString to stderr with appended newline.
+void NSPrintErr(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
@@ -59,8 +59,8 @@ inline void NSPrintErr(NSString *format, ...) {
 }
 
 // Print NSString to stdout without newline, flushing stdout in the process
-// to ensure that the output is shown immediately without line buffering
-inline void NSDump(NSString *format, ...) {
+// to ensure that the output is shown immediately without line buffering.
+void NSDump(NSString *format, ...) {
     va_list args;
     
     va_start(args, format);
