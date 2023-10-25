@@ -38,7 +38,7 @@
 
 + (void)printSupportedLanguages;
 
-- (instancetype)initWithLanguage:(NSString *)language
+- (instancetype)initWithLocale:(NSString *)language
                            input:(NSString *)input
                         onDevice:(BOOL)useOnDeviceRecognition
                   singleLineMode:(BOOL)singleLine

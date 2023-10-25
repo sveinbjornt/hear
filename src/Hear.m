@@ -41,7 +41,7 @@
 
 @property (nonatomic, retain) AVAudioEngine *engine;
 
-@property (nonatomic, retain) NSString *language;
+@property (nonatomic, retain) NSString *locale;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
@@ -53,21 +53,21 @@
 
 @implementation Hear
 
-- (instancetype)initWithLanguage:(NSString *)language
-                           input:(NSString *)input
-                        onDevice:(BOOL)onDevice
-                  singleLineMode:(BOOL)singleLine
-                  addPunctuation:(BOOL)punctuation
-                        exitWord:(NSString *)exitWord {
+- (instancetype)initWithLocale:(NSString *)loc
+                         input:(NSString *)input
+                      onDevice:(BOOL)onDevice
+                singleLineMode:(BOOL)singleLine
+                addPunctuation:(BOOL)punctuation
+                      exitWord:(NSString *)exitWord {
     self = [super init];
     if (self) {
         
-        if ([[Hear supportedLanguages] containsObject:language] == NO) {
-            NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", language);
+        if ([[Hear supportedLanguages] containsObject:loc] == NO) {
+            NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", loc);
             exit(EXIT_FAILURE);
         }
         
-        self.language = language;
+        self.locale = loc;
         self.inputFile = input;
         self.useOnDeviceRecognition = onDevice;
         self.singleLineMode = singleLine;
@@ -87,8 +87,7 @@
 #pragma mark -
 
 - (void)die:(NSString *)errMsg {
-    NSString *msg = [NSString stringWithFormat:@"Error: %@", errMsg];
-    NSPrintErr(msg);
+    NSPrintErr(@"Error: %@", errMsg);
     exit(EXIT_FAILURE);
 }
 
@@ -124,7 +123,7 @@
 
 - (void)initRecognizer {
     // Initialize speech recognizer
-    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.language];
+    NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.locale];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     if (self.recognizer == nil) {
         [self die:@"Unable to initialize speech recognizer"];
@@ -137,7 +136,7 @@
     }
     
     if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
-        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for locale '%@'", self.language]];
+        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for locale '%@'", self.locale]];
     }
 }
 

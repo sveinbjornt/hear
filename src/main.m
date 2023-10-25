@@ -76,7 +76,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         exit(EXIT_FAILURE);
     }
     
-    NSString *language = DEFAULT_LOCALE;
+    NSString *locale = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *exitWord;
     BOOL useOnDeviceRecognition = NO;
@@ -98,7 +98,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             
             // Set language (i.e. locale) for speech recognition
             case 'l':
-                language = @(optarg);
+                locale = @(optarg);
                 break;
             
             // Input filename (path)
@@ -143,12 +143,12 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     }
     
     // Instantiate app delegate object with core program functionality
-    Hear *hear = [[Hear alloc] initWithLanguage:language
-                                          input:inputFilename
-                                       onDevice:useOnDeviceRecognition
-                                 singleLineMode:singleLineMode
-                                 addPunctuation:addsPunctuation
-                                       exitWord:exitWord];
+    Hear *hear = [[Hear alloc] initWithLocale:locale
+                                        input:inputFilename
+                                     onDevice:useOnDeviceRecognition
+                               singleLineMode:singleLineMode
+                               addPunctuation:addsPunctuation
+                                     exitWord:exitWord];
     [[NSApplication sharedApplication] setDelegate:hear];
     [[NSApplication sharedApplication] run];
     
