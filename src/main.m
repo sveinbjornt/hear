@@ -46,10 +46,10 @@ static inline void PrintHelp(void);
 static const char optstring[] = "sl:i:dpmx:hv";
 
 static struct option long_options[] = {
-    // List supported languages (locales) for STT
+    // List supported locales for speech to text
     {"supported",                 no_argument,        0, 's'},
-    // Specify language (locale) for STT
-    {"language",                  required_argument,  0, 'l'},
+    // Specify locale for STT
+    {"locale",                    required_argument,  0, 'l'},
     // Input (file path)
     {"input",                     required_argument,  0, 'i'},
     // Use on-device speech recognition
@@ -90,13 +90,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     while ((optch = getopt_long(argc, (char *const *)argv, optstring, long_options, &long_index)) != -1) {
         switch (optch) {
             
-            // Print list of supported languages
+            // Print list of supported locales
             case 's':
-                [Hear printSupportedLanguages];
+                [Hear printSupportedLocales];
                 exit(EXIT_SUCCESS);
                 break;
             
-            // Set language (i.e. locale) for speech recognition
+            // Set locale for speech recognition
             case 'l':
                 locale = @(optarg);
                 break;
@@ -177,9 +177,9 @@ static inline void PrintHelp(void) {
 \n\
 Options:\n\
 \n\
-    -s --supported          Print list of supported languages (locales)\n\
+    -s --supported          Print list of supported locales\n\
 \n\
-    -l --language           Specify speech recognition language (locale)\n\
+    -l --locale             Specify speech recognition locale\n\
     -i --input [file_path]  Specify audio file to process\n\
     -d --device             Only use on-device speech recognition\n\
     -m --mode               Enable single-line output mode (mic only)\n\

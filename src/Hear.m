@@ -62,7 +62,7 @@
     self = [super init];
     if (self) {
         
-        if ([[Hear supportedLanguages] containsObject:loc] == NO) {
+        if ([[Hear supportedLocales] containsObject:loc] == NO) {
             NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", loc);
             exit(EXIT_FAILURE);
         }
@@ -289,7 +289,7 @@
 
 #pragma mark - Class methods
 
-+ (NSArray<NSString *> *)supportedLanguages {
++ (NSArray<NSString *> *)supportedLocales {
     NSMutableArray *localeIdentifiers = [NSMutableArray new];
     for (NSLocale *locale in [SFSpeechRecognizer supportedLocales]) {
         [localeIdentifiers addObject:[locale localeIdentifier]];
@@ -298,8 +298,8 @@
     return localeIdentifiers;
 }
 
-+ (void)printSupportedLanguages {
-    NSPrint([[Hear supportedLanguages] componentsJoinedByString:@"\n"]);
++ (void)printSupportedLocales {
+    NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
 }
 
 @end

@@ -8,7 +8,7 @@
 .Nm
 .Op Fl hvdmps
 .Op Fl i Ar audio_file
-.Op Fl l Ar language
+.Op Fl l Ar locale
 .Op Fl x Ar exit_word
 .Sh DESCRIPTION
 .Nm
@@ -21,8 +21,8 @@ microphone.
 The following flags are supported:
 .Bl -tag -width -indent
 .It Fl s -supported
-Print list of supported languages (locales) for speech recognition and exit.
-.It Fl l -language Ar lang
+Print list of supported locales for speech recognition and exit.
+.It Fl l -locale Ar loc
 Specify speech recognition language (locale). Default is 'en-US'.
 .It Fl i -input Ar audio_file
 Input audio file. All formats supported by CoreAudio should work (e.g. WAV, MP3,

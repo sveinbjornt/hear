@@ -36,13 +36,13 @@
 
 @interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
-+ (void)printSupportedLanguages;
++ (void)printSupportedLocales;
 
-- (instancetype)initWithLocale:(NSString *)language
-                           input:(NSString *)input
-                        onDevice:(BOOL)useOnDeviceRecognition
-                  singleLineMode:(BOOL)singleLine
-                  addPunctuation:(BOOL)addPunctuation
-                        exitWord:(NSString *)exitWord;
+- (instancetype)initWithLocale:(NSString *)loc
+                         input:(NSString *)input
+                      onDevice:(BOOL)useOnDeviceRecognition
+                singleLineMode:(BOOL)singleLine
+                addPunctuation:(BOOL)addPunctuation
+                      exitWord:(NSString *)exitWord;
 
 @end
