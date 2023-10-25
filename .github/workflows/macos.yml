@@ -13,5 +13,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-      - run: make test
+        uses: actions/checkout@v4
+      - run: |
+          gem install xcpretty
+          make test | xcpretty -c && exit ${PIPESTATUS[0]}
