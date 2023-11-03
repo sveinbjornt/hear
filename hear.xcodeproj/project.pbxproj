@@ -42,6 +42,8 @@
 		F45C87A527C0457A00EF9845 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F47FA1B7290B31C500914395 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		F47FA1B8290B38EF00914395 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
+		F4A4D9472AF544D20036590C /* hear.1.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = hear.1.html; sourceTree = "<group>"; };
+		F4A4D9482AF5455F0036590C /* upload_manpage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_manpage.sh; sourceTree = "<group>"; };
 		F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		F4A620A029F2D79800DD9BE1 /* hear.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = hear.rb; sourceTree = "<group>"; };
 		F4ACB73928DB41DA00E9E778 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
@@ -82,11 +84,13 @@
 				F45C87A027C0457900EF9845 /* Makefile */,
 				F439F2C027D5157A00626667 /* install.sh */,
 				F45C879D27C0457900EF9845 /* hear.1 */,
+				F4A4D9472AF544D20036590C /* hear.1.html */,
+				F4A4D9482AF5455F0036590C /* upload_manpage.sh */,
 				F45C87A527C0457A00EF9845 /* Info.plist */,
 				F45C87AA27C0458300EF9845 /* src */,
 				F439F2C227D51D7F00626667 /* test */,
-				F43A461C27C010B2000469BC /* Products */,
 				F4A6209D29EEC7BB00DD9BE1 /* Frameworks */,
+				F43A461C27C010B2000469BC /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,7 +150,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					F43A461A27C010B2000469BC = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -244,7 +248,8 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = NO;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -306,6 +311,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -335,7 +341,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -356,7 +362,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MARKETING_VERSION = 0.4;
+				MARKETING_VERSION = 0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = org.sveinbjorn.hear;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

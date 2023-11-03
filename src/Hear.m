@@ -41,6 +41,8 @@
 
 @property (nonatomic, retain) AVAudioEngine *engine;
 
+@property (nonatomic, retain) NSTimer *timeoutTimer;
+
 @property (nonatomic, retain) NSString *locale;
 @property (nonatomic, retain) NSString *inputFile;
 @property (nonatomic) BOOL useDeviceInput;
@@ -48,6 +50,7 @@
 @property (nonatomic) BOOL singleLineMode;
 @property (nonatomic) BOOL addPunctuation;
 @property (nonatomic, retain) NSString *exitWord;
+@property (nonatomic) CGFloat timeout;
 
 @end
 
@@ -58,7 +61,8 @@
                       onDevice:(BOOL)onDevice
                 singleLineMode:(BOOL)singleLine
                 addPunctuation:(BOOL)punctuation
-                      exitWord:(NSString *)exitWord {
+                      exitWord:(NSString *)exitWord 
+                       timeout:(CGFloat)timeout {
     self = [super init];
     if (self) {
         
@@ -74,6 +78,7 @@
         self.useDeviceInput = (input == nil);
         self.addPunctuation = punctuation;
         self.exitWord = exitWord;
+        self.timeout = timeout;
     }
     return self;
 }
@@ -235,6 +240,10 @@
             return;
         }
         
+        if (self.timeout > 0) {
+            [self startTimer:self];
+        }
+        
         // Print to stdout
         NSString *transcript = result.bestTranscription.formattedString;
         if (self.singleLineMode) {
@@ -278,13 +287,40 @@
      ^(AVAudioPCMBuffer * _Nonnull buffer, AVAudioTime * _Nonnull when) {
         [(SFSpeechAudioBufferRecognitionRequest *)self.request appendAudioPCMBuffer:buffer];
     }];
-    
+        
     // Start engine
     NSError *err;
     [self.engine startAndReturnError:&err];
     if (err != nil) {
         [self die:[NSString stringWithFormat:@"Failed to start audio engine: %@", [err localizedDescription]]];
     }
+    
+    if (self.timeout > 0) {
+        [self startTimer:self];
+    }
+}
+
+- (void)startTimer:(id)sender {
+    [self performSelectorOnMainThread:@selector(_startTimer:)
+                           withObject:self
+                        waitUntilDone:NO];
+}
+
+- (void)_startTimer:(id)sender {
+    if (self.timeoutTimer != nil) {
+        [self.timeoutTimer invalidate];
+    }
+    self.timeoutTimer = [NSTimer timerWithTimeInterval:self.timeout
+                                                         target:self
+                                                       selector:@selector(timedOut:)
+                                                       userInfo:self
+                                                        repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:self.timeoutTimer
+                                 forMode:NSDefaultRunLoopMode];
+}
+
+- (void)timedOut:(id)sender {
+    exit(EXIT_SUCCESS);
 }
 
 #pragma mark - Class methods

@@ -43,7 +43,7 @@ static inline void PrintVersion(void);
 static inline void PrintHelp(void);
 
 // Command line options
-static const char optstring[] = "sl:i:dpmx:hv";
+static const char optstring[] = "sl:i:dpmx:t:hv";
 
 static struct option long_options[] = {
     // List supported locales for speech to text
@@ -60,6 +60,8 @@ static struct option long_options[] = {
     {"mode",                      no_argument,        0, 'm'},
     // Exit word
     {"exit-word",                 required_argument,  0, 'x'},
+    // Timeout (in seconds)
+    {"timeout",                   required_argument,  0, 'x'},
     // Print help
     {"help",                      no_argument,        0, 'h'},
     // Print version
@@ -82,6 +84,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     BOOL addsPunctuation = NO;
+    CGFloat timeout = 0.0f;
     
     // Parse arguments
     int optch;
@@ -127,6 +130,10 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 exitWord = @(optarg);
                 break;
             
+            case 't':
+                timeout = [@(optarg) floatValue];
+                break;
+            
             // Print version
             case 'v':
                 PrintVersion();
@@ -148,9 +155,10 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                      onDevice:useOnDeviceRecognition
                                singleLineMode:singleLineMode
                                addPunctuation:addsPunctuation
-                                     exitWord:exitWord];
+                                     exitWord:exitWord
+                                      timeout:timeout];
     [[NSApplication sharedApplication] setDelegate:hear];
-    [[NSApplication sharedApplication] run];
+    [NSApp run];
     
     return EXIT_SUCCESS;
 }}
@@ -173,7 +181,7 @@ static inline void PrintVersion(void) {
 static inline void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
-%@ [-vhmsdp] [-l lang] [-i file] [-x word]\n\
+%@ [-vhmsdp] [-l lang] [-i file] [-x word] [-t seconds]\n\
 \n\
 Options:\n\
 \n\
@@ -185,6 +193,7 @@ Options:\n\
     -m --mode               Enable single-line output mode (mic only)\n\
     -p --punctuation        Add punctuation to speech recognition results (macOS 13+)\n\
     -x --exit-word          Set exit word that causes program to quit\n\
+    -t --timeout            Set silence timeout (in seconds)\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\

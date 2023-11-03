@@ -6,7 +6,7 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdmps</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>language</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
+     <b>hear</b> [<b>-hvdmps</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>locale</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
 
 <b>DESCRIPTION</b>
 
@@ -19,10 +19,9 @@
      The following flags are supported:
 
      <b>-s</b> <b>--supported</b>
-              Print list of supported languages (locales) for speech
-              recognition.
+              Print list of supported locales for speech recognition and exit.
 
-     <b>-l</b> <b>--language</b> <u>lang</u>
+     <b>-l</b> <b>--locale</b> <u>loc</u>
               Specify speech recognition language (locale). Default is 'en-
               US'.
 
@@ -48,6 +47,10 @@
      <b>-x</b> <b>--exit</b> <u>exit</u><b>_<u></b>word</u>
               Set exit word. This causes hear to exit when a speech
               recognition result ends with the word in question.
+
+     <b>-t</b> <b>--timeout</b> <u>seconds</u>
+              Exit if no recognition results are received within the specified
+              number of seconds.
 
      <b>-h</b> <b>--help</b>
               Print help and exit.

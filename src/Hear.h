@@ -43,6 +43,7 @@
                       onDevice:(BOOL)useOnDeviceRecognition
                 singleLineMode:(BOOL)singleLine
                 addPunctuation:(BOOL)addPunctuation
-                      exitWord:(NSString *)exitWord;
+                      exitWord:(NSString *)exitWord
+                       timeout:(CGFloat)timeout;
 
 @end

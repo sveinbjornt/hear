@@ -39,8 +39,10 @@ input device, e.g. microphone).
 .It Fl p -punctuation
 Add punctuation to speech recognition results.
 .It Fl x -exit Ar exit_word
-Set exit word. This causes hear to exit when a speech recognition result ends
-with the word in question.
+Set exit word. This causes the program to exit when a speech recognition result
+ends with the specified word.
+.It Fl t -timeout Ar seconds
+Exit if no recognition results are received within the specified number of seconds.
 .It Fl h -help
 Print help and exit.
 .It Fl v -version

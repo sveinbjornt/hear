@@ -3,11 +3,11 @@
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"
 BUILD_DIR := "products"
-VERSION := "0.4"
+VERSION := "0.5"
 
 all: clean build_unsigned
 
-release: clean build_signed archive size
+release: clean build_signed archive man size
 
 test: clean build_unsigned runtests
 
@@ -46,6 +46,9 @@ size:
 	@stat -f %z "$(BUILD_DIR)/$(PROGRAM_NAME)"
 	@echo "Archive size:"
 	@cd "$(BUILD_DIR)"; du -hs "$(PROGRAM_NAME)-$(VERSION).zip"
+
+man:
+	/usr/bin/man ./hear.1 | ./cat2html > hear.1.html
 
 runtests:
 # The tests don't work in CI env due to missing permissions from macOS
