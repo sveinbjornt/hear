@@ -67,8 +67,7 @@
     if (self) {
         
         if ([[Hear supportedLocales] containsObject:loc] == NO) {
-            NSPrintErr(@"Locale '%@' not supported. Run with -s flag to see list of supported locales", loc);
-            exit(EXIT_FAILURE);
+            [self die:@"Locale '%@' not supported. Run with -s flag to see list of supported locales", loc];
         }
         
         self.locale = loc;
@@ -91,8 +90,12 @@
 
 #pragma mark -
 
-- (void)die:(NSString *)errMsg {
-    NSPrintErr(@"Error: %@", errMsg);
+- (void)die:(NSString *)format, ... {
+    va_list args;
+    va_start(args, format);
+    NSString *string  = [[NSString alloc] initWithFormat:format arguments:args];
+    va_end(args);
+    fprintf(stderr, "%s\n", [string UTF8String]);
     exit(EXIT_FAILURE);
 }
 
@@ -141,7 +144,7 @@
     }
     
     if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
-        [self die:[NSString stringWithFormat:@"On-device recognition is not supported for locale '%@'", self.locale]];
+        [self die:@"On-device recognition is not supported for locale '%@'", self.locale];
     }
 }
 
@@ -157,7 +160,7 @@
     
     NSString *filePath = self.inputFile;
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
-        [self die:[NSString stringWithFormat:@"No file at path '%@'", filePath]];
+        [self die:@"No file at path '%@'", filePath];
     }
     
     // OK, the file exists, let's try to run speech recognition on it
@@ -292,7 +295,7 @@
     NSError *err;
     [self.engine startAndReturnError:&err];
     if (err != nil) {
-        [self die:[NSString stringWithFormat:@"Failed to start audio engine: %@", [err localizedDescription]]];
+        [self die:@"Failed to start audio engine: %@", [err localizedDescription]];
     }
     
     if (self.timeout > 0) {
