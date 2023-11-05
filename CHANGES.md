@@ -1,5 +1,9 @@
 # hear version history
 
+## v0.5 - 05/11/2023
+
+* Now supports setting a timeout for speech recognition via the -t flag
+
 ## v0.4 - 21/04/2023
 
 * Now supports -p flag to enable adding punctuation to speech recognition results (macOS 13+ only)

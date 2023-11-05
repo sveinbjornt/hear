@@ -15,7 +15,7 @@ This makes it possible to transcribe spoken audio input or entire audio files.
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", it also ships with highly capable speech recognition for a variety
-of languages. This project is an attempt to provide a robust CLI for this functionality
+of languages. This project is an attempt to provide a robust native CLI for this functionality
 since no such tool is provided by Apple. `hear` supports speech recognition and
 transcription of both live microphone input and audio files in a variety of formats. 
 All formats supported by CoreAudio should work (e.g. WAV, MP3, AIFF, AAC, CAF, ALAC, etc.).
@@ -30,7 +30,7 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⇩ Download hear 0.4](https://sveinbjorn.org/files/software/hear.zip)** 
+* **[⇩ Download hear 0.5](https://sveinbjorn.org/files/software/hear.zip)** 
 (Intel/ARM 64-bit, macOS 10.15 or later, ~50 KB)
 
 ## Installation
@@ -48,16 +48,19 @@ This will install the binary into `/usr/local/bin` and the man page into
 ## Usage
 
 ### Transcribe audio from microphone (or default audio input device)
+
 ```
 hear
 ```
 
 ### From microphone in single line output mode
+
 ```
 hear -m
 ```
 
 ### Transcribe audio file
+
 ```
 hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 ```
