@@ -8,8 +8,12 @@ function setup() {
     bats_load_library bats-assert
 }
 
+@test "bin is available" {
+    run -0 which $BIN
+}
+
 @test "transcribe test.wav" {
-    run $BIN -d -i test.wav
+    run $BIN -d -i ./test.wav
     assert_success
     assert_output "The rain in Spain stays mainly in the plain"
 }
