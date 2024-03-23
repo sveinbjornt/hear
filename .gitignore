@@ -20,3 +20,5 @@ xcuserdata
 dsa_priv.pem
 .xcbkptlist
 *.xcuserstate
+.direnv/
+result
