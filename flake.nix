@@ -31,6 +31,7 @@
               ]))
               just
               xcode
+              xcpretty
               frameworks.Foundation
               frameworks.AppKit
               frameworks.Speech

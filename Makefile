@@ -11,7 +11,7 @@ build/${CONFIGURATION}/hear:
 		CODE_SIGNING_REQUIRED=NO \
 		CODE_SIGNING_ALLOWED=NO \
 		$${BUILD_ARGS} \
-		clean build
+		clean build | xcpretty
 
 hear.1.html: hear.1
 	echo /usr/bin/man $< | ./cat2html > $@
