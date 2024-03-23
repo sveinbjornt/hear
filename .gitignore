@@ -1,6 +1,5 @@
 build/
 dist/
-products/
 DerivedData
 ## Various settings
 *.pbxuser
@@ -20,3 +19,5 @@ xcuserdata
 dsa_priv.pem
 .xcbkptlist
 *.xcuserstate
+.direnv/
+result
