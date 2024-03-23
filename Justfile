@@ -15,7 +15,7 @@ clean:
 
 # Run unit tests
 test:
-    bats tests/*.bats
+	bats tests/*.bats
 
 [private]
 build-signed:
