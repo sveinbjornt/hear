@@ -13,18 +13,6 @@
 		F4A6209F29EEC7BB00DD9BE1 /* Speech.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		F43A461927C010B2000469BC /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		F439F2C027D5157A00626667 /* install.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = install.sh; sourceTree = "<group>"; };
 		F439F2C327D51D7F00626667 /* test.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = test.wav; sourceTree = "<group>"; };
@@ -131,8 +119,6 @@
 			buildPhases = (
 				F43A461727C010B2000469BC /* Sources */,
 				F43A461827C010B2000469BC /* Frameworks */,
-				F43A461927C010B2000469BC /* CopyFiles */,
-				F4B96E4729D0FA690023A4BF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -150,7 +136,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					F43A461A27C010B2000469BC = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -174,27 +160,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		F4B96E4729D0FA690023A4BF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n# strip -Tx  \"$SRCROOT/products/hear\"\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F43A461727C010B2000469BC /* Sources */ = {

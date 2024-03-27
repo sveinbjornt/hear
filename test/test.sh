@@ -23,5 +23,5 @@ test_transcribe_file() {
 WAV_PATH="$TEST_ROOT/test.wav"
 test_transcribe_file $WAV_PATH
 
-WAV_PATH="$TEST_ROOT/test.mp3"
-test_transcribe_file $WAV_PATH
+MP3_PATH="$TEST_ROOT/test.mp3"
+test_transcribe_file $MP3_PATH

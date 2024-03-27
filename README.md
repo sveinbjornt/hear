@@ -67,7 +67,7 @@ hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
 
 The `-d` flag specifies that only on-device speech recognition capabilities
 should be used. Otherwise, data may be sent to Apple servers, which as of 
-writing (2023) have a hard limit of something like 500 characters before quitting.
+writing (2024) have a hard limit of about 500 characters before quitting.
 
 ## Build
 
@@ -93,7 +93,7 @@ If running the binary leads to an abort signal, try running the binary by right-
 
 ## BSD License 
 
-Copyright (c) 2022-2023 Sveinbjorn Thordarson
+Copyright (c) 2022-2024 Sveinbjorn Thordarson
 &lt;[sveinbjorn@sveinbjorn.org](mailto:sveinbjorn@sveinbjorn.org)&gt;  
 
 Redistribution and use in source and binary forms, with or without modification,
