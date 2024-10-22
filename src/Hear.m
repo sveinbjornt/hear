@@ -49,6 +49,7 @@
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
 @property (nonatomic) BOOL addPunctuation;
+@property (nonatomic) BOOL addTimestamps;
 @property (nonatomic, retain) NSString *exitWord;
 @property (nonatomic) CGFloat timeout;
 
@@ -61,6 +62,7 @@
                       onDevice:(BOOL)onDevice
                 singleLineMode:(BOOL)singleLine
                 addPunctuation:(BOOL)punctuation
+                addTimestamps:(BOOL)timestamps
                       exitWord:(NSString *)exitWord 
                        timeout:(CGFloat)timeout {
     self = [super init];
@@ -76,6 +78,7 @@
         self.singleLineMode = singleLine;
         self.useDeviceInput = (input == nil);
         self.addPunctuation = punctuation;
+        self.addTimestamps = timestamps;
         self.exitWord = exitWord;
         self.timeout = timeout;
     }
@@ -193,13 +196,21 @@
         if (result == nil) {
             return;
         }
-        
+
+        if (@available(macOS 13, *)) {
+            if (self.addTimestamps) {
+                SFSpeechRecognitionMetadata* meta = result.speechRecognitionMetadata;
+                NSString *timestamp = [[NSDateComponentsFormatter new] stringFromTimeInterval:meta.speechStartTimestamp];
+                NSDump([NSString stringWithFormat:@"\n%@ -> \n", timestamp]);
+            }
+        }
+
         // Make sure there's a space between the incoming result strings
         NSString *s = result.bestTranscription.formattedString;
         if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
             s = [NSString stringWithFormat:@"%@ ", s];
         }
-        
+
         // Print to stdout without newline and flush
         NSDump(s);
         
@@ -246,7 +257,15 @@
         if (self.timeout > 0) {
             [self startTimer:self];
         }
-        
+
+        if (@available(macOS 13, *)) {
+            if (self.addTimestamps) {
+                SFSpeechRecognitionMetadata* meta = result.speechRecognitionMetadata;
+                NSString *timestamp = [[NSDateComponentsFormatter new] stringFromTimeInterval:meta.speechStartTimestamp];
+                NSDump([NSString stringWithFormat:@"\n%@ -> \n", timestamp]);
+            }
+        }
+
         // Print to stdout
         NSString *transcript = result.bestTranscription.formattedString;
         if (self.singleLineMode) {
