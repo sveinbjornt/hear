@@ -43,7 +43,7 @@ static inline void PrintVersion(void);
 static inline void PrintHelp(void);
 
 // Command line options
-static const char optstring[] = "sl:i:dpmx:t:hv";
+static const char optstring[] = "sl:i:dpmx:t:Thv";
 
 static struct option long_options[] = {
     // List supported locales for speech to text
@@ -56,6 +56,8 @@ static struct option long_options[] = {
     {"device",                    no_argument,        0, 'd'},
     // Whether to add punctuation to speech recognition results
     {"punctuation",               no_argument,        0, 'p'},
+    // Whether to add timestamps when reading from a file
+    {"timestamp",                 no_argument,        0, 'T'},
     // Enable single-line output mode (for mic)
     {"mode",                      no_argument,        0, 'm'},
     // Exit word
@@ -84,6 +86,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     BOOL addsPunctuation = NO;
+    BOOL addsTimestamps = NO;
     CGFloat timeout = 0.0f;
     
     // Parse arguments
@@ -124,6 +127,12 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             case 'p':
                 addsPunctuation = YES;
                 break;
+
+            // Whether to add timestamps to speech recognition results
+            // This option is ignored on macOS versions prior to Ventura
+            case 'T':
+                addsTimestamps = YES;
+                break;
             
             // Set exit word (causes app to exit when word detected in speech)
             case 'x':
@@ -155,6 +164,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                      onDevice:useOnDeviceRecognition
                                singleLineMode:singleLineMode
                                addPunctuation:addsPunctuation
+                                addTimestamps:addsTimestamps
                                      exitWord:exitWord
                                       timeout:timeout];
     [[NSApplication sharedApplication] setDelegate:hear];
@@ -194,6 +204,7 @@ Options:\n\
     -p --punctuation        Add punctuation to speech recognition results (macOS 13+)\n\
     -x --exit-word          Set exit word that causes program to quit\n\
     -t --timeout            Set silence timeout (in seconds)\n\
+    -T --timestamps         Write timestamps as transcription occurs\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
