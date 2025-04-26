@@ -1,7 +1,7 @@
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-[![Language](https://img.shields.io/badge/language-objective--c-lightgrey)]()
-[![Release](https://shields.io/github/v/release/sveinbjornt/hear?display_name=tag)]()
-[![Build](https://github.com/sveinbjornt/hear/actions/workflows/macos.yml/badge.svg)]()
+[![Language](https://img.shields.io/badge/language-objective--c-lightgrey)](https://en.wikipedia.org/wiki/Objective-C)
+[![Release](https://shields.io/github/v/release/sveinbjornt/hear?display_name=tag)](https://github.com/sveinbjornt/hear/releases)
+[![Build](https://github.com/sveinbjornt/hear/actions/workflows/macos.yml/badge.svg)](https://github.com/sveinbjornt/hear/actions)
 
 # hear
 
@@ -62,12 +62,12 @@ hear -m
 ### Transcribe audio file
 
 ```
-hear -d -i /path/to/someone_speaking.mp3 > transcribed_text.txt
+hear -d -i /path/to/someone_speaking.wav > transcribed_text.txt
 ```
 
 The `-d` flag specifies that only on-device speech recognition capabilities
 should be used. Otherwise, data may be sent to Apple servers, which as of 
-writing (2024) have a hard limit of about 500 characters before quitting.
+writing (2025) have a hard limit of about 500 characters before quitting.
 
 ## Build
 
@@ -93,7 +93,7 @@ If running the binary leads to an abort signal, try running the binary by right-
 
 ## BSD License 
 
-Copyright (c) 2022-2024 Sveinbjorn Thordarson
+Copyright (c) 2022-2025 Sveinbjorn Thordarson
 &lt;[sveinbjorn@sveinbjorn.org](mailto:sveinbjorn@sveinbjorn.org)&gt;  
 
 Redistribution and use in source and binary forms, with or without modification,
