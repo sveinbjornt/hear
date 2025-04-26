@@ -2,13 +2,19 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleIdentifier</key>
-	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>This command line tool converts spoken audio to text.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>This command line tool converts spoken audio to text.</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(MARKETING_VERSION)</string>
+    <key>CFBundleSupportedPlatforms</key>
+    <array>
+    <string>MacOSX</string>
+    </array>
+    <key>LSMinimumSystemVersion</key>
+    <string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This command line tool converts spoken audio to text.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>This command line tool converts spoken audio to text.</string>
 </dict>
 </plist>
