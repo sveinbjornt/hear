@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2024 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -36,14 +36,13 @@
 #import "Common.h"
 #import "Hear.h"
 
-
 // Prototypes
 static inline BOOL IsRightOSVersion(void);
 static inline void PrintVersion(void);
 static inline void PrintHelp(void);
 
 // Command line options
-static const char optstring[] = "sl:i:dpmx:t:Thv";
+static const char optstring[] = "sl:i:dpmx:t:TShv";
 
 static struct option long_options[] = {
     // List supported locales for speech to text
@@ -56,14 +55,16 @@ static struct option long_options[] = {
     {"device",                    no_argument,        0, 'd'},
     // Whether to add punctuation to speech recognition results
     {"punctuation",               no_argument,        0, 'p'},
-    // Whether to add timestamps when reading from a file
-    {"timestamp",                 no_argument,        0, 'T'},
+    // Whether to print timestamps (file only)
+    {"timestamps",                no_argument,        0, 'T'},
+    // Format output as .srt subtitle file
+    {"subtitle",                  no_argument,        0, 'S'},
     // Enable single-line output mode (for mic)
     {"mode",                      no_argument,        0, 'm'},
     // Exit word
     {"exit-word",                 required_argument,  0, 'x'},
     // Timeout (in seconds)
-    {"timeout",                   required_argument,  0, 'x'},
+    {"timeout",                   required_argument,  0, 't'},
     // Print help
     {"help",                      no_argument,        0, 'h'},
     // Print version
@@ -87,12 +88,12 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     BOOL singleLineMode = NO;
     BOOL addsPunctuation = NO;
     BOOL addsTimestamps = NO;
-    CGFloat timeout = 0.0f;
+    BOOL subtitleMode = NO;
+    CGFloat timeout = NO_TIMEOUT;
     
     // Parse arguments
     int optch;
     int long_index = 0;
-    
     while ((optch = getopt_long(argc, (char *const *)argv, optstring, long_options, &long_index)) != -1) {
         switch (optch) {
             
@@ -134,11 +135,17 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 addsTimestamps = YES;
                 break;
             
+            // Output .srt formatted subtitle file
+            case 'S':
+                subtitleMode = YES;
+                break;
+            
             // Set exit word (causes app to exit when word detected in speech)
             case 'x':
                 exitWord = @(optarg);
                 break;
             
+            // Set timeout (in seconds)
             case 't':
                 timeout = [@(optarg) floatValue];
                 break;
@@ -165,6 +172,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                singleLineMode:singleLineMode
                                addPunctuation:addsPunctuation
                                 addTimestamps:addsTimestamps
+                                 subtitleMode:subtitleMode
                                      exitWord:exitWord
                                       timeout:timeout];
     [[NSApplication sharedApplication] setDelegate:hear];
@@ -184,8 +192,11 @@ static inline BOOL IsRightOSVersion(void) {
 }
 
 static inline void PrintVersion(void) {
-    NSPrint(@"%@ version %@ by %@ <%@>", PROGRAM_NAME, PROGRAM_VERSION,
-            PROGRAM_AUTHOR, PROGRAM_AUTHOR_EMAIL);
+    NSPrint(@"%@ version %@ by %@ <%@>",
+            PROGRAM_NAME,
+            PROGRAM_VERSION,
+            PROGRAM_AUTHOR,
+            PROGRAM_AUTHOR_EMAIL);
 }
 
 static inline void PrintHelp(void) {
@@ -204,11 +215,11 @@ Options:\n\
     -p --punctuation        Add punctuation to speech recognition results (macOS 13+)\n\
     -x --exit-word          Set exit word that causes program to quit\n\
     -t --timeout            Set silence timeout (in seconds)\n\
-    -T --timestamps         Write timestamps as transcription occurs\n\
+    -T --timestamps         Write timestamps as transcription occurs (file input only)\n\
+    -S --subtitle           Enable subtitle mode, producing .srt output (file input only)\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\
 \n\
 For further details, see 'man %@'.", PROGRAM_NAME, PROGRAM_NAME);
 }
-

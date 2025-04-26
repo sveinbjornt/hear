@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2024 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -50,6 +50,7 @@
 @property (nonatomic) BOOL singleLineMode;
 @property (nonatomic) BOOL addPunctuation;
 @property (nonatomic) BOOL addTimestamps;
+@property (nonatomic) BOOL subtitleMode;
 @property (nonatomic, retain) NSString *exitWord;
 @property (nonatomic) CGFloat timeout;
 
@@ -62,11 +63,11 @@
                       onDevice:(BOOL)onDevice
                 singleLineMode:(BOOL)singleLine
                 addPunctuation:(BOOL)punctuation
-                addTimestamps:(BOOL)timestamps
-                      exitWord:(NSString *)exitWord 
+                 addTimestamps:(BOOL)timestamps
+                  subtitleMode:(BOOL)subtitle
+                      exitWord:(NSString *)exitWord
                        timeout:(CGFloat)timeout {
-    self = [super init];
-    if (self) {
+    if ((self = [super init])) {
         
         if ([[Hear supportedLocales] containsObject:loc] == NO) {
             [self die:@"Locale '%@' not supported. Run with -s flag to see list of supported locales", loc];
@@ -79,6 +80,7 @@
         self.useDeviceInput = (input == nil);
         self.addPunctuation = punctuation;
         self.addTimestamps = timestamps;
+        self.subtitleMode = subtitle;
         self.exitWord = exitWord;
         self.timeout = timeout;
     }
@@ -93,6 +95,7 @@
 
 #pragma mark -
 
+// Dump message to stdout and exit
 - (void)die:(NSString *)format, ... {
     va_list args;
     va_start(args, format);
@@ -103,7 +106,6 @@
 }
 
 - (void)requestSpeechRecognitionPermission {
-    
     [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus authStatus) {
         switch (authStatus) {
             
@@ -111,29 +113,28 @@
                 // User allowed access to speech recognition
                 [self runTask];
                 break;
-                
+            
             case SFSpeechRecognizerAuthorizationStatusDenied:
                 [self die:@"Speech recognition authorization denied"];
                 break;
-                
+            
             case SFSpeechRecognizerAuthorizationStatusRestricted:
                 [self die:@"Speech recognition authorization restricted on this device"];
                 break;
-                
+            
             case SFSpeechRecognizerAuthorizationStatusNotDetermined:
                 [self die:@"Speech recognition authorization not determined"];
                 break;
-                
+            
             default:
                 break;
             
         }
     }];
-    
 }
 
+// Initialize speech recognizer
 - (void)initRecognizer {
-    // Initialize speech recognizer
     NSLocale *locale = [NSLocale localeWithLocaleIdentifier:self.locale];
     self.recognizer = [[SFSpeechRecognizer alloc] initWithLocale:locale];
     if (self.recognizer == nil) {
@@ -155,22 +156,31 @@
     if (self.useDeviceInput) {
         [self startListening];
     } else {
-        [self processFile];
+        if (self.subtitleMode) {
+            [self processFileSubtitle];
+        } else {
+            [self processFile];
+        }
+    }
+}
+
+- (void)verifyFile:(NSString *)filePath {
+    // Make sure it exists
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
+        [self die:@"No file at path '%@'", filePath];
+    }
+    // Make sure it is a supported format
+    if ([Hear isFileSupportedByAVFoundation:filePath] == NO) {
+        [self die:@"File format not supported."];
     }
 }
 
 - (void)processFile {
-    
-    NSString *filePath = self.inputFile;
-    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
-        [self die:@"No file at path '%@'", filePath];
-    }
-    
-    // OK, the file exists, let's try to run speech recognition on it
+    [self verifyFile:self.inputFile];
     [self initRecognizer];
     
     // Create speech recognition request with file URL
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURL *fileURL = [NSURL fileURLWithPath:self.inputFile];
     self.request = [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
     if (self.request == nil) {
         [self die:@"Unable to initialize speech recognition request"];
@@ -178,7 +188,6 @@
     
     self.request.shouldReportPartialResults = NO;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
-    
     // Add punctuation setting only available in Ventura and later
     if (@available(macOS 13, *)) {
         self.request.addsPunctuation = self.addPunctuation;
@@ -190,29 +199,34 @@
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         
         if (error != nil) {
-            [self die:[error localizedDescription]];
+            [self die:[error description]];
         }
         
         if (result == nil) {
             return;
         }
-
+        
         if (@available(macOS 13, *)) {
             if (self.addTimestamps) {
-                SFSpeechRecognitionMetadata* meta = result.speechRecognitionMetadata;
-                NSString *timestamp = [[NSDateComponentsFormatter new] stringFromTimeInterval:meta.speechStartTimestamp];
-                NSDump([NSString stringWithFormat:@"\n%@ -> \n", timestamp]);
+                SFSpeechRecognitionMetadata *meta = result.speechRecognitionMetadata;
+                NSTimeInterval start = meta.speechStartTimestamp;
+                NSTimeInterval end = start + meta.speechDuration;
+                NSDump([NSString stringWithFormat:@"%.2f --> %.2f\n", start, end]);
             }
         }
-
+        
         // Make sure there's a space between the incoming result strings
         NSString *s = result.bestTranscription.formattedString;
         if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
             s = [NSString stringWithFormat:@"%@ ", s];
         }
-
+        
         // Print to stdout without newline and flush
         NSDump(s);
+        
+        if (self.addTimestamps) {
+            NSDump(@"\n");
+        }
         
         // Close with a newline once we're done
         if (result.isFinal) {
@@ -228,8 +242,71 @@
     }
 }
 
-- (void)startListening {
+// Produces output in the format of a valid .srt file
+- (void)processFileSubtitle {
+    [self verifyFile:self.inputFile];
+    [self initRecognizer];
     
+    // Create speech recognition request with file URL
+    NSURL *fileURL = [NSURL fileURLWithPath:self.inputFile];
+    self.request = [[SFSpeechURLRecognitionRequest alloc] initWithURL:fileURL];
+    if (self.request == nil) {
+        [self die:@"Error: Unable to initialize speech recognition request"];
+    }
+    self.request.shouldReportPartialResults = NO;
+    self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
+    // Add punctuation setting only available in Ventura and later
+    if (@available(macOS 13, *)) {
+        self.request.addsPunctuation = self.addPunctuation;
+    }
+    
+    // Create speech recognition task
+    self.task = [self.recognizer recognitionTaskWithRequest:self.request
+                                              resultHandler:
+    ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
+        if (error != nil) {
+            [self die:[error description]];
+        }
+        
+        NSUInteger srt_index = 1;
+        NSUInteger segment_count = result.bestTranscription.segments.count;
+        const int CHUNK_SIZE = 8;
+        
+        for (NSUInteger i = 0; i < segment_count; i++) {
+            NSUInteger start = i;
+            NSUInteger end = MIN(i + CHUNK_SIZE, segment_count - 1);
+            i = end;
+            
+            printf("%lu\n", srt_index); // sequential subtitle number
+            srt_index++;
+            
+            NSTimeInterval start_time = result.bestTranscription.segments[start].timestamp;
+            NSTimeInterval end_time = result.bestTranscription.segments[end].timestamp + result.bestTranscription.segments[end].duration;
+            printf("%s --> %s\n", [[self stringFromTimeInterval:start_time] UTF8String], [[self stringFromTimeInterval:end_time] UTF8String]);
+            
+            for (NSUInteger k = start; k <= end; k++) {
+                printf("%s", [result.bestTranscription.segments[k].substring UTF8String]);
+                if (k < end) {
+                    printf(" ");
+                }
+            }
+            printf("\n\n");
+        }
+        
+        if (result.isFinal) {
+            // We're all done
+            NSDump(@"\n");
+            exit(EXIT_SUCCESS);
+        }
+    }];
+    
+    if (self.task == nil) {
+        [self die:@"Error: Unable to initialize speech recognition task"];
+    }
+}
+
+
+- (void)startListening {
     [self initRecognizer];
     
     // Create speech recognition request
@@ -239,7 +316,6 @@
     }
     self.request.shouldReportPartialResults = YES;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
-    
     // Add punctuation setting only available in Ventura and later
     if (@available(macOS 13, *)) {
         self.request.addsPunctuation = self.addPunctuation;
@@ -257,15 +333,7 @@
         if (self.timeout > 0) {
             [self startTimer:self];
         }
-
-        if (@available(macOS 13, *)) {
-            if (self.addTimestamps) {
-                SFSpeechRecognitionMetadata* meta = result.speechRecognitionMetadata;
-                NSString *timestamp = [[NSDateComponentsFormatter new] stringFromTimeInterval:meta.speechStartTimestamp];
-                NSDump([NSString stringWithFormat:@"\n%@ -> \n", timestamp]);
-            }
-        }
-
+        
         // Print to stdout
         NSString *transcript = result.bestTranscription.formattedString;
         if (self.singleLineMode) {
@@ -333,10 +401,10 @@
         [self.timeoutTimer invalidate];
     }
     self.timeoutTimer = [NSTimer timerWithTimeInterval:self.timeout
-                                                         target:self
-                                                       selector:@selector(timedOut:)
-                                                       userInfo:self
-                                                        repeats:NO];
+                                                target:self
+                                              selector:@selector(timedOut:)
+                                              userInfo:self
+                                               repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:self.timeoutTimer
                                  forMode:NSDefaultRunLoopMode];
 }
@@ -358,6 +426,33 @@
 
 + (void)printSupportedLocales {
     NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
+}
+
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
+    // Create NSURL from file path
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    if (!fileURL) {
+        return NO;
+    }
+    
+    // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
+    // trigger more thorough format checks during initialization.
+    // Setting it to NO might be slightly faster.
+    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
+    
+    return (asset != nil && [asset isReadable]);
+}
+
+// https://stackoverflow.com/a/32884209/11639533
+- (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
+    NSInteger interval = timeInterval;
+    NSInteger ms = (fmod(timeInterval, 1) * 1000);
+    long seconds = interval % 60;
+    long minutes = (interval / 60) % 60;
+    long hours = (interval / 3600);
+    return [NSString stringWithFormat:@"%0.2ld:%0.2ld:%0.2ld,%0.3ld",
+            hours, minutes, seconds, (long)ms];
 }
 
 @end

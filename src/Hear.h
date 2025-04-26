@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2024 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -36,15 +36,16 @@
 
 @interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
-+ (void)printSupportedLocales;
-
 - (instancetype)initWithLocale:(NSString *)loc
                          input:(NSString *)input
                       onDevice:(BOOL)useOnDeviceRecognition
                 singleLineMode:(BOOL)singleLine
-                addPunctuation:(BOOL)addPunctuation
+                addPunctuation:(BOOL)punctuation
                  addTimestamps:(BOOL)addTimestamps
+                  subtitleMode:(BOOL)subtitle
                       exitWord:(NSString *)exitWord
                        timeout:(CGFloat)timeout;
+
++ (void)printSupportedLocales;
 
 @end

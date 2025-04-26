@@ -6,7 +6,8 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdmps</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>locale</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
+     <b>hear</b> [<b>-hvdmpsTS</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>locale</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
+          [<b>-t</b> <u>timeout</u><b>_<u></b>sec</u>]
 
 <b>DESCRIPTION</b>
 
@@ -35,7 +36,7 @@
               which may include sending data to Apple servers. When on-device
               is not enabled, there may be a hard limit to the length of audio
               that can be transcribed in a single session. As of writing
-              (2023) this is about 500 characters or so.
+              (2025) this seems to be about 500 characters or so.
 
      <b>-m</b> <b>--mode</b>
               Enable single-line output mode (only applies when the input is
@@ -43,6 +44,13 @@
 
      <b>-p</b> <b>--punctuation</b>
               Add punctuation to speech recognition results.
+
+     <b>-T</b> <b>--timestamps</b>
+              Write timestamps as transcription occurs (file input only).
+
+     <b>-S</b> <b>--subtitle</b>
+              Enable subtitle mode, producing .srt output (file input only,
+              experimental)
 
      <b>-x</b> <b>--exit</b> <u>exit</u><b>_<u></b>word</u>
               Set exit word. This causes the program to exit when a speech
@@ -68,6 +76,6 @@
 
      Sveinbjorn Thordarson &lt;sveinbjorn@sveinbjorn.org&gt;
 
-Darwin                         October 27, 2023                         Darwin
+Darwin                          April 26, 2025                          Darwin
 </font></pre>
 </body></html>
