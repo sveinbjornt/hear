@@ -1,5 +1,7 @@
 # hear version history
 
+## v0.6 - ??/??/????
+
 ## v0.5 - 05/11/2023
 
 * Now supports setting a timeout for speech recognition via the -t flag
