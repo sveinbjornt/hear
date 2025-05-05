@@ -9,15 +9,15 @@
 
 ### macOS speech recognition via the command line
 
-`hear` is a command line interface for the built-in speech recognition capabilities in macOS.
-This makes it possible to transcribe spoken audio input or entire audio files.
+`hear` is a command line interface for the built-in speech recognition capabilities
+in macOS. This makes it possible to transcribe spoken audio input or entire audio files.
 
 Apple's macOS has long shipped with the `say` tool, a command line interface
 for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", it also ships with highly capable speech recognition for a variety
-of languages. This project is an attempt to provide a robust native CLI for this functionality
-since no such tool is provided by Apple. `hear` supports speech recognition and
-transcription of both live microphone input and audio files in a variety of formats. 
+of languages. This project is an attempt to provide a robust native CLI for this
+functionality since no such tool is provided by Apple. `hear` supports speech recognition
+and transcription of both live microphone input and audio files in a variety of formats. 
 All formats supported by CoreAudio should work (e.g. WAV, MP3, AIFF, AAC, CAF, ALAC, etc.).
 
 See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further details.
@@ -69,9 +69,12 @@ The `-d` flag specifies that only on-device speech recognition capabilities
 should be used. Otherwise, data may be sent to Apple servers, which as of 
 writing (2025) have a hard limit of about 500 characters before quitting.
 
+For some reason, only those locales supported by Siri work with the `-d` flag.
+
 ## Build
 
-To build `hear` from source, run the following command from the repository root (requires Xcode command line build tools):
+To build `hear` from source, run the following command from the repository root
+(requires Xcode command line build tools):
 
 ```
 make build_unsigned
@@ -81,7 +84,8 @@ The resulting binary is created in `products/`.
 
 ## Test
 
-To run tests on the built command line tool, execute the following command from the repository root:
+To run tests on the built command line tool, execute the following command
+from the repository root:
 
 ```
 bash test/test.sh
@@ -89,7 +93,10 @@ bash test/test.sh
 
 ## Troubleshooting
 
-If running the binary leads to an abort signal, try running the binary by right-clicking, and selecting open. This should automatically open the binary with the regular terminal and prompt you to allow the required permissions.
+If running the binary leads to an abort signal, try running the binary by
+right-clicking it and selecting Open. This should automatically open the
+binary with the regular Terminal app and prompt you to grant the required
+permissions.
 
 ## BSD License 
 

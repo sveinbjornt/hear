@@ -12,7 +12,7 @@ release: clean build_signed archive man size
 test: clean build_unsigned runtests
 
 build_unsigned:
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 	xcodebuild	-project "$(XCODE_PROJ)" \
 	            -target "$(PROGRAM_NAME)" \
 	            -configuration "Debug" \
@@ -23,7 +23,7 @@ build_unsigned:
 	            build
 
 build_signed:
-	mkdir -p $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 	xcodebuild  -parallelizeTargets \
 	            -project "$(XCODE_PROJ)" \
 	            -target "$(PROGRAM_NAME)" \
