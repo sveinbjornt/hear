@@ -4,4 +4,4 @@ TODO list for `hear` macOS command line tool:
 * Support for manually specifying audio input device
 * Add tests for timestamps and SRT generation
 * Unit test coverage
-* Add integration more tests for full workflow
+* Add integration tests for full workflow

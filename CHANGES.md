@@ -1,6 +1,11 @@
 # hear version history
 
-## v0.6 - ??/??/????
+## v0.6 - 29/05/2025
+
+* Added timestamped output mode
+* Added SRT subtitles output mode (experimental)
+* Now requires macOS 13 or later
+* Binary now both Developer ID signed and notarized by Apple
 
 ## v0.5 - 05/11/2023
 

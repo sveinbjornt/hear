@@ -188,10 +188,7 @@
     
     self.request.shouldReportPartialResults = NO;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
-    // Add punctuation setting only available in Ventura and later
-    if (@available(macOS 13, *)) {
-        self.request.addsPunctuation = self.addPunctuation;
-    }
+    self.request.addsPunctuation = self.addPunctuation;
     
     // Create speech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
@@ -206,13 +203,11 @@
             return;
         }
         
-        if (@available(macOS 13, *)) {
-            if (self.addTimestamps) {
-                SFSpeechRecognitionMetadata *meta = result.speechRecognitionMetadata;
-                NSTimeInterval start = meta.speechStartTimestamp;
-                NSTimeInterval end = start + meta.speechDuration;
-                NSDump([NSString stringWithFormat:@"%.2f --> %.2f\n", start, end]);
-            }
+        if (self.addTimestamps) {
+            SFSpeechRecognitionMetadata *meta = result.speechRecognitionMetadata;
+            NSTimeInterval start = meta.speechStartTimestamp;
+            NSTimeInterval end = start + meta.speechDuration;
+            NSDump([NSString stringWithFormat:@"%.2f --> %.2f\n", start, end]);
         }
         
         // Make sure there's a space between the incoming result strings
@@ -255,10 +250,7 @@
     }
     self.request.shouldReportPartialResults = NO;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
-    // Add punctuation setting only available in Ventura and later
-    if (@available(macOS 13, *)) {
-        self.request.addsPunctuation = self.addPunctuation;
-    }
+    self.request.addsPunctuation = self.addPunctuation;
     
     // Create speech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
@@ -317,9 +309,7 @@
     self.request.shouldReportPartialResults = YES;
     self.request.requiresOnDeviceRecognition = self.useOnDeviceRecognition;
     // Add punctuation setting only available in Ventura and later
-    if (@available(macOS 13, *)) {
-        self.request.addsPunctuation = self.addPunctuation;
-    }
+    self.request.addsPunctuation = self.addPunctuation;
     
     // Create spech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
