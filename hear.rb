@@ -9,16 +9,16 @@ class Hear < Formula
   depends_on macos: :catalina
 
   def install
-    mkdir "#{buildpath}/dst"
-    xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}/dst",
-               "-project", "hear.xcodeproj",
-               "-target", "hear",
-               "CODE_SIGN_IDENTITY=",
-               "CODE_SIGNING_REQUIRED=NO",
-               "CODE_SIGNING_ALLOWED=NO",
-               "clean", "install"
+    system "xcodebuild", "-project", "hear.xcodeproj",
+           "-target", "hear",
+           "-configuration", "Release",
+           "SYMROOT=build",
+           "CODE_SIGN_IDENTITY=",
+           "CODE_SIGNING_REQUIRED=NO",
+           "CODE_SIGNING_ALLOWED=NO"
+    
+    bin.install "build/Release/hear"
     man1.install "hear.1"
-    bin.install "dst/hear" => "hear"
   end
 
   test do
