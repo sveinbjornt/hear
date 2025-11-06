@@ -18,7 +18,7 @@ for the operating system's venerable speech synthesis capabilities. As of
 10.15 "Catalina", it also ships with highly capable speech recognition for a variety
 of languages. This project is an attempt to provide a robust native CLI for this
 functionality since no such tool is provided by Apple. `hear` supports speech recognition
-and transcription of both live microphone input and audio files in a variety of formats. 
+and transcription of both live microphone input and audio files in a variety of formats.
 All formats supported by CoreAudio should work (e.g. WAV, MP3, AIFF, AAC, CAF, ALAC, etc.).
 
 See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for further details.
@@ -28,10 +28,10 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BDT58J7HYKAEE"><img align="right" src="https://www.paypalobjects.com/WEBSCR-640-20110306-1/en_US/i/btn/btn_donate_LG.gif" ></a>
 
 `hear` is free, open source software written in Objective-C. The source code is freely
-[available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license). 
+[available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license).
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⬇ Download hear 0.6](https://sveinbjorn.org/files/software/hear.zip)** 
+* **[⬇ Download hear 0.6](https://sveinbjorn.org/files/software/hear.zip)**
 (~50 KB, ARM/Intel 64-bit, macOS 13 or later, Developer ID signed and notarized by Apple)
 
 ## Installation
@@ -39,35 +39,42 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 After downloading and expanding the archive, change to the resulting directory and run
 the following command:
 
-```
+```bash
 bash install.sh
 ```
 
 This will install the binary into `/usr/local/bin` and the man page into
 `/usr/local/share/man/man1/`.
 
+### Install via Homebrew
+
+```bash
+brew tap sveinbjornt/hear https://github.com/sveinbjornt/hear
+brew install sveinbjornt/hear/hear
+```
+
 ## Usage
 
 ### Transcribe audio from microphone (or default audio input device)
 
-```
+```bash
 hear
 ```
 
 ### From microphone in single line output mode
 
-```
+```bash
 hear -m
 ```
 
 ### Transcribe audio file
 
-```
+```bash
 hear -d -i /path/to/someone_speaking.wav > transcribed_text.txt
 ```
 
 The `-d` flag specifies that only on-device speech recognition capabilities
-should be used. Otherwise, data may be sent to Apple servers, which as of 
+should be used. Otherwise, data may be sent to Apple servers, which as of
 writing (2025) have a hard limit of about 500 characters before quitting.
 
 For some reason, only those locales supported by Siri work with the `-d` flag.
@@ -77,7 +84,7 @@ For some reason, only those locales supported by Siri work with the `-d` flag.
 To build `hear` from source, run the following command from the repository root
 (requires Xcode command line build tools):
 
-```
+```bash
 make build_unsigned
 ```
 
@@ -88,7 +95,7 @@ The resulting binary is created in `products/`.
 To run tests on the built command line tool, execute the following command
 from the repository root:
 
-```
+```bash
 bash test/test.sh
 ```
 
@@ -99,7 +106,7 @@ right-clicking it and selecting Open. This should automatically open the
 binary with the regular Terminal app and prompt you to grant the required
 permissions.
 
-## BSD License 
+## BSD License
 
 Copyright (c) 2022-2025 Sveinbjorn Thordarson
 &lt;[sveinbjorn@sveinbjorn.org](mailto:sveinbjorn@sveinbjorn.org)&gt;  
