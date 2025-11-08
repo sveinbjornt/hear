@@ -42,7 +42,7 @@ static inline void PrintVersion(void);
 static inline void PrintHelp(void);
 
 // Command line options
-static const char optstring[] = "sl:i:dpmx:t:TShv";
+static const char optstring[] = "sl:i:dpmx:t:an:TShv";
 
 static struct option long_options[] = {
     // List supported locales for speech to text
@@ -65,6 +65,10 @@ static struct option long_options[] = {
     {"exit-word",                 required_argument,  0, 'x'},
     // Timeout (in seconds)
     {"timeout",                   required_argument,  0, 't'},
+    // List available audio input devices
+    {"audio-input-devices",       required_argument,  0, 'a'},
+    // Specify ID of audio input device
+    {"input-device-id",           required_argument,  0, 'n'},
     // Print help
     {"help",                      no_argument,        0, 'h'},
     // Print version
@@ -81,9 +85,14 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         exit(EXIT_FAILURE);
     }
     
+    if ([Hear hasAvailableAudioInputDevice] == FALSE) {
+        NSPrintErr(@"No available audio input device.");
+    }
+    
     NSString *locale = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *exitWord;
+    NSString *inputDeviceID;
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     BOOL addsPunctuation = NO;
@@ -128,7 +137,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             case 'p':
                 addsPunctuation = YES;
                 break;
-
+            
             // Whether to add timestamps to speech recognition results
             // This option is ignored on macOS versions prior to Ventura
             case 'T':
@@ -148,6 +157,18 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             // Set timeout (in seconds)
             case 't':
                 timeout = [@(optarg) floatValue];
+                break;
+            
+            case 'a':
+                [Hear printAvailableAudioInputDevices];
+                exit(EXIT_SUCCESS);
+                break;
+            
+            case 'n':
+                inputDeviceID = @(optarg);
+                if ([Hear isAvailableAudioInputDevice:inputDeviceID] == NO) {
+                    NSPrintErr(@"The device '%@' is not a valid audio input device.");
+                }
                 break;
             
             // Print version
@@ -174,7 +195,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                 addTimestamps:addsTimestamps
                                  subtitleMode:subtitleMode
                                      exitWord:exitWord
-                                      timeout:timeout];
+                                      timeout:timeout
+                                inputDeviceID:inputDeviceID];
     [[NSApplication sharedApplication] setDelegate:hear];
     [NSApp run];
     

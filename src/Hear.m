@@ -53,6 +53,7 @@
 @property (nonatomic) BOOL subtitleMode;
 @property (nonatomic, retain) NSString *exitWord;
 @property (nonatomic) CGFloat timeout;
+@property (nonatomic) NSString *inputDeviceID;
 
 @end
 
@@ -66,7 +67,9 @@
                  addTimestamps:(BOOL)timestamps
                   subtitleMode:(BOOL)subtitle
                       exitWord:(NSString *)exitWord
-                       timeout:(CGFloat)timeout {
+                       timeout:(CGFloat)timeout
+                 inputDeviceID:(NSString *)inputDeviceID
+{
     if ((self = [super init])) {
         
         if ([[Hear supportedLocales] containsObject:loc] == NO) {
@@ -83,6 +86,7 @@
         self.subtitleMode = subtitle;
         self.exitWord = exitWord;
         self.timeout = timeout;
+        self.inputDeviceID = inputDeviceID;
     }
     return self;
 }
@@ -144,7 +148,7 @@
     
     // Make sure recognition is available
     if (self.recognizer.isAvailable == NO) {
-        [self die:@"Speech recognizer not available. Try enabling Siri in System Preferences/Settings."];
+        [self die:@"Speech recognizer not available. Try enabling Siri in System Settings."];
     }
     
     if (self.useOnDeviceRecognition && !self.recognizer.supportsOnDeviceRecognition) {
@@ -403,7 +407,7 @@
     exit(EXIT_SUCCESS);
 }
 
-#pragma mark - Class methods
+#pragma mark - Locales
 
 + (NSArray<NSString *> *)supportedLocales {
     NSMutableArray *localeIdentifiers = [NSMutableArray new];
@@ -417,6 +421,56 @@
 + (void)printSupportedLocales {
     NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
 }
+
+#pragma mark - Audio Input Devices
+
++ (NSArray<AVCaptureDevice *> *)availableAudioInputDevices {
+    NSArray *deviceTypes;
+    if (@available(macOS 14.0, *)) {
+        deviceTypes = @[AVCaptureDeviceTypeBuiltInMicrophone, AVCaptureDeviceTypeExternal];
+    } else {
+        deviceTypes = @[AVCaptureDeviceTypeBuiltInMicrophone, AVCaptureDeviceTypeExternalUnknown];
+    }
+    AVCaptureDeviceDiscoverySession *discoverySession =\
+    [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:deviceTypes
+                                                           mediaType:AVMediaTypeAudio
+                                                            position:AVCaptureDevicePositionUnspecified];
+    return discoverySession.devices;
+}
+
++ (BOOL)hasAvailableAudioInputDevice {
+    return [[Hear availableAudioInputDevices] count] != 0;
+}
+
++ (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID {
+    NSArray<AVCaptureDevice *> *devices = [Hear availableAudioInputDevices];
+    for (AVCaptureDevice *device in devices) {
+        if ([device.uniqueID isEqualToString:deviceID]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (void)printAvailableAudioInputDevices {
+    NSArray<AVCaptureDevice *> *devices = [Hear availableAudioInputDevices];
+    
+    if ([devices count] == 0) {
+        NSPrint(@"No audio input devices available");
+        return;
+    }
+    
+    NSPrint(@"Available Audio Input Devices:");
+    NSUInteger num = 0;
+    for (AVCaptureDevice *device in devices) {
+        num += 1;
+        // Print the user-friendly name, model, and unique ID for each device.
+        // The unique ID is useful for programmatically selecting a specific device later.
+        NSPrint(@"%d. %@ - %@ (ID: %@)", num, device.localizedName, device.modelID, device.uniqueID);
+    }
+}
+
+#pragma mark - Util
 
 + (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
     // Create NSURL from file path
