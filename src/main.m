@@ -87,6 +87,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     if ([Hear hasAvailableAudioInputDevice] == FALSE) {
         NSPrintErr(@"No available audio input device.");
+        exit(EXIT_FAILURE);
     }
     
     NSString *locale = DEFAULT_LOCALE;
