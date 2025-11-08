@@ -44,8 +44,13 @@
                  addTimestamps:(BOOL)addTimestamps
                   subtitleMode:(BOOL)subtitle
                       exitWord:(NSString *)exitWord
-                       timeout:(CGFloat)timeout;
+                       timeout:(CGFloat)timeout
+                 inputDeviceID:(NSString *)inputDeviceID;
 
 + (void)printSupportedLocales;
++ (NSArray *)availableAudioInputDevices;
++ (BOOL)hasAvailableAudioInputDevice;
++ (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID;
++ (void)printAvailableAudioInputDevices;
 
 @end

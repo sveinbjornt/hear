@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 
 #define PROGRAM_NAME            @"hear"
-#define PROGRAM_VERSION         @"0.6"
+#define PROGRAM_VERSION         @"0.7"
 #define PROGRAM_AUTHOR          @"Sveinbjorn Thordarson"
 #define PROGRAM_AUTHOR_EMAIL    @"sveinbjorn@sveinbjorn.org"
 
