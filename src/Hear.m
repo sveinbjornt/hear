@@ -310,6 +310,7 @@
     if (self.inputDeviceID) {
         AudioObjectPropertyAddress addr = {
             kAudioHardwarePropertyDefaultInputDevice,
+            kAudioObjectPropertyScopeGlobal,
             kAudioObjectPropertyElementMain
         };
         
