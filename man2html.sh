@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-/usr/bin/man ./hear.1 | ../platypus/CLT/man/cat2html/cat2html > hear.1.html
+cd "$(dirname "$0")"
+
+/usr/bin/man ./hear.1 | ./cat2html > hear.1.html

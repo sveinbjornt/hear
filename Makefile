@@ -12,8 +12,8 @@ release: clean build_signed archive man size
 test: clean build_unsigned runtests
 
 build_unsigned:
-	mkdir -p $(BUILD_DIR)
-	xattr -w com.apple.xcode.CreatedByBuildSystem true $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
+	@xattr -w com.apple.xcode.CreatedByBuildSystem true $(BUILD_DIR)
 	xcodebuild	-project "$(XCODE_PROJ)" \
 	            -target "$(PROGRAM_NAME)" \
 	            -configuration "Debug" \
@@ -25,7 +25,7 @@ build_unsigned:
 
 build_signed:
 	@mkdir -p $(BUILD_DIR)
-	xattr -w com.apple.xcode.CreatedByBuildSystem true $(BUILD_DIR)
+	@xattr -w com.apple.xcode.CreatedByBuildSystem true $(BUILD_DIR)
 	xcodebuild  -parallelizeTargets \
 	            -project "$(XCODE_PROJ)" \
 	            -target "$(PROGRAM_NAME)" \
@@ -50,7 +50,7 @@ size:
 	@cd "$(BUILD_DIR)"; du -hs "$(PROGRAM_NAME)-$(VERSION).zip"
 
 man:
-	/usr/bin/man ./hear.1 | ./cat2html > hear.1.html
+	@bash man2html.sh
 
 runtests:
 # The tests don't work in CI env due to missing permissions from macOS

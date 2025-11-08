@@ -23,7 +23,6 @@
 
 * Minor bug fixes
 
-
 ## v0.1 - 07/03/2022
 
 * Initial release
