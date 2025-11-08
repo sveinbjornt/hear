@@ -581,7 +581,7 @@
     NSUInteger num = 0;
     for (NSDictionary *device in devices) {
         num += 1;
-        NSPrint(@"%d. %@ (ID: %@)", num, device[@"name"], device[@"id"]);
+        NSPrint(@"%lu. %@ (ID: %@)", num, device[@"name"], device[@"id"]);
     }
 }
 
