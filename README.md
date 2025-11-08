@@ -48,6 +48,8 @@ This will install the binary into `/usr/local/bin` and the man page into
 
 ### Install via Homebrew
 
+A full installation of [Xcode](https://developer.apple.com/xcode/resources/) is required to build `hear` via Homebrew.
+
 ```bash
 brew tap sveinbjornt/hear https://github.com/sveinbjornt/hear
 brew install sveinbjornt/hear/hear
