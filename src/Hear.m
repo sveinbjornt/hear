@@ -488,6 +488,9 @@
     
     int count = size / sizeof(AudioDeviceID);
     AudioDeviceID *deviceIDs = (AudioDeviceID *)malloc(size);
+    if (deviceIDs == NULL) {
+        return @[];
+    }
     
     status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, deviceIDs);
     if (status != noErr) {
