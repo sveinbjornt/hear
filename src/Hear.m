@@ -333,7 +333,7 @@
                 AudioObjectPropertyAddress addr = {
                     kAudioHardwarePropertyDeviceForUID,
                     kAudioObjectPropertyScopeGlobal,
-                    kAudioObjectPropertyElementMaster
+                    kAudioObjectPropertyElementMain
                 };
                 
                 OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &value);
