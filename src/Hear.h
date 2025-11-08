@@ -48,7 +48,7 @@
                  inputDeviceID:(NSString *)inputDeviceID;
 
 + (void)printSupportedLocales;
-+ (NSArray<AVCaptureDevice *> *)availableAudioInputDevices;
++ (NSArray *)availableAudioInputDevices;
 + (BOOL)hasAvailableAudioInputDevice;
 + (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID;
 + (void)printAvailableAudioInputDevices;

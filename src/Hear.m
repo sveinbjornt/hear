@@ -32,6 +32,7 @@
 
 #import "Hear.h"
 #import "Common.h"
+#import <CoreAudio/CoreAudio.h>
 
 @interface Hear()
 
@@ -305,6 +306,53 @@
 - (void)startListening {
     [self initRecognizer];
     
+    // Set the input device, if specified
+    if (self.inputDeviceID) {
+        AudioObjectPropertyAddress addr = {
+            kAudioHardwarePropertyDefaultInputDevice,
+            kAudioObjectPropertyElementMain
+        };
+        
+        AudioDeviceID deviceID = kAudioObjectUnknown;
+        
+        NSArray *devices = [Hear availableAudioInputDevices];
+        for (NSDictionary *device in devices) {
+            if ([device[@"id"] isEqualToString:self.inputDeviceID]) {
+                
+                CFStringRef deviceUID = (__bridge CFStringRef)device[@"id"];
+                
+                AudioValueTranslation value;
+                value.mInputData = &deviceUID;
+                value.mInputDataSize = sizeof(CFStringRef);
+                value.mOutputData = &deviceID;
+                value.mOutputDataSize = sizeof(AudioDeviceID);
+                
+                UInt32 size = sizeof(AudioValueTranslation);
+                
+                AudioObjectPropertyAddress addr = {
+                    kAudioHardwarePropertyDeviceForUID,
+                    kAudioObjectPropertyScopeGlobal,
+                    kAudioObjectPropertyElementMaster
+                };
+                
+                OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &value);
+                if (status != noErr) {
+                    [self die:@"Unable to get device ID for UID '%@'", self.inputDeviceID];
+                }
+                break;
+            }
+        }
+        
+        if (deviceID == kAudioObjectUnknown) {
+            [self die:@"Audio input device with ID '%@' not found", self.inputDeviceID];
+        }
+        
+        OSStatus status = AudioObjectSetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, sizeof(AudioDeviceID), &deviceID);
+        if (status != noErr) {
+            [self die:@"Error setting audio input device: %d", status];
+        }
+    }
+    
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
@@ -424,18 +472,86 @@
 
 #pragma mark - Audio Input Devices
 
-+ (NSArray<AVCaptureDevice *> *)availableAudioInputDevices {
-    NSArray *deviceTypes;
-    if (@available(macOS 14.0, *)) {
-        deviceTypes = @[AVCaptureDeviceTypeBuiltInMicrophone, AVCaptureDeviceTypeExternal];
-    } else {
-        deviceTypes = @[AVCaptureDeviceTypeBuiltInMicrophone, AVCaptureDeviceTypeExternalUnknown];
++ (NSArray *)availableAudioInputDevices {
+    AudioObjectPropertyAddress addr = {
+        kAudioHardwarePropertyDevices,
+        kAudioObjectPropertyScopeGlobal,
+        kAudioObjectPropertyElementMain
+    };
+    
+    UInt32 size;
+    OSStatus status = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &addr, 0, NULL, &size);
+    if (status != noErr) {
+        return @[];
     }
-    AVCaptureDeviceDiscoverySession *discoverySession =\
-    [AVCaptureDeviceDiscoverySession discoverySessionWithDeviceTypes:deviceTypes
-                                                           mediaType:AVMediaTypeAudio
-                                                            position:AVCaptureDevicePositionUnspecified];
-    return discoverySession.devices;
+    
+    int count = size / sizeof(AudioDeviceID);
+    AudioDeviceID *deviceIDs = (AudioDeviceID *)malloc(size);
+    
+    status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, deviceIDs);
+    if (status != noErr) {
+        free(deviceIDs);
+        return @[];
+    }
+    
+    NSMutableArray *devices = [NSMutableArray array];
+    
+    for (int i = 0; i < count; i++) {
+        AudioDeviceID deviceID = deviceIDs[i];
+        
+        addr.mScope = kAudioDevicePropertyScopeInput;
+        addr.mSelector = kAudioDevicePropertyStreamConfiguration;
+        status = AudioObjectGetPropertyDataSize(deviceID, &addr, 0, NULL, &size);
+        if (status != noErr) {
+            continue;
+        }
+        
+        AudioBufferList *bufferList = (AudioBufferList *)malloc(size);
+        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, bufferList);
+        if (status != noErr) {
+            free(bufferList);
+            continue;
+        }
+        
+        UInt32 channelCount = 0;
+        for (int j = 0; j < bufferList->mNumberBuffers; j++) {
+            channelCount += bufferList->mBuffers[j].mNumberChannels;
+        }
+        free(bufferList);
+        
+        if (channelCount == 0) {
+            continue;
+        }
+        
+        CFStringRef deviceName;
+        size = sizeof(deviceName);
+        addr.mSelector = kAudioDevicePropertyDeviceNameCFString;
+        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceName);
+        if (status != noErr) {
+            continue;
+        }
+        
+        CFStringRef deviceUID;
+        size = sizeof(deviceUID);
+        addr.mSelector = kAudioDevicePropertyDeviceUID;
+        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceUID);
+        if (status != noErr) {
+            CFRelease(deviceName);
+            continue;
+        }
+        
+        [devices addObject:@{
+            @"name": (__bridge NSString *)deviceName,
+            @"id": (__bridge NSString *)deviceUID
+        }];
+        
+        CFRelease(deviceName);
+        CFRelease(deviceUID);
+    }
+    
+    free(deviceIDs);
+    
+    return devices;
 }
 
 + (BOOL)hasAvailableAudioInputDevice {
@@ -443,9 +559,9 @@
 }
 
 + (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID {
-    NSArray<AVCaptureDevice *> *devices = [Hear availableAudioInputDevices];
-    for (AVCaptureDevice *device in devices) {
-        if ([device.uniqueID isEqualToString:deviceID]) {
+    NSArray *devices = [Hear availableAudioInputDevices];
+    for (NSDictionary *device in devices) {
+        if ([device[@"id"] isEqualToString:deviceID]) {
             return YES;
         }
     }
@@ -453,7 +569,7 @@
 }
 
 + (void)printAvailableAudioInputDevices {
-    NSArray<AVCaptureDevice *> *devices = [Hear availableAudioInputDevices];
+    NSArray *devices = [Hear availableAudioInputDevices];
     
     if ([devices count] == 0) {
         NSPrint(@"No audio input devices available");
@@ -462,11 +578,9 @@
     
     NSPrint(@"Available Audio Input Devices:");
     NSUInteger num = 0;
-    for (AVCaptureDevice *device in devices) {
+    for (NSDictionary *device in devices) {
         num += 1;
-        // Print the user-friendly name, model, and unique ID for each device.
-        // The unique ID is useful for programmatically selecting a specific device later.
-        NSPrint(@"%d. %@ - %@ (ID: %@)", num, device.localizedName, device.modelID, device.uniqueID);
+        NSPrint(@"%d. %@ (ID: %@)", num, device[@"name"], device[@"id"]);
     }
 }
 
