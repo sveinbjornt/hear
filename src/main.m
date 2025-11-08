@@ -66,7 +66,7 @@ static struct option long_options[] = {
     // Timeout (in seconds)
     {"timeout",                   required_argument,  0, 't'},
     // List available audio input devices
-    {"audio-input-devices",       required_argument,  0, 'a'},
+    {"audio-input-devices",       no_argument,        0, 'a'},
     // Specify ID of audio input device
     {"input-device-id",           required_argument,  0, 'n'},
     // Print help
