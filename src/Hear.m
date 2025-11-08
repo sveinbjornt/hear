@@ -54,7 +54,7 @@
 @property (nonatomic) BOOL subtitleMode;
 @property (nonatomic, retain) NSString *exitWord;
 @property (nonatomic) CGFloat timeout;
-@property (nonatomic) NSString *inputDeviceID;
+@property (nonatomic, retain) NSString *inputDeviceID;
 
 @end
 
