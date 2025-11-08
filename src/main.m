@@ -93,7 +93,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     NSString *locale = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *exitWord;
-    NSString *inputDeviceID;
+    NSString *inputDeviceID = nil;
     BOOL useOnDeviceRecognition = NO;
     BOOL singleLineMode = NO;
     BOOL addsPunctuation = NO;
