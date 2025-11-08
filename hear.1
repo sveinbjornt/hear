@@ -6,11 +6,12 @@
 .Nd macOS speech recognition and transcription via the command line
 .Sh SYNOPSIS
 .Nm
-.Op Fl hvdmpsTS
+.Op Fl hvdmpsTSa
 .Op Fl i Ar audio_file
 .Op Fl l Ar locale
 .Op Fl x Ar exit_word
 .Op Fl t Ar timeout_sec
+.Op Fl n Ar input_device_id
 .Sh DESCRIPTION
 .Nm
 is a command line interface for the built-in speech recognition
@@ -51,7 +52,7 @@ Exit if no recognition results are received within the specified number of secon
 .It Fl a -audio-input-devices
 List available audio input devices and exit.
 .It Fl n --input-device-id
-Specify ID of audio input device.
+Specify ID of audio input device (experimental).
 .It Fl h -help
 Print help and exit.
 .It Fl v -version

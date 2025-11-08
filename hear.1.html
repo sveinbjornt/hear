@@ -6,8 +6,8 @@
 
 <b>SYNOPSIS</b>
 
-     <b>hear</b> [<b>-hvdmpsTS</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>locale</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
-          [<b>-t</b> <u>timeout</u><b>_<u></b>sec</u>]
+     <b>hear</b> [<b>-hvdmpsTSa</b>] [<b>-i</b> <u>audio</u><b>_<u></b>file</u>] [<b>-l</b> <u>locale</u>] [<b>-x</b> <u>exit</u><b>_<u></b>word</u>]
+          [<b>-t</b> <u>timeout</u><b>_<u></b>sec</u>] [<b>-n</b> <u>input</u><b>_<u></b>device</u><b>_<u></b>id</u>]
 
 <b>DESCRIPTION</b>
 
@@ -39,8 +39,8 @@
               (2025) this seems to be about 500 characters or so.
 
      <b>-m</b> <b>--mode</b>
-              Enable single-line output mode (only applies when the input is
-              default audio input device, e.g. microphone).
+              Enable single-line output mode (only applies when the input an
+              audio input device, e.g. a microphone).
 
      <b>-p</b> <b>--punctuation</b>
               Add punctuation to speech recognition results.
@@ -63,8 +63,8 @@
      <b>-a</b> <b>--audio-input-devices</b>
               List available audio input devices and exit.
 
-     <b>-n</b> <b>--input-device-id</b>
-              Specify ID of audio input device.
+     <b>-n</b> <b>---input-device-id</b>
+              Specify ID of audio input device (experimental).
 
      <b>-h</b> <b>--help</b>
               Print help and exit.
