@@ -25,9 +25,11 @@ LOCALE="en-US"
 
 WAV_PATH="$TEST_ROOT/en-US.wav"
 test_transcribe_file $WAV_PATH $LOCALE "$EXPECTED_OUTPUT"
+echo "[OK] WAV en-US speech recognition"
 
 MP3_PATH="$TEST_ROOT/en-US.mp3"
 test_transcribe_file $MP3_PATH $LOCALE "$EXPECTED_OUTPUT"
+echo "[OK] MP3 en-US speech recognition"
 
 # fr-FR
 EXPECTED_OUTPUT="Ça soir je vais à la maison"
@@ -35,4 +37,4 @@ LOCALE="fr-FR"
 
 WAV_PATH="$TEST_ROOT/fr-FR.wav"
 test_transcribe_file $WAV_PATH $LOCALE "$EXPECTED_OUTPUT"
-
+echo "[OK] WAV fr-FR speech recognition"

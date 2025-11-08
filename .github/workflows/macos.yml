@@ -14,7 +14,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Build program and run tests
+      - name: Install xcpretty
         run: |
           gem install xcpretty
-          make test | xcpretty -c && exit ${PIPESTATUS[0]}
+      - name: Build program
+        run: |
+          make build_unsigned | xcpretty -c && exit ${PIPESTATUS[0]}
+      - name: Run tests
+        run: |
+          make runtests

@@ -54,9 +54,11 @@ man:
 
 runtests:
 # The tests don't work in CI env due to missing permissions from macOS
-#	@echo "Running tests"
-#	@bash "test/test.sh"
-	@"$(BUILD_DIR)/$(PROGRAM_NAME)" --version
+	echo "Running tests"
+	"$(BUILD_DIR)/$(PROGRAM_NAME)" --version
+	"$(BUILD_DIR)/$(PROGRAM_NAME)" --help
+	"$(BUILD_DIR)/$(PROGRAM_NAME)" --supported
+	"$(BUILD_DIR)/$(PROGRAM_NAME)" --audio-input-devices
 
 clean:
 	xcodebuild -project "$(XCODE_PROJ)" clean
