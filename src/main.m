@@ -84,12 +84,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         NSPrintErr(@"This program requires macOS Catalina 10.15 or later.");
         exit(EXIT_FAILURE);
     }
-    
-    if ([Hear hasAvailableAudioInputDevice] == FALSE) {
-        NSPrintErr(@"No available audio input device.");
-        exit(EXIT_FAILURE);
-    }
-    
+        
     NSString *locale = DEFAULT_LOCALE;
     NSString *inputFilename;
     NSString *exitWord;
@@ -188,6 +183,11 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         }
     }
     
+    if (inputFilename == nil && [Hear hasAvailableAudioInputDevice] == FALSE) {
+        NSPrintErr(@"No available audio input device.");
+        exit(EXIT_FAILURE);
+    }
+    
     // Instantiate app delegate object with core program functionality
     Hear *hear = [[Hear alloc] initWithLocale:locale
                                         input:inputFilename
@@ -230,17 +230,19 @@ static inline void PrintHelp(void) {
 \n\
 Options:\n\
 \n\
-    -s --supported          Print list of supported locales\n\
+    -s --supported           Print list of supported locales\n\
 \n\
-    -l --locale             Specify speech recognition locale\n\
-    -i --input [file_path]  Specify audio file to process\n\
-    -d --device             Only use on-device speech recognition\n\
-    -m --mode               Enable single-line output mode (mic only)\n\
-    -p --punctuation        Add punctuation to speech recognition results (macOS 13+)\n\
-    -x --exit-word          Set exit word that causes program to quit\n\
-    -t --timeout            Set silence timeout (in seconds)\n\
-    -T --timestamps         Write timestamps as transcription occurs (file input only)\n\
-    -S --subtitle           Enable subtitle mode, producing .srt output (file input only)\n\
+    -l --locale              Specify speech recognition locale\n\
+    -i --input [file_path]   Specify audio file to process\n\
+    -d --device              Only use on-device speech recognition\n\
+    -m --mode                Enable single-line output mode (mic only)\n\
+    -p --punctuation         Add punctuation to speech recognition results (macOS 13+)\n\
+    -x --exit-word           Set exit word that causes program to quit\n\
+    -t --timeout             Set silence timeout (in seconds)\n\
+    -T --timestamps          Write timestamps as transcription occurs (file input only)\n\
+    -S --subtitle            Enable subtitle mode, producing .srt output (file input only)\n\
+    -a --audio-input-devices List available audio input devices\n\
+    -n --input-device-id     Specify ID of audio input device\n\
 \n\
     -h --help               Prints help\n\
     -v --version            Prints program name and version\n\

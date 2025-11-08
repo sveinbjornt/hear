@@ -1,5 +1,10 @@
 # hear version history
 
+## v0.7 - 08/11/2025
+
+* Added support for specifying audio input device via `-n` flag
+* Added support for listing available audio input devices via `-a` flag
+
 ## v0.6 - 29/05/2025
 
 * Added timestamped output mode
@@ -9,15 +14,15 @@
 
 ## v0.5 - 05/11/2023
 
-* Now supports setting a timeout for speech recognition via the -t flag
+* Now supports setting a timeout for speech recognition via the `-t` flag
 
 ## v0.4 - 21/04/2023
 
-* Now supports -p flag to enable adding punctuation to speech recognition results (macOS 13+ only)
+* Now supports `-p` flag to enable adding punctuation to speech recognition results (macOS 13+ only)
 
 ## v0.3 - 25/03/2023
 
-* Now supports -x flag to specify "exit word", i.e. a word that causes the program to quit when heard
+* Now supports `-x` flag to specify "exit word", i.e. a word that causes the program to quit when heard
 
 ## v0.2 - 27/10/2022
 
