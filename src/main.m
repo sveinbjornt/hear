@@ -81,7 +81,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     // Make sure we're running on a macOS version that supports speech recognition
     if (IsRightOSVersion() == NO) {
-        NSPrintErr(@"This program requires macOS Catalina 10.15 or later.");
+        NSPrintErr(@"This program requires macOS Big Sur 13.0 or later.");
         exit(EXIT_FAILURE);
     }
         
@@ -210,8 +210,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 static inline BOOL IsRightOSVersion(void) {
     // The Speech Recognition API wasn't introduced until macOS 10.15
     NSOperatingSystemVersion osVersion = {0};
-    osVersion.majorVersion = 10;
-    osVersion.minorVersion = 15;
+    osVersion.majorVersion = 13;
+    osVersion.minorVersion = 0;
     return [[NSProcessInfo processInfo] isOperatingSystemAtLeastVersion:osVersion];
 }
 
@@ -226,7 +226,7 @@ static inline void PrintVersion(void) {
 static inline void PrintHelp(void) {
     PrintVersion();
     NSPrint(@"\n\
-%@ [-vhmsdp] [-l lang] [-i file] [-x word] [-t seconds]\n\
+%@ [-vhmsdpa] [-l lang] [-i file] [-x word] [-t seconds] [-n device_id]\n\
 \n\
 Options:\n\
 \n\
@@ -244,8 +244,8 @@ Options:\n\
     -a --audio-input-devices List available audio input devices\n\
     -n --input-device-id     Specify ID of audio input device\n\
 \n\
-    -h --help               Prints help\n\
-    -v --version            Prints program name and version\n\
+    -h --help                Prints help\n\
+    -v --version             Prints program name and version\n\
 \n\
 For further details, see 'man %@'.", PROGRAM_NAME, PROGRAM_NAME);
 }
