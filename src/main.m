@@ -167,7 +167,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             case 'n':
                 inputDeviceID = @(optarg);
                 if ([Hear isAvailableAudioInputDevice:inputDeviceID] == NO) {
-                    NSPrintErr(@"The device '%@' is not a valid audio input device.");
+                    NSPrintErr(@"The device '%@' is not a valid audio input device.", inputDeviceID);
+                    exit(EXIT_FAILURE);
                 }
                 break;
             
