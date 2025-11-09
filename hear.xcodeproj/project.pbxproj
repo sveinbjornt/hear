@@ -14,8 +14,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F43056512EC0761C00360103 /* en-US.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "en-US.mp3"; sourceTree = "<group>"; };
+		F43056522EC0761C00360103 /* en-US.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "en-US.wav"; sourceTree = "<group>"; };
+		F43056532EC0761C00360103 /* fr-FR.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fr-FR.wav"; sourceTree = "<group>"; };
 		F439F2C027D5157A00626667 /* install.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = install.sh; sourceTree = "<group>"; };
-		F439F2C327D51D7F00626667 /* test.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = test.wav; sourceTree = "<group>"; };
 		F439F2C427D51D7F00626667 /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		F439F2C527D55BFF00626667 /* macos.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = macos.yml; path = .github/workflows/macos.yml; sourceTree = "<group>"; };
 		F43A461B27C010B2000469BC /* hear */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hear; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,7 +31,6 @@
 		F45C87A427C0457A00EF9845 /* Hear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hear.m; sourceTree = "<group>"; };
 		F45C87A527C0457A00EF9845 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F47FA1B7290B31C500914395 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
-		F47FA1B8290B38EF00914395 /* test.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = test.mp3; sourceTree = "<group>"; };
 		F4A4D9472AF544D20036590C /* hear.1.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = hear.1.html; sourceTree = "<group>"; };
 		F4A4D9482AF5455F0036590C /* upload_manpage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_manpage.sh; sourceTree = "<group>"; };
 		F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
@@ -54,8 +55,9 @@
 			isa = PBXGroup;
 			children = (
 				F439F2C427D51D7F00626667 /* test.sh */,
-				F439F2C327D51D7F00626667 /* test.wav */,
-				F47FA1B8290B38EF00914395 /* test.mp3 */,
+				F43056512EC0761C00360103 /* en-US.mp3 */,
+				F43056522EC0761C00360103 /* en-US.wav */,
+				F43056532EC0761C00360103 /* fr-FR.wav */,
 			);
 			path = test;
 			sourceTree = "<group>";

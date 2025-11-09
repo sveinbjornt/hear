@@ -1,9 +1,9 @@
 # hear version history
 
-## v0.7 - 08/11/2025
+## v0.7 - 09/11/2025
 
-* Added support for specifying audio input device via `-n` flag
 * Added support for listing available audio input devices via `-a` flag
+* Added support for specifying audio input device via `-n` flag
 
 ## v0.6 - 29/05/2025
 
