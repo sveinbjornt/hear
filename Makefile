@@ -1,4 +1,4 @@
-# Makefile for Sloth app
+# Makefile for hear command line tool
 
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"

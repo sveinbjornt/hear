@@ -104,15 +104,14 @@ bash test/test.sh
 
 ## Troubleshooting
 
-If running the binary leads to an abort signal, try running the binary by
-right-clicking it and selecting Open. This should automatically open the
-binary with the your terminal client and prompt you to grant the required
+If running the binary leads to an abort signal, try running it by
+right-clicking it in the Finder and selecting Open. This should automatically
+open the binary with your terminal client and prompt you to grant the required
 permissions.
 
 ## BSD License
 
-Copyright (c) 2022-2025 Sveinbjorn Thordarson
-&lt;[sveinbjorn@sveinbjorn.org](mailto:sveinbjorn@sveinbjorn.org)&gt;  
+Copyright (c) 2022-2026 [Sveinbjorn Thordarson](mailto:sveinbjorn@sveinbjorn.org)
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
