@@ -183,7 +183,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
         }
     }
     
-    if (inputFilename == nil && [Hear hasAvailableAudioInputDevice] == FALSE) {
+    if (inputFilename == nil && [Hear hasAvailableAudioInputDevice] == NO) {
         NSPrintErr(@"No available audio input device.");
         exit(EXIT_FAILURE);
     }
@@ -199,9 +199,10 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                                      exitWord:exitWord
                                       timeout:timeout
                                 inputDeviceID:inputDeviceID];
+    
     [[NSApplication sharedApplication] setDelegate:hear];
     [NSApp run];
-    
+
     return EXIT_SUCCESS;
 }}
 

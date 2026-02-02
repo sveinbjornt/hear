@@ -100,7 +100,7 @@
 
 #pragma mark -
 
-// Dump message to stdout and exit
+// Dump message to stderr and exit
 - (void)die:(NSString *)format, ... {
     va_list args;
     va_start(args, format);
@@ -113,7 +113,6 @@
 - (void)requestSpeechRecognitionPermission {
     [SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus authStatus) {
         switch (authStatus) {
-            
             case SFSpeechRecognizerAuthorizationStatusAuthorized:
                 // User allowed access to speech recognition
                 [self runTask];
@@ -133,7 +132,6 @@
             
             default:
                 break;
-            
         }
     }];
 }
@@ -220,7 +218,7 @@
         
         // Make sure there's a space between the incoming result strings
         NSString *s = result.bestTranscription.formattedString;
-        if ([s hasSuffix:@" "] == FALSE && !result.isFinal) {
+        if ([s hasSuffix:@" "] == NO && !result.isFinal) {
             fmtStr = @"%@ ";
         }
         
@@ -237,7 +235,7 @@
             NSDump(@"\n");
             exit(EXIT_SUCCESS);
         }
-        
+
     }];
     
     if (self.task == nil) {
@@ -299,7 +297,7 @@
             exit(EXIT_SUCCESS);
         }
     }];
-    
+
     if (self.task == nil) {
         [self die:@"Error: Unable to initialize speech recognition task"];
     }
@@ -367,7 +365,7 @@
     // Add punctuation setting only available in Ventura and later
     self.request.addsPunctuation = self.addPunctuation;
     
-    // Create spech recognition task
+    // Create speech recognition task
     self.task = [self.recognizer recognitionTaskWithRequest:self.request
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
@@ -399,7 +397,7 @@
                 exit(EXIT_SUCCESS);
             }
         }
-        
+
         if (result.isFinal) {
             // We're done
             exit(EXIT_SUCCESS);
