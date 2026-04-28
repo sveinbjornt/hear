@@ -35,6 +35,7 @@
 
 #import "Common.h"
 #import "Hear.h"
+#import "AudioDevices.h"
 
 // Prototypes
 static inline BOOL IsRightOSVersion(void);
@@ -156,13 +157,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 break;
             
             case 'a':
-                [Hear printAvailableAudioInputDevices];
+                [AudioDevices printAvailableAudioInputDevices];
                 exit(EXIT_SUCCESS);
                 break;
             
             case 'n':
                 inputDeviceID = @(optarg);
-                if ([Hear isAvailableAudioInputDevice:inputDeviceID] == NO) {
+                if ([AudioDevices isAvailableAudioInputDevice:inputDeviceID] == NO) {
                     NSPrintErr(@"The device '%@' is not a valid audio input device.", inputDeviceID);
                     exit(EXIT_FAILURE);
                 }
@@ -176,14 +177,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             
             // Print help text with list of option flags
             case 'h':
-            default:
                 PrintHelp();
                 exit(EXIT_SUCCESS);
                 break;
         }
     }
     
-    if (inputFilename == nil && [Hear hasAvailableAudioInputDevice] == NO) {
+    if (inputFilename == nil && [AudioDevices hasAvailableAudioInputDevice] == NO) {
         NSPrintErr(@"No available audio input device.");
         exit(EXIT_FAILURE);
     }

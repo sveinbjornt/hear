@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -30,27 +30,37 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#import "Util.h"
+
 #import <Speech/Speech.h>
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation Util
 
-@interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
+    // Create NSURL from file path
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    if (!fileURL) {
+        return NO;
+    }
+    
+    // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
+    // trigger more thorough format checks during initialization.
+    // Setting it to NO might be slightly faster.
+    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
+    
+    return (asset != nil && [asset isReadable]);
+}
 
-- (instancetype)initWithLocale:(NSString *)loc
-                         input:(NSString *)input
-                      onDevice:(BOOL)useOnDeviceRecognition
-                singleLineMode:(BOOL)singleLine
-                addPunctuation:(BOOL)punctuation
-                 addTimestamps:(BOOL)addTimestamps
-                  subtitleMode:(BOOL)subtitle
-                      exitWord:(NSString *)exitWord
-                       timeout:(CGFloat)timeout
-                 inputDeviceID:(NSString *)inputDeviceID;
-
-+ (void)printSupportedLocales;
+// https://stackoverflow.com/a/32884209/11639533
++ (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
+    NSInteger interval = timeInterval;
+    NSInteger ms = (fmod(timeInterval, 1) * 1000);
+    long seconds = interval % 60;
+    long minutes = (interval / 60) % 60;
+    long hours = (interval / 3600);
+    return [NSString stringWithFormat:@"%0.2ld:%0.2ld:%0.2ld,%0.3ld",
+            hours, minutes, seconds, (long)ms];
+}
 
 @end
-
-NS_ASSUME_NONNULL_END

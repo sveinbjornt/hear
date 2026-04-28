@@ -32,7 +32,8 @@
 
 #import "Hear.h"
 #import "Common.h"
-#import <CoreAudio/CoreAudio.h>
+#import "AudioDevices.h"
+#import "Util.h"
 
 @interface Hear()
 
@@ -173,7 +174,7 @@
         [self die:@"No file at path '%@'", filePath];
     }
     // Make sure it is a supported format
-    if ([Hear isFileSupportedByAVFoundation:filePath] == NO) {
+    if ([Util isFileSupportedByAVFoundation:filePath] == NO) {
         [self die:@"File format not supported."];
     }
 }
@@ -280,7 +281,7 @@
             
             NSTimeInterval start_time = result.bestTranscription.segments[start].timestamp;
             NSTimeInterval end_time = result.bestTranscription.segments[end].timestamp + result.bestTranscription.segments[end].duration;
-            printf("%s --> %s\n", [[self stringFromTimeInterval:start_time] UTF8String], [[self stringFromTimeInterval:end_time] UTF8String]);
+            printf("%s --> %s\n", [[Util stringFromTimeInterval:start_time] UTF8String], [[Util stringFromTimeInterval:end_time] UTF8String]);
             
             for (NSUInteger k = start; k <= end; k++) {
                 printf("%s", [result.bestTranscription.segments[k].substring UTF8String]);
@@ -317,7 +318,7 @@
         
         AudioDeviceID deviceID = kAudioObjectUnknown;
         
-        NSArray *devices = [Hear availableAudioInputDevices];
+        NSArray *devices = [AudioDevices availableAudioInputDevices];
         for (NSDictionary *device in devices) {
             if ([device[@"id"] isEqualToString:self.inputDeviceID]) {
                 
@@ -469,152 +470,6 @@
 
 + (void)printSupportedLocales {
     NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
-}
-
-#pragma mark - Audio Input Devices
-
-+ (NSArray *)availableAudioInputDevices {
-    AudioObjectPropertyAddress addr = {
-        kAudioHardwarePropertyDevices,
-        kAudioObjectPropertyScopeGlobal,
-        kAudioObjectPropertyElementMain
-    };
-    
-    UInt32 size;
-    OSStatus status = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &addr, 0, NULL, &size);
-    if (status != noErr) {
-        return @[];
-    }
-    
-    int count = size / sizeof(AudioDeviceID);
-    AudioDeviceID *deviceIDs = (AudioDeviceID *)malloc(size);
-    if (deviceIDs == NULL) {
-        return @[];
-    }
-    
-    status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, deviceIDs);
-    if (status != noErr) {
-        free(deviceIDs);
-        return @[];
-    }
-    
-    NSMutableArray *devices = [NSMutableArray array];
-    
-    for (int i = 0; i < count; i++) {
-        AudioDeviceID deviceID = deviceIDs[i];
-        
-        addr.mScope = kAudioDevicePropertyScopeInput;
-        addr.mSelector = kAudioDevicePropertyStreamConfiguration;
-        status = AudioObjectGetPropertyDataSize(deviceID, &addr, 0, NULL, &size);
-        if (status != noErr) {
-            continue;
-        }
-        
-        AudioBufferList *bufferList = (AudioBufferList *)malloc(size);
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, bufferList);
-        if (status != noErr) {
-            free(bufferList);
-            continue;
-        }
-        
-        UInt32 channelCount = 0;
-        for (int j = 0; j < bufferList->mNumberBuffers; j++) {
-            channelCount += bufferList->mBuffers[j].mNumberChannels;
-        }
-        free(bufferList);
-        
-        if (channelCount == 0) {
-            continue;
-        }
-        
-        CFStringRef deviceName;
-        size = sizeof(deviceName);
-        addr.mSelector = kAudioDevicePropertyDeviceNameCFString;
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceName);
-        if (status != noErr) {
-            continue;
-        }
-        
-        CFStringRef deviceUID;
-        size = sizeof(deviceUID);
-        addr.mSelector = kAudioDevicePropertyDeviceUID;
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceUID);
-        if (status != noErr) {
-            CFRelease(deviceName);
-            continue;
-        }
-        
-        [devices addObject:@{
-            @"name": (__bridge NSString *)deviceName,
-            @"id": (__bridge NSString *)deviceUID
-        }];
-        
-        CFRelease(deviceName);
-        CFRelease(deviceUID);
-    }
-    
-    free(deviceIDs);
-    
-    return devices;
-}
-
-+ (BOOL)hasAvailableAudioInputDevice {
-    return [[Hear availableAudioInputDevices] count] != 0;
-}
-
-+ (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID {
-    NSArray *devices = [Hear availableAudioInputDevices];
-    for (NSDictionary *device in devices) {
-        if ([device[@"id"] isEqualToString:deviceID]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-+ (void)printAvailableAudioInputDevices {
-    NSArray *devices = [Hear availableAudioInputDevices];
-    
-    if ([devices count] == 0) {
-        NSPrint(@"No audio input devices available");
-        return;
-    }
-    
-    NSPrint(@"Available Audio Input Devices:");
-    NSUInteger num = 0;
-    for (NSDictionary *device in devices) {
-        num += 1;
-        NSPrint(@"%lu. %@ (ID: %@)", num, device[@"name"], device[@"id"]);
-    }
-}
-
-#pragma mark - Util
-
-+ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
-    // Create NSURL from file path
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    if (!fileURL) {
-        return NO;
-    }
-    
-    // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
-    // trigger more thorough format checks during initialization.
-    // Setting it to NO might be slightly faster.
-    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
-    
-    return (asset != nil && [asset isReadable]);
-}
-
-// https://stackoverflow.com/a/32884209/11639533
-- (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
-    NSInteger interval = timeInterval;
-    NSInteger ms = (fmod(timeInterval, 1) * 1000);
-    long seconds = interval % 60;
-    long minutes = (interval / 60) % 60;
-    long hours = (interval / 3600);
-    return [NSString stringWithFormat:@"%0.2ld:%0.2ld:%0.2ld,%0.3ld",
-            hours, minutes, seconds, (long)ms];
 }
 
 @end
