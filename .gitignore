@@ -22,3 +22,4 @@ dsa_priv.pem
 *.xcuserstate
 test.*
 hear
+.claude

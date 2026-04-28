@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -33,7 +33,7 @@
 #import <Foundation/Foundation.h>
 
 #define PROGRAM_NAME            @"hear"
-#define PROGRAM_VERSION         @"0.7"
+#define PROGRAM_VERSION         @"0.8"
 #define PROGRAM_AUTHOR          @"Sveinbjorn Thordarson"
 #define PROGRAM_AUTHOR_EMAIL    @"sveinbjorn@sveinbjorn.org"
 

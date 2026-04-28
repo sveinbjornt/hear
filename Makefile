@@ -3,7 +3,7 @@
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"
 BUILD_DIR := "products"
-VERSION := "0.7"
+VERSION := "0.8"
 
 all: clean build_unsigned
 

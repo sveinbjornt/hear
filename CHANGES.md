@@ -1,5 +1,10 @@
 # `hear` version history
 
+## v0.8 - 28/04/2026
+
+* Fixed issue where system-wide audio input would be permanently set
+* Various minor bug fixes
+
 ## v0.7 - 09/11/2025
 
 * Added support for listing available audio input devices via `-a` flag

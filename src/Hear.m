@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -34,6 +34,8 @@
 #import "Common.h"
 #import "AudioDevices.h"
 #import "Util.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface Hear()
 
@@ -132,6 +134,7 @@
                 break;
             
             default:
+                [self die:@"Unknown authorization status: %ld", (long)authStatus];
                 break;
         }
     }];
@@ -200,7 +203,7 @@
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         
         if (error != nil) {
-            [self die:[error description]];
+            [self die:@"%@", [error description]];
         }
         
         if (result == nil) {
@@ -264,7 +267,7 @@
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         if (error != nil) {
-            [self die:[error description]];
+            [self die:@"%@", [error description]];
         }
         
         NSUInteger srt_index = 1;
@@ -307,55 +310,18 @@
 
 - (void)startListening {
     [self initRecognizer];
-    
-    // Set the input device, if specified
+
+    // Resolve the requested input device, if any. Actual binding happens
+    // after the engine is created, so we don't touch the system-wide
+    // default input.
+    AudioDeviceID inputDeviceID = kAudioObjectUnknown;
     if (self.inputDeviceID) {
-        AudioObjectPropertyAddress addr = {
-            kAudioHardwarePropertyDefaultInputDevice,
-            kAudioObjectPropertyScopeGlobal,
-            kAudioObjectPropertyElementMain
-        };
-        
-        AudioDeviceID deviceID = kAudioObjectUnknown;
-        
-        NSArray *devices = [AudioDevices availableAudioInputDevices];
-        for (NSDictionary *device in devices) {
-            if ([device[@"id"] isEqualToString:self.inputDeviceID]) {
-                
-                CFStringRef deviceUID = (__bridge CFStringRef)device[@"id"];
-                
-                AudioValueTranslation value;
-                value.mInputData = &deviceUID;
-                value.mInputDataSize = sizeof(CFStringRef);
-                value.mOutputData = &deviceID;
-                value.mOutputDataSize = sizeof(AudioDeviceID);
-                
-                UInt32 size = sizeof(AudioValueTranslation);
-                
-                AudioObjectPropertyAddress addr = {
-                    kAudioHardwarePropertyDeviceForUID,
-                    kAudioObjectPropertyScopeGlobal,
-                    kAudioObjectPropertyElementMain
-                };
-                
-                OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &value);
-                if (status != noErr) {
-                    [self die:@"Unable to get device ID for UID '%@'", self.inputDeviceID];
-                }
-                break;
-            }
-        }
-        
-        if (deviceID == kAudioObjectUnknown) {
+        inputDeviceID = [AudioDevices deviceIDForUID:self.inputDeviceID];
+        if (inputDeviceID == kAudioObjectUnknown) {
             [self die:@"Audio input device with ID '%@' not found", self.inputDeviceID];
         }
-        
-        OSStatus status = AudioObjectSetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, sizeof(AudioDeviceID), &deviceID);
-        if (status != noErr) {
-            [self die:@"Error setting audio input device: %d", status];
-        }
     }
-    
+
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
@@ -412,7 +378,25 @@
     // Create audio engine
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
-    
+
+    // Bind the engine's input AU to the chosen device before the format
+    // is queried, so the AU is configured against the right hardware.
+    if (inputDeviceID != kAudioObjectUnknown) {
+        AudioUnit inputAU = inputNode.audioUnit;
+        if (inputAU == NULL) {
+            [self die:@"Could not access input node's audio unit"];
+        }
+        OSStatus status = AudioUnitSetProperty(inputAU,
+                                               kAudioOutputUnitProperty_CurrentDevice,
+                                               kAudioUnitScope_Global,
+                                               0,
+                                               &inputDeviceID,
+                                               sizeof(inputDeviceID));
+        if (status != noErr) {
+            [self die:@"Error setting audio input device on engine: %d", status];
+        }
+    }
+
     // Feed microphone audio data into recognition request
     [inputNode installTapOnBus:0
                     bufferSize:3200
@@ -469,7 +453,7 @@
 }
 
 + (void)printSupportedLocales {
-    NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
+    NSPrint(@"%@", [[Hear supportedLocales] componentsJoinedByString:@"\n"]);
 }
 
 @end

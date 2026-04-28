@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -82,7 +82,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     // Make sure we're running on a macOS version that supports speech recognition
     if (IsRightOSVersion() == NO) {
-        NSPrintErr(@"This program requires macOS Big Sur 13.0 or later.");
+        NSPrintErr(@"This program requires macOS Ventura 13.0 or later.");
         exit(EXIT_FAILURE);
     }
         
@@ -179,6 +179,10 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             case 'h':
                 PrintHelp();
                 exit(EXIT_SUCCESS);
+                break;
+            
+            case '?':
+                exit(EXIT_FAILURE);
                 break;
         }
     }

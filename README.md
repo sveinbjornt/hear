@@ -31,7 +31,7 @@ See the [man page](https://sveinbjorn.org/files/manpages/hear.1.html) for furthe
 [available](https://github.com/sveinbjornt/hear) under a [BSD license](#bsd-license).
 **If you find this program useful, please [make a donation](https://sveinbjorn.org/donations).**
 
-* **[⬇ Download hear 0.7](https://sveinbjorn.org/files/software/hear.zip)**
+* **[⬇ Download hear 0.8](https://sveinbjorn.org/files/software/hear.zip)**
 (~50 KB, ARM/Intel 64-bit, macOS 13 or later, Developer ID signed and notarized by Apple)
 
 ## Installation
@@ -78,7 +78,7 @@ hear -d -i /path/to/someone_speaking.wav > transcribed_text.txt
 
 The `-d` flag specifies that only on-device speech recognition capabilities
 should be used. Otherwise, data may be sent to Apple servers, which as of
-writing (2025) have a hard limit of about 500 characters before quitting.
+writing (2026) have a hard limit of about 500 characters before quitting.
 
 For some reason, only those locales supported by Siri work with the `-d` flag.
 
