@@ -53,7 +53,7 @@ man:
 	@bash man2html.sh
 
 runtests:
-# The tests don't work in CI env due to missing permissions from macOS
+# We can't run more extensive tests than these due to missing permissions from macOS
 	echo "Running tests"
 	"$(BUILD_DIR)/$(PROGRAM_NAME)" --version
 	"$(BUILD_DIR)/$(PROGRAM_NAME)" --help
