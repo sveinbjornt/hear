@@ -30,11 +30,9 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
-#import <Speech/Speech.h>
-
-NS_ASSUME_NONNULL_BEGIN
+@import Foundation;
+@import AppKit;
+@import Speech;
 
 @interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
 
@@ -52,5 +50,3 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)printSupportedLocales;
 
 @end
-
-NS_ASSUME_NONNULL_END

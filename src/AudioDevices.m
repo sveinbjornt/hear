@@ -33,7 +33,7 @@
 #import "AudioDevices.h"
 #import "Common.h"
 
-#import <CoreAudio/CoreAudio.h>
+@import CoreAudio;
 
 @implementation AudioDevices
 
@@ -77,6 +77,9 @@
         }
         
         AudioBufferList *bufferList = (AudioBufferList *)malloc(size);
+        if (bufferList == NULL) {
+            continue;
+        }
         status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, bufferList);
         if (status != noErr) {
             free(bufferList);
@@ -140,12 +143,12 @@
 
 + (void)printAvailableAudioInputDevices {
     NSArray *devices = [self availableAudioInputDevices];
-
+    
     if ([devices count] == 0) {
         NSPrint(@"No audio input devices available");
         return;
     }
-
+    
     NSPrint(@"Available Audio Input Devices:");
     NSUInteger num = 0;
     for (NSDictionary *device in devices) {
@@ -157,7 +160,7 @@
 + (AudioDeviceID)deviceIDForUID:(NSString *)uid {
     AudioDeviceID deviceID = kAudioObjectUnknown;
     CFStringRef cfUID = (__bridge CFStringRef)uid;
-
+    
     AudioValueTranslation value = {
         .mInputData = &cfUID,
         .mInputDataSize = sizeof(CFStringRef),
@@ -165,13 +168,13 @@
         .mOutputDataSize = sizeof(AudioDeviceID)
     };
     UInt32 size = sizeof(AudioValueTranslation);
-
+    
     AudioObjectPropertyAddress addr = {
         kAudioHardwarePropertyDeviceForUID,
         kAudioObjectPropertyScopeGlobal,
         kAudioObjectPropertyElementMain
     };
-
+    
     OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &value);
     if (status != noErr) {
         return kAudioObjectUnknown;

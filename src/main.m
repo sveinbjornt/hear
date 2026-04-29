@@ -31,7 +31,7 @@
 */
 
 #import <getopt.h>
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "Common.h"
 #import "Hear.h"

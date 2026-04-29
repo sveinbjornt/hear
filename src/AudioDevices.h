@@ -30,8 +30,8 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Foundation/Foundation.h>
-#import <CoreAudio/CoreAudio.h>
+@import Foundation;
+@import CoreAudio;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,9 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)hasAvailableAudioInputDevice;
 + (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID;
 + (void)printAvailableAudioInputDevices;
-
-// Returns the AudioDeviceID for the given device UID, or
-// kAudioObjectUnknown if no such device is registered with CoreAudio.
 + (AudioDeviceID)deviceIDForUID:(NSString *)uid;
 
 @end

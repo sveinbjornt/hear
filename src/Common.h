@@ -30,7 +30,7 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #define PROGRAM_NAME            @"hear"
 #define PROGRAM_VERSION         @"0.8"
