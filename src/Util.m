@@ -30,23 +30,53 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-@import Foundation;
-@import AppKit;
-@import Speech;
+#import "Util.h"
 
-@interface Hear : NSObject <NSApplicationDelegate, SFSpeechRecognizerDelegate>
+@import AVFoundation;
+#import <math.h>
 
-- (instancetype)initWithLocale:(NSString *)loc
-                         input:(NSString *)input
-                      onDevice:(BOOL)useOnDeviceRecognition
-                singleLineMode:(BOOL)singleLine
-                addPunctuation:(BOOL)punctuation
-                 addTimestamps:(BOOL)addTimestamps
-                  subtitleMode:(BOOL)subtitle
-                      exitWord:(NSString *)exitWord
-                       timeout:(CGFloat)timeout
-                 inputDeviceID:(NSString *)inputDeviceID;
+@implementation Util
 
-+ (void)printSupportedLocales;
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath hasAudioTrack:(BOOL *)audioPresent {
+    if (audioPresent != NULL) {
+        *audioPresent = NO;
+    }
+    
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    if (fileURL == nil) {
+        return NO;
+    }
+    
+    // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
+    // trigger more thorough format checks during initialization.
+    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
+    if (asset == nil || ![asset isReadable]) {
+        return NO;
+    }
+    
+    if (audioPresent != NULL) {
+        *audioPresent = ([[asset tracksWithMediaType:AVMediaTypeAudio] count] > 0);
+    }
+    return YES;
+}
+
+// Formats a time interval as an SRT-style HH:MM:SS,mmm timestamp.
+// Rounds to the nearest millisecond and decomposes from total ms so any
+// rounding carry propagates correctly into the seconds field. Negative
+// inputs are clamped to zero, since SRT has no negative-timestamp form.
++ (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
+    if (timeInterval < 0 || isnan(timeInterval)) {
+        timeInterval = 0;
+    }
+    long long total_ms = llround(timeInterval * 1000.0);
+    long ms      = (long)(total_ms % 1000);
+    long long s  = total_ms / 1000;
+    long seconds = (long)(s % 60);
+    long minutes = (long)((s / 60) % 60);
+    long hours   = (long)(s / 3600);
+    return [NSString stringWithFormat:@"%02ld:%02ld:%02ld,%03ld",
+            hours, minutes, seconds, ms];
+}
 
 @end

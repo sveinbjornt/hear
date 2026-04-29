@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F42A2B712FA04CE700A41CD8 /* AudioDevices.m in Sources */ = {isa = PBXBuildFile; fileRef = F42A2B702FA04CE700A41CD8 /* AudioDevices.m */; };
+		F42A2B742FA04DF000A41CD8 /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = F42A2B732FA04DF000A41CD8 /* Util.m */; };
 		F439F2B727C5794D00626667 /* Common.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A327C0457A00EF9845 /* Common.m */; };
 		F45C87A627C0457A00EF9845 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C879F27C0457900EF9845 /* main.m */; };
 		F45C87A927C0457A00EF9845 /* Hear.m in Sources */ = {isa = PBXBuildFile; fileRef = F45C87A427C0457A00EF9845 /* Hear.m */; };
@@ -14,6 +16,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F42A2B6F2FA04CE700A41CD8 /* AudioDevices.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioDevices.h; sourceTree = "<group>"; };
+		F42A2B702FA04CE700A41CD8 /* AudioDevices.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioDevices.m; sourceTree = "<group>"; };
+		F42A2B722FA04DF000A41CD8 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		F42A2B732FA04DF000A41CD8 /* Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
 		F43056512EC0761C00360103 /* en-US.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "en-US.mp3"; sourceTree = "<group>"; };
 		F43056522EC0761C00360103 /* en-US.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "en-US.wav"; sourceTree = "<group>"; };
 		F43056532EC0761C00360103 /* fr-FR.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fr-FR.wav"; sourceTree = "<group>"; };
@@ -100,6 +106,10 @@
 				F45C87A327C0457A00EF9845 /* Common.m */,
 				F45C87A227C0457A00EF9845 /* Hear.h */,
 				F45C87A427C0457A00EF9845 /* Hear.m */,
+				F42A2B6F2FA04CE700A41CD8 /* AudioDevices.h */,
+				F42A2B702FA04CE700A41CD8 /* AudioDevices.m */,
+				F42A2B722FA04DF000A41CD8 /* Util.h */,
+				F42A2B732FA04DF000A41CD8 /* Util.m */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -138,7 +148,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					F43A461A27C010B2000469BC = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -168,8 +178,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F42A2B742FA04DF000A41CD8 /* Util.m in Sources */,
 				F439F2B727C5794D00626667 /* Common.m in Sources */,
 				F45C87A927C0457A00EF9845 /* Hear.m in Sources */,
+				F42A2B712FA04CE700A41CD8 /* AudioDevices.m in Sources */,
 				F45C87A627C0457A00EF9845 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

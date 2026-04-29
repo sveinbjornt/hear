@@ -3,7 +3,7 @@
 XCODE_PROJ := "hear.xcodeproj"
 PROGRAM_NAME := "hear"
 BUILD_DIR := "products"
-VERSION := "0.7"
+VERSION := "0.8"
 
 all: clean build_unsigned
 
@@ -53,7 +53,7 @@ man:
 	@bash man2html.sh
 
 runtests:
-# The tests don't work in CI env due to missing permissions from macOS
+# We can't run more extensive tests than these due to missing permissions from macOS
 	echo "Running tests"
 	"$(BUILD_DIR)/$(PROGRAM_NAME)" --version
 	"$(BUILD_DIR)/$(PROGRAM_NAME)" --help

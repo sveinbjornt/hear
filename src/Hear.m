@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -32,7 +32,10 @@
 
 #import "Hear.h"
 #import "Common.h"
-#import <CoreAudio/CoreAudio.h>
+#import "AudioDevices.h"
+#import "Util.h"
+
+@import AudioToolbox;
 
 @interface Hear()
 
@@ -131,6 +134,7 @@
                 break;
             
             default:
+                [self die:@"Unknown authorization status: %ld", (long)authStatus];
                 break;
         }
     }];
@@ -172,9 +176,13 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
         [self die:@"No file at path '%@'", filePath];
     }
-    // Make sure it is a supported format
-    if ([Hear isFileSupportedByAVFoundation:filePath] == NO) {
+    // Make sure it is a supported format and contains an audio track
+    BOOL hasAudio = NO;
+    if ([Util isFileSupportedByAVFoundation:filePath hasAudioTrack:&hasAudio] == NO) {
         [self die:@"File format not supported."];
+    }
+    if (hasAudio == NO) {
+        [self die:@"File contains no audio track."];
     }
 }
 
@@ -199,7 +207,7 @@
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         
         if (error != nil) {
-            [self die:[error description]];
+            [self die:@"%@", [error description]];
         }
         
         if (result == nil) {
@@ -263,7 +271,7 @@
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         if (error != nil) {
-            [self die:[error description]];
+            [self die:@"%@", [error description]];
         }
         
         NSUInteger srt_index = 1;
@@ -280,7 +288,7 @@
             
             NSTimeInterval start_time = result.bestTranscription.segments[start].timestamp;
             NSTimeInterval end_time = result.bestTranscription.segments[end].timestamp + result.bestTranscription.segments[end].duration;
-            printf("%s --> %s\n", [[self stringFromTimeInterval:start_time] UTF8String], [[self stringFromTimeInterval:end_time] UTF8String]);
+            printf("%s --> %s\n", [[Util stringFromTimeInterval:start_time] UTF8String], [[Util stringFromTimeInterval:end_time] UTF8String]);
             
             for (NSUInteger k = start; k <= end; k++) {
                 printf("%s", [result.bestTranscription.segments[k].substring UTF8String]);
@@ -306,55 +314,18 @@
 
 - (void)startListening {
     [self initRecognizer];
-    
-    // Set the input device, if specified
+
+    // Resolve the requested input device, if any. Actual binding happens
+    // after the engine is created, so we don't touch the system-wide
+    // default input.
+    AudioDeviceID inputDeviceID = kAudioObjectUnknown;
     if (self.inputDeviceID) {
-        AudioObjectPropertyAddress addr = {
-            kAudioHardwarePropertyDefaultInputDevice,
-            kAudioObjectPropertyScopeGlobal,
-            kAudioObjectPropertyElementMain
-        };
-        
-        AudioDeviceID deviceID = kAudioObjectUnknown;
-        
-        NSArray *devices = [Hear availableAudioInputDevices];
-        for (NSDictionary *device in devices) {
-            if ([device[@"id"] isEqualToString:self.inputDeviceID]) {
-                
-                CFStringRef deviceUID = (__bridge CFStringRef)device[@"id"];
-                
-                AudioValueTranslation value;
-                value.mInputData = &deviceUID;
-                value.mInputDataSize = sizeof(CFStringRef);
-                value.mOutputData = &deviceID;
-                value.mOutputDataSize = sizeof(AudioDeviceID);
-                
-                UInt32 size = sizeof(AudioValueTranslation);
-                
-                AudioObjectPropertyAddress addr = {
-                    kAudioHardwarePropertyDeviceForUID,
-                    kAudioObjectPropertyScopeGlobal,
-                    kAudioObjectPropertyElementMain
-                };
-                
-                OSStatus status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, &value);
-                if (status != noErr) {
-                    [self die:@"Unable to get device ID for UID '%@'", self.inputDeviceID];
-                }
-                break;
-            }
-        }
-        
-        if (deviceID == kAudioObjectUnknown) {
+        inputDeviceID = [AudioDevices deviceIDForUID:self.inputDeviceID];
+        if (inputDeviceID == kAudioObjectUnknown) {
             [self die:@"Audio input device with ID '%@' not found", self.inputDeviceID];
         }
-        
-        OSStatus status = AudioObjectSetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, sizeof(AudioDeviceID), &deviceID);
-        if (status != noErr) {
-            [self die:@"Error setting audio input device: %d", status];
-        }
     }
-    
+
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
@@ -411,7 +382,25 @@
     // Create audio engine
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
-    
+
+    // Bind the engine's input AU to the chosen device before the format
+    // is queried, so the AU is configured against the right hardware.
+    if (inputDeviceID != kAudioObjectUnknown) {
+        AudioUnit inputAU = inputNode.audioUnit;
+        if (inputAU == NULL) {
+            [self die:@"Could not access input node's audio unit"];
+        }
+        OSStatus status = AudioUnitSetProperty(inputAU,
+                                               kAudioOutputUnitProperty_CurrentDevice,
+                                               kAudioUnitScope_Global,
+                                               0,
+                                               &inputDeviceID,
+                                               sizeof(inputDeviceID));
+        if (status != noErr) {
+            [self die:@"Error setting audio input device on engine: %d", status];
+        }
+    }
+
     // Feed microphone audio data into recognition request
     [inputNode installTapOnBus:0
                     bufferSize:3200
@@ -468,153 +457,7 @@
 }
 
 + (void)printSupportedLocales {
-    NSPrint([[Hear supportedLocales] componentsJoinedByString:@"\n"]);
-}
-
-#pragma mark - Audio Input Devices
-
-+ (NSArray *)availableAudioInputDevices {
-    AudioObjectPropertyAddress addr = {
-        kAudioHardwarePropertyDevices,
-        kAudioObjectPropertyScopeGlobal,
-        kAudioObjectPropertyElementMain
-    };
-    
-    UInt32 size;
-    OSStatus status = AudioObjectGetPropertyDataSize(kAudioObjectSystemObject, &addr, 0, NULL, &size);
-    if (status != noErr) {
-        return @[];
-    }
-    
-    int count = size / sizeof(AudioDeviceID);
-    AudioDeviceID *deviceIDs = (AudioDeviceID *)malloc(size);
-    if (deviceIDs == NULL) {
-        return @[];
-    }
-    
-    status = AudioObjectGetPropertyData(kAudioObjectSystemObject, &addr, 0, NULL, &size, deviceIDs);
-    if (status != noErr) {
-        free(deviceIDs);
-        return @[];
-    }
-    
-    NSMutableArray *devices = [NSMutableArray array];
-    
-    for (int i = 0; i < count; i++) {
-        AudioDeviceID deviceID = deviceIDs[i];
-        
-        addr.mScope = kAudioDevicePropertyScopeInput;
-        addr.mSelector = kAudioDevicePropertyStreamConfiguration;
-        status = AudioObjectGetPropertyDataSize(deviceID, &addr, 0, NULL, &size);
-        if (status != noErr) {
-            continue;
-        }
-        
-        AudioBufferList *bufferList = (AudioBufferList *)malloc(size);
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, bufferList);
-        if (status != noErr) {
-            free(bufferList);
-            continue;
-        }
-        
-        UInt32 channelCount = 0;
-        for (int j = 0; j < bufferList->mNumberBuffers; j++) {
-            channelCount += bufferList->mBuffers[j].mNumberChannels;
-        }
-        free(bufferList);
-        
-        if (channelCount == 0) {
-            continue;
-        }
-        
-        CFStringRef deviceName;
-        size = sizeof(deviceName);
-        addr.mSelector = kAudioDevicePropertyDeviceNameCFString;
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceName);
-        if (status != noErr) {
-            continue;
-        }
-        
-        CFStringRef deviceUID;
-        size = sizeof(deviceUID);
-        addr.mSelector = kAudioDevicePropertyDeviceUID;
-        status = AudioObjectGetPropertyData(deviceID, &addr, 0, NULL, &size, &deviceUID);
-        if (status != noErr) {
-            CFRelease(deviceName);
-            continue;
-        }
-        
-        [devices addObject:@{
-            @"name": (__bridge NSString *)deviceName,
-            @"id": (__bridge NSString *)deviceUID
-        }];
-        
-        CFRelease(deviceName);
-        CFRelease(deviceUID);
-    }
-    
-    free(deviceIDs);
-    
-    return devices;
-}
-
-+ (BOOL)hasAvailableAudioInputDevice {
-    return [[Hear availableAudioInputDevices] count] != 0;
-}
-
-+ (BOOL)isAvailableAudioInputDevice:(NSString *)deviceID {
-    NSArray *devices = [Hear availableAudioInputDevices];
-    for (NSDictionary *device in devices) {
-        if ([device[@"id"] isEqualToString:deviceID]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-+ (void)printAvailableAudioInputDevices {
-    NSArray *devices = [Hear availableAudioInputDevices];
-    
-    if ([devices count] == 0) {
-        NSPrint(@"No audio input devices available");
-        return;
-    }
-    
-    NSPrint(@"Available Audio Input Devices:");
-    NSUInteger num = 0;
-    for (NSDictionary *device in devices) {
-        num += 1;
-        NSPrint(@"%lu. %@ (ID: %@)", num, device[@"name"], device[@"id"]);
-    }
-}
-
-#pragma mark - Util
-
-+ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
-    // Create NSURL from file path
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    if (!fileURL) {
-        return NO;
-    }
-    
-    // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
-    // trigger more thorough format checks during initialization.
-    // Setting it to NO might be slightly faster.
-    NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
-    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
-    
-    return (asset != nil && [asset isReadable]);
-}
-
-// https://stackoverflow.com/a/32884209/11639533
-- (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
-    NSInteger interval = timeInterval;
-    NSInteger ms = (fmod(timeInterval, 1) * 1000);
-    long seconds = interval % 60;
-    long minutes = (interval / 60) % 60;
-    long hours = (interval / 3600);
-    return [NSString stringWithFormat:@"%0.2ld:%0.2ld:%0.2ld,%0.3ld",
-            hours, minutes, seconds, (long)ms];
+    NSPrint(@"%@", [[Hear supportedLocales] componentsJoinedByString:@"\n"]);
 }
 
 @end

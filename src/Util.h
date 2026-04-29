@@ -30,23 +30,16 @@
     POSSIBILITY OF SUCH DAMAGE.
 */
 
-@import Foundation;
+#import <Foundation/Foundation.h>
 
-#define PROGRAM_NAME            @"hear"
-#define PROGRAM_VERSION         @"0.8"
-#define PROGRAM_AUTHOR          @"Sveinbjorn Thordarson"
-#define PROGRAM_AUTHOR_EMAIL    @"sveinbjorn@sveinbjorn.org"
+NS_ASSUME_NONNULL_BEGIN
 
-#define DEFAULT_LOCALE          @"en-US"
-#define NO_TIMEOUT              0.0f
+@interface Util : NSObject
 
-// Logging in debug mode only
-#ifdef DEBUG
-    #define DLog(...) NSLog(__VA_ARGS__)
-#else
-    #define DLog(...)
-#endif
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath
+                        hasAudioTrack:(BOOL * _Nullable)audioPresent;
++ (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval;
 
-void NSPrint(NSString *format, ...);
-void NSPrintErr(NSString *format, ...);
-void NSDump(NSString *format, ...);
+@end
+
+NS_ASSUME_NONNULL_END

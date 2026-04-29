@@ -1,7 +1,7 @@
 /*
     hear - Command line speech recognition for macOS
 
-    Copyright (c) 2022-2025 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
+    Copyright (c) 2022-2026 Sveinbjorn Thordarson <sveinbjorn@sveinbjorn.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification,
@@ -31,10 +31,11 @@
 */
 
 #import <getopt.h>
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "Common.h"
 #import "Hear.h"
+#import "AudioDevices.h"
 
 // Prototypes
 static inline BOOL IsRightOSVersion(void);
@@ -81,7 +82,7 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
     
     // Make sure we're running on a macOS version that supports speech recognition
     if (IsRightOSVersion() == NO) {
-        NSPrintErr(@"This program requires macOS Big Sur 13.0 or later.");
+        NSPrintErr(@"This program requires macOS Ventura 13.0 or later.");
         exit(EXIT_FAILURE);
     }
         
@@ -156,13 +157,13 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
                 break;
             
             case 'a':
-                [Hear printAvailableAudioInputDevices];
+                [AudioDevices printAvailableAudioInputDevices];
                 exit(EXIT_SUCCESS);
                 break;
             
             case 'n':
                 inputDeviceID = @(optarg);
-                if ([Hear isAvailableAudioInputDevice:inputDeviceID] == NO) {
+                if ([AudioDevices isAvailableAudioInputDevice:inputDeviceID] == NO) {
                     NSPrintErr(@"The device '%@' is not a valid audio input device.", inputDeviceID);
                     exit(EXIT_FAILURE);
                 }
@@ -176,14 +177,17 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
             
             // Print help text with list of option flags
             case 'h':
-            default:
                 PrintHelp();
                 exit(EXIT_SUCCESS);
+                break;
+            
+            case '?':
+                exit(EXIT_FAILURE);
                 break;
         }
     }
     
-    if (inputFilename == nil && [Hear hasAvailableAudioInputDevice] == NO) {
+    if (inputFilename == nil && [AudioDevices hasAvailableAudioInputDevice] == NO) {
         NSPrintErr(@"No available audio input device.");
         exit(EXIT_FAILURE);
     }
