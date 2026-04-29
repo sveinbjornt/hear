@@ -61,15 +61,22 @@
     return YES;
 }
 
-// https://stackoverflow.com/a/32884209/11639533
+// Formats a time interval as an SRT-style HH:MM:SS,mmm timestamp.
+// Rounds to the nearest millisecond and decomposes from total ms so any
+// rounding carry propagates correctly into the seconds field. Negative
+// inputs are clamped to zero, since SRT has no negative-timestamp form.
 + (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval {
-    NSInteger interval = timeInterval;
-    NSInteger ms = (fmod(timeInterval, 1) * 1000);
-    long seconds = interval % 60;
-    long minutes = (interval / 60) % 60;
-    long hours = (interval / 3600);
-    return [NSString stringWithFormat:@"%0.2ld:%0.2ld:%0.2ld,%0.3ld",
-            hours, minutes, seconds, (long)ms];
+    if (timeInterval < 0 || isnan(timeInterval)) {
+        timeInterval = 0;
+    }
+    long long total_ms = llround(timeInterval * 1000.0);
+    long ms      = (long)(total_ms % 1000);
+    long long s  = total_ms / 1000;
+    long seconds = (long)(s % 60);
+    long minutes = (long)((s / 60) % 60);
+    long hours   = (long)(s / 3600);
+    return [NSString stringWithFormat:@"%02ld:%02ld:%02ld,%03ld",
+            hours, minutes, seconds, ms];
 }
 
 @end
