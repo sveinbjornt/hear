@@ -1,8 +1,8 @@
 class Hear < Formula
   desc "Command line interface for the built-in speech recognition and transcription capabilities in macOS."
   homepage "https://github.com/sveinbjornt/hear"
-  url "https://github.com/sveinbjornt/hear/archive/refs/tags/0.7.tar.gz"
-  sha256 "c3384115f11e59ec2744b257c1c1a5e0c0013c6813d8f34b8ba749833cb0f5f9"
+  url "https://github.com/sveinbjornt/hear/archive/refs/tags/0.8.tar.gz"
+  sha256 "27ca9cb067721e22dfac2db888dc962ad4fe1b079a5f8e03ff13279ce0892e34"
   license "BSD-3-Clause"
 
   depends_on xcode: ["10.0", :build]
