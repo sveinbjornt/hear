@@ -2,7 +2,7 @@
 
 ## v0.8 - 28/04/2026
 
-* Fixed issue where system-wide audio input would be permanently set
+* Fixed issue where system-wide audio input would change permanently when input device was specified
 * Various minor bug fixes
 
 ## v0.7 - 09/11/2025
