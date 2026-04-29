@@ -36,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Util : NSObject
 
-+ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath;
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath
+                        hasAudioTrack:(BOOL * _Nullable)audioPresent;
 + (NSString *)stringFromTimeInterval:(NSTimeInterval)timeInterval;
 
 @end

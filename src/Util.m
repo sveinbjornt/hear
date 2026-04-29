@@ -32,24 +32,33 @@
 
 #import "Util.h"
 
-#import <Speech/Speech.h>
+@import AVFoundation;
+#import <math.h>
 
 @implementation Util
 
-+ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath {
-    // Create NSURL from file path
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath hasAudioTrack:(BOOL *)audioPresent {
+    if (audioPresent != NULL) {
+        *audioPresent = NO;
+    }
+    
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-    if (!fileURL) {
+    if (fileURL == nil) {
         return NO;
     }
     
     // Using AVURLAssetPreferPreciseDurationAndTimingKey can sometimes
     // trigger more thorough format checks during initialization.
-    // Setting it to NO might be slightly faster.
     NSDictionary *options = @{ AVURLAssetPreferPreciseDurationAndTimingKey : @(YES) };
     AVURLAsset *asset = [AVURLAsset URLAssetWithURL:fileURL options:options];
+    if (asset == nil || ![asset isReadable]) {
+        return NO;
+    }
     
-    return (asset != nil && [asset isReadable]);
+    if (audioPresent != NULL) {
+        *audioPresent = ([[asset tracksWithMediaType:AVMediaTypeAudio] count] > 0);
+    }
+    return YES;
 }
 
 // https://stackoverflow.com/a/32884209/11639533

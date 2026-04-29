@@ -35,7 +35,7 @@
 #import "AudioDevices.h"
 #import "Util.h"
 
-#import <AudioToolbox/AudioToolbox.h>
+@import AudioToolbox;
 
 @interface Hear()
 
@@ -176,9 +176,13 @@
     if ([[NSFileManager defaultManager] fileExistsAtPath:filePath] == NO) {
         [self die:@"No file at path '%@'", filePath];
     }
-    // Make sure it is a supported format
-    if ([Util isFileSupportedByAVFoundation:filePath] == NO) {
+    // Make sure it is a supported format and contains an audio track
+    BOOL hasAudio = NO;
+    if ([Util isFileSupportedByAVFoundation:filePath hasAudioTrack:&hasAudio] == NO) {
         [self die:@"File format not supported."];
+    }
+    if (hasAudio == NO) {
+        [self die:@"File contains no audio track."];
     }
 }
 
