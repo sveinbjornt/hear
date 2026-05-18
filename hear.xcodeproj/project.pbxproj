@@ -27,7 +27,14 @@
 		F439F2C427D51D7F00626667 /* test.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = test.sh; sourceTree = "<group>"; };
 		F439F2C527D55BFF00626667 /* macos.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = macos.yml; path = .github/workflows/macos.yml; sourceTree = "<group>"; };
 		F43A461B27C010B2000469BC /* hear */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hear; sourceTree = BUILT_PRODUCTS_DIR; };
-		F45C879D27C0457900EF9845 /* hear.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = hear.1; sourceTree = "<group>"; };
+		F4550B0F2FBB360200812E78 /* cat2html */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = cat2html; sourceTree = "<group>"; };
+		F4550B102FBB360200812E78 /* hear.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = hear.1; sourceTree = "<group>"; };
+		F4550B112FBB360200812E78 /* hear.1.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = hear.1.html; sourceTree = "<group>"; };
+		F4550B122FBB360200812E78 /* man2html.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = man2html.sh; sourceTree = "<group>"; };
+		F4550B132FBB360200812E78 /* upload_manpage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_manpage.sh; sourceTree = "<group>"; };
+		F4550B152FBB360A00812E78 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
+		F4550B162FBB360A00812E78 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		F4550B172FBB360A00812E78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F45C879E27C0457900EF9845 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		F45C879F27C0457900EF9845 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F45C87A027C0457900EF9845 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -35,13 +42,9 @@
 		F45C87A227C0457A00EF9845 /* Hear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hear.h; sourceTree = "<group>"; };
 		F45C87A327C0457A00EF9845 /* Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Common.m; sourceTree = "<group>"; };
 		F45C87A427C0457A00EF9845 /* Hear.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hear.m; sourceTree = "<group>"; };
-		F45C87A527C0457A00EF9845 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F47FA1B7290B31C500914395 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
-		F4A4D9472AF544D20036590C /* hear.1.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = hear.1.html; sourceTree = "<group>"; };
-		F4A4D9482AF5455F0036590C /* upload_manpage.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = upload_manpage.sh; sourceTree = "<group>"; };
 		F4A6209E29EEC7BB00DD9BE1 /* Speech.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Speech.framework; path = System/Library/Frameworks/Speech.framework; sourceTree = SDKROOT; };
 		F4A620A029F2D79800DD9BE1 /* hear.rb */ = {isa = PBXFileReference; lastKnownFileType = text.script.ruby; path = hear.rb; sourceTree = "<group>"; };
-		F4ACB73928DB41DA00E9E778 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
 		F4B96E4629CF4B1C0023A4BF /* CHANGES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGES.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,19 +74,16 @@
 		F43A461227C010B2000469BC = {
 			isa = PBXGroup;
 			children = (
-				F4ACB73928DB41DA00E9E778 /* hear.entitlements */,
-				F4A620A029F2D79800DD9BE1 /* hear.rb */,
 				F439F2C527D55BFF00626667 /* macos.yml */,
 				F45C87A127C0457A00EF9845 /* README.md */,
 				F47FA1B7290B31C500914395 /* TODO.md */,
 				F4B96E4629CF4B1C0023A4BF /* CHANGES.md */,
 				F45C87A027C0457900EF9845 /* Makefile */,
 				F439F2C027D5157A00626667 /* install.sh */,
-				F45C879D27C0457900EF9845 /* hear.1 */,
-				F4A4D9472AF544D20036590C /* hear.1.html */,
-				F4A4D9482AF5455F0036590C /* upload_manpage.sh */,
-				F45C87A527C0457A00EF9845 /* Info.plist */,
+				F4A620A029F2D79800DD9BE1 /* hear.rb */,
 				F45C87AA27C0458300EF9845 /* src */,
+				F4550B182FBB360A00812E78 /* assets */,
+				F4550B142FBB360200812E78 /* man */,
 				F439F2C227D51D7F00626667 /* test */,
 				F4A6209D29EEC7BB00DD9BE1 /* Frameworks */,
 				F43A461C27C010B2000469BC /* Products */,
@@ -96,6 +96,28 @@
 				F43A461B27C010B2000469BC /* hear */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F4550B142FBB360200812E78 /* man */ = {
+			isa = PBXGroup;
+			children = (
+				F4550B0F2FBB360200812E78 /* cat2html */,
+				F4550B102FBB360200812E78 /* hear.1 */,
+				F4550B112FBB360200812E78 /* hear.1.html */,
+				F4550B122FBB360200812E78 /* man2html.sh */,
+				F4550B132FBB360200812E78 /* upload_manpage.sh */,
+			);
+			path = man;
+			sourceTree = "<group>";
+		};
+		F4550B182FBB360A00812E78 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				F4550B152FBB360A00812E78 /* hear.entitlements */,
+				F4550B162FBB360A00812E78 /* icon.png */,
+				F4550B172FBB360A00812E78 /* Info.plist */,
+			);
+			path = assets;
 			sourceTree = "<group>";
 		};
 		F45C87AA27C0458300EF9845 /* src */ = {
@@ -148,7 +170,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastUpgradeCheck = 2640;
+				LastUpgradeCheck = 2650;
 				TargetAttributes = {
 					F43A461A27C010B2000469BC = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -313,7 +335,7 @@
 		F43A462327C010B2000469BC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = hear.entitlements;
+				CODE_SIGN_ENTITLEMENTS = assets/hear.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
@@ -325,7 +347,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_TESTABILITY = NO;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = assets/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				LOCALIZATION_EXPORT_SUPPORTED = NO;
@@ -341,7 +363,7 @@
 		F43A462427C010B2000469BC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = hear.entitlements;
+				CODE_SIGN_ENTITLEMENTS = assets/hear.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Developer ID Application";
 				CODE_SIGN_STYLE = Manual;
@@ -352,7 +374,7 @@
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = 5WX26Y89JP;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_EXPAND_BUILD_SETTINGS = YES;
-				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_FILE = assets/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_OUTPUT_FORMAT = binary;
 				LOCALIZATION_EXPORT_SUPPORTED = NO;

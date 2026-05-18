@@ -6,7 +6,7 @@
 
 # hear
 
-<img src="icon.png" width="168" height="168" alt="hear" style="float: right; margin-left: 20px; margin-bottom: 20px;" align="right">
+<img src="assets/icon.png" width="168" height="168" alt="hear" style="float: right; margin-left: 20px; margin-bottom: 20px;" align="right">
 
 ### macOS speech recognition via the command line
 

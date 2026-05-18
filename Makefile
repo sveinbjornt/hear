@@ -38,7 +38,7 @@ build_signed:
 archive:
 	@mkdir "$(BUILD_DIR)/$(PROGRAM_NAME)-$(VERSION)"
 	@cp "$(BUILD_DIR)/$(PROGRAM_NAME)" "$(BUILD_DIR)/$(PROGRAM_NAME)-$(VERSION)/"
-	@cp "$(PROGRAM_NAME).1" "$(BUILD_DIR)/$(PROGRAM_NAME)-$(VERSION)/"
+	@cp "man/$(PROGRAM_NAME).1" "$(BUILD_DIR)/$(PROGRAM_NAME)-$(VERSION)/"
 	@cp "install.sh" "$(BUILD_DIR)/$(PROGRAM_NAME)-$(VERSION)/"
 	@cd "$(BUILD_DIR)"; zip -qy --symlinks "$(PROGRAM_NAME)-$(VERSION).zip" -r "$(PROGRAM_NAME)-$(VERSION)"
 	@cd "$(BUILD_DIR)"; rm -r "$(PROGRAM_NAME)-$(VERSION)"
