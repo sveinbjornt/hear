@@ -30,3 +30,4 @@ jobs:
         run: |
           shellcheck *.sh
           shellcheck man/*.sh
+          shellcheck test/test.sh

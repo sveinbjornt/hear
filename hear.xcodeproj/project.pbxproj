@@ -35,6 +35,7 @@
 		F4550B152FBB360A00812E78 /* hear.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = hear.entitlements; sourceTree = "<group>"; };
 		F4550B162FBB360A00812E78 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		F4550B172FBB360A00812E78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F4550B192FBC0C2F00812E78 /* long-audio-percentage.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = "long-audio-percentage.aac"; sourceTree = "<group>"; };
 		F45C879E27C0457900EF9845 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		F45C879F27C0457900EF9845 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F45C87A027C0457900EF9845 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 				F43056512EC0761C00360103 /* en-US.mp3 */,
 				F43056522EC0761C00360103 /* en-US.wav */,
 				F43056532EC0761C00360103 /* fr-FR.wav */,
+				F4550B192FBC0C2F00812E78 /* long-audio-percentage.aac */,
 			);
 			path = test;
 			sourceTree = "<group>";

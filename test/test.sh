@@ -4,10 +4,10 @@
 #
 
 abs_path_to_enclosing_dir () {
-   echo "$(dirname $(cd $(dirname "$1");pwd)/$(basename "$1"))"
+    cd "$(dirname "$1")" && pwd
 }
 
-TEST_ROOT=$(abs_path_to_enclosing_dir $0)
+TEST_ROOT=$(abs_path_to_enclosing_dir "$0")
 BIN_PATH="products/hear"
 
                  
@@ -24,17 +24,17 @@ EXPECTED_OUTPUT="The rain in Spain stays mainly in the plain"
 LOCALE="en-US"
 
 WAV_PATH="$TEST_ROOT/en-US.wav"
-test_transcribe_file $WAV_PATH $LOCALE "$EXPECTED_OUTPUT"
+test_transcribe_file "$WAV_PATH" "$LOCALE" "$EXPECTED_OUTPUT"
 echo "[OK] WAV en-US speech recognition"
 
 MP3_PATH="$TEST_ROOT/en-US.mp3"
-test_transcribe_file $MP3_PATH $LOCALE "$EXPECTED_OUTPUT"
+test_transcribe_file "$MP3_PATH" "$LOCALE" "$EXPECTED_OUTPUT"
 echo "[OK] MP3 en-US speech recognition"
 
 # Audio with percentage
 EXPECTED_OUTPUT="I have to say that's really incredible it is 60% off"
 AAC_PATH="$TEST_ROOT/long-audio-percentage.aac"
-test_transcribe_file $AAC_PATH $LOCALE "$EXPECTED_OUTPUT"
+test_transcribe_file "$AAC_PATH" "$LOCALE" "$EXPECTED_OUTPUT"
 echo "[OK] AAC en-US speech recognition on text including word percentage"
 
 # fr-FR
@@ -42,5 +42,5 @@ EXPECTED_OUTPUT="Ça soir je vais à la maison"
 LOCALE="fr-FR"
 
 WAV_PATH="$TEST_ROOT/fr-FR.wav"
-test_transcribe_file $WAV_PATH $LOCALE "$EXPECTED_OUTPUT"
+test_transcribe_file "$WAV_PATH" "$LOCALE" "$EXPECTED_OUTPUT"
 echo "[OK] WAV fr-FR speech recognition"
