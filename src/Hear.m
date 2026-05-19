@@ -243,7 +243,7 @@
             NSDump(@"\n");
             exit(EXIT_SUCCESS);
         }
-
+        
     }];
     
     if (self.task == nil) {
@@ -314,7 +314,7 @@
 
 - (void)startListening {
     [self initRecognizer];
-
+    
     // Resolve the requested input device, if any. Actual binding happens
     // after the engine is created, so we don't touch the system-wide
     // default input.
@@ -325,7 +325,7 @@
             [self die:@"Audio input device with ID '%@' not found", self.inputDeviceID];
         }
     }
-
+    
     // Create speech recognition request
     self.request = [[SFSpeechAudioBufferRecognitionRequest alloc] init];
     if (self.request == nil) {
@@ -368,7 +368,7 @@
                 exit(EXIT_SUCCESS);
             }
         }
-
+        
         if (result.isFinal) {
             // We're done
             exit(EXIT_SUCCESS);
@@ -382,7 +382,7 @@
     // Create audio engine
     self.engine = [[AVAudioEngine alloc] init];
     AVAudioInputNode *inputNode = self.engine.inputNode;
-
+    
     // Bind the engine's input AU to the chosen device before the format
     // is queried, so the AU is configured against the right hardware.
     if (inputDeviceID != kAudioObjectUnknown) {
@@ -400,7 +400,7 @@
             [self die:@"Error setting audio input device on engine: %d", status];
         }
     }
-
+    
     // Feed microphone audio data into recognition request
     [inputNode installTapOnBus:0
                     bufferSize:3200

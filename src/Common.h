@@ -38,7 +38,7 @@
 #define PROGRAM_AUTHOR_EMAIL    @"sveinbjorn@sveinbjorn.org"
 
 #define DEFAULT_LOCALE          @"en-US"
-#define NO_TIMEOUT              0.0f
+#define NO_TIMEOUT              0.f
 
 // Logging in debug mode only
 #ifdef DEBUG

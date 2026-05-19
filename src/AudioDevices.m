@@ -37,8 +37,6 @@
 
 @implementation AudioDevices
 
-#pragma mark - Audio Input Devices
-
 + (NSArray *)availableAudioInputDevices {
     AudioObjectPropertyAddress addr = {
         kAudioHardwarePropertyDevices,

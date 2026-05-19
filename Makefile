@@ -49,8 +49,9 @@ size:
 	@echo "Archive size:"
 	@cd "$(BUILD_DIR)"; du -hs "$(PROGRAM_NAME)-$(VERSION).zip"
 
+.PHONY: man
 man:
-	@bash man2html.sh
+	@bash man/man2html.sh
 
 runtests:
 # We can't run more extensive tests than these due to missing permissions from macOS

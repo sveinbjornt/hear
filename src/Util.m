@@ -37,7 +37,8 @@
 
 @implementation Util
 
-+ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath hasAudioTrack:(BOOL *)audioPresent {
++ (BOOL)isFileSupportedByAVFoundation:(NSString *)filePath
+                        hasAudioTrack:(BOOL * _Nullable)audioPresent {
     if (audioPresent != NULL) {
         *audioPresent = NO;
     }
