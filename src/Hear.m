@@ -39,25 +39,25 @@
 
 @interface Hear()
 
-@property (nonatomic, retain) SFSpeechRecognizer *recognizer;
-@property (nonatomic, retain) SFSpeechRecognitionRequest *request;
-@property (nonatomic, retain) SFSpeechRecognitionTask *task;
+@property (nonatomic, strong) SFSpeechRecognizer *recognizer;
+@property (nonatomic, strong) SFSpeechRecognitionRequest *request;
+@property (nonatomic, strong) SFSpeechRecognitionTask *task;
 
-@property (nonatomic, retain) AVAudioEngine *engine;
+@property (nonatomic, strong) AVAudioEngine *engine;
 
-@property (nonatomic, retain) NSTimer *timeoutTimer;
+@property (nonatomic, strong) NSTimer *timeoutTimer;
 
-@property (nonatomic, retain) NSString *locale;
-@property (nonatomic, retain) NSString *inputFile;
+@property (nonatomic, strong) NSString *locale;
+@property (nonatomic, strong) NSString *inputFile;
 @property (nonatomic) BOOL useDeviceInput;
 @property (nonatomic) BOOL useOnDeviceRecognition;
 @property (nonatomic) BOOL singleLineMode;
 @property (nonatomic) BOOL addPunctuation;
 @property (nonatomic) BOOL addTimestamps;
 @property (nonatomic) BOOL subtitleMode;
-@property (nonatomic, retain) NSString *exitWord;
+@property (nonatomic, strong) NSString *exitWord;
 @property (nonatomic) CGFloat timeout;
-@property (nonatomic, retain) NSString *inputDeviceID;
+@property (nonatomic, strong) NSString *inputDeviceID;
 
 @end
 
@@ -341,8 +341,7 @@
                                               resultHandler:
     ^(SFSpeechRecognitionResult * _Nullable result, NSError * _Nullable error) {
         if (error != nil) {
-            NSPrintErr(@"Error: %@", error.localizedDescription);
-            return;
+            [self die:@"%@", error.localizedDescription];
         }
         
         if (self.timeout > 0) {
@@ -362,8 +361,12 @@
         if (self.exitWord != nil) {
             NSString *exitWord = [self.exitWord lowercaseString];
             NSString *exitSuffix = [[NSString stringWithFormat:@" %@", exitWord] lowercaseString];
+            NSString *exitSuffixPunct = [exitSuffix stringByTrimmingCharactersInSet:[NSCharacterSet
+                                                                                     punctuationCharacterSet]];
             NSString *tsLower = [transcript lowercaseString];
-            if ([tsLower hasSuffix:exitSuffix] || [tsLower isEqualToString:exitWord]) {
+            if ([tsLower hasSuffix:exitSuffix] ||
+                [tsLower isEqualToString:exitWord] ||
+                (self.addPunctuation && [tsLower hasSuffix:exitSuffixPunct])) {
                 // Exit word identified, we're done
                 exit(EXIT_SUCCESS);
             }

@@ -213,7 +213,8 @@ int main(int argc, const char * argv[]) { @autoreleasepool {
 #pragma mark -
 
 static inline BOOL IsRightOSVersion(void) {
-    // The Speech Recognition API wasn't introduced until macOS 10.15
+    // The Speech Recognition API was introduced in macOS 10.15
+    // but we only support macOS 13 or later
     NSOperatingSystemVersion osVersion = {0};
     osVersion.majorVersion = 13;
     osVersion.minorVersion = 0;
